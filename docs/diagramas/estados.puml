@@ -1,0 +1,25 @@
+@startuml
+title Ciclo de vida de um evento de risco
+hide empty description
+state Reportado
+state "Em validacao" as EmValidacao
+state Confirmado
+state "Alerta emitido" as AlertaEmitido
+state "Em monitoramento" as EmMonitoramento
+state Encerrado
+state Descartado
+
+[*] --> Reportado : dadoRecebido
+Reportado --> EmValidacao : novoDado [confianca >= 50]
+Reportado --> Descartado : timeout [sem confirmacao em 2 h]
+EmValidacao --> Confirmado : [confianca >= 75] ou agenteConfirma
+EmValidacao --> AlertaEmitido : [risco = Critico] / emitirAlertaPreliminar
+EmValidacao --> Descartado : agenteRejeita ou [dado invalido]
+Confirmado --> AlertaEmitido : [risco >= Alto] / notificarUsuarios
+Confirmado --> EmMonitoramento : [risco < Alto]
+AlertaEmitido --> EmMonitoramento : notificacaoEnviada
+EmMonitoramento --> AlertaEmitido : riscoEscalou / reenviarAlerta
+EmMonitoramento --> Encerrado : [abaixo do limiar por 30 min] ou agenteEncerra
+Encerrado --> [*]
+Descartado --> [*]
+@enduml

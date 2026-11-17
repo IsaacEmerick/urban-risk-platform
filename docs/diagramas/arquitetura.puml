@@ -1,0 +1,66 @@
+@startuml arquitetura
+title Arquitetura em camadas - Urban Risk Intelligence Platform
+skinparam componentStyle rectangle
+
+package "Fontes externas" {
+  [Sensores IoT\n(nivel d'agua, chuva, temperatura)] as S
+  [APIs publicas\n(CEMADEN, INMET, concessionarias)] as API
+  [Comunidade\n(registros pelo app)] as COM
+}
+
+package "Camada de Apresentacao" {
+  [App do Morador (web/mobile)] as APP
+  [Painel do Agente / Operador] as PAINEL
+  [Central de Notificacoes] as CNUI
+}
+
+package "Camada de Aplicacao / Negocio" {
+  [API Gateway\n(autenticacao, rate limit)] as GW
+  [Servico de Ingestao] as ING
+  queue "Broker de Eventos\n(processamento de eventos)" as BR
+  [Servico de Validacao] as VAL
+  [Motor de Confianca] as CONF
+  [Motor de Classificacao de Risco] as RISK
+  [Gerenciador de Eventos\n(maquina de estados)] as EV
+  [Servico de Notificacao\n(push, SMS, e-mail)] as NOT
+  [Servico de Analises] as ANA
+  [Identidade e Consentimento\n(LGPD)] as IAM
+}
+
+package "Camada de Dados" {
+  database "Eventos + geodados\n(PostgreSQL/PostGIS)" as DB
+  database "Series temporais\n(TimescaleDB)" as TS
+  database "Cofre de dados pessoais\n(criptografado)" as PII
+  database "Logs de auditoria" as LOG
+  database "Cache (Redis)" as CACHE
+}
+
+COM --> APP : registra ocorrencia
+S --> GW : envia leituras
+ING --> API : coleta agendada
+APP --> GW
+PAINEL --> GW
+CNUI --> GW
+GW --> IAM : autentica
+GW --> ING
+GW --> CACHE
+ING --> BR : publica DadoRecebido
+ING --> TS
+BR --> VAL
+VAL --> CONF
+VAL --> RISK
+VAL --> EV
+EV --> DB
+EV --> BR : publica AlertaEmitido
+BR --> NOT
+NOT --> CNUI : entrega notificacao
+ANA --> DB
+ANA --> TS
+IAM --> PII
+IAM --> LOG
+
+note right of PII
+  Dados pessoais separados dos eventos.
+  Eventos guardam apenas ID pseudonimizado.
+end note
+@enduml

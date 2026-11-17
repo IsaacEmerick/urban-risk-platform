@@ -1,0 +1,54 @@
+@startuml
+title Fluxo de recebimento e disparo de um alerta
+autonumber
+participant "Fonte de dados\n(Sensor / API publica / App)" as F
+participant "API Gateway" as GW
+participant "Servico de Ingestao" as ING
+queue "Broker de Eventos" as BR
+participant "Servico de Validacao" as VAL
+participant "Motor de Confianca" as CONF
+participant "Motor de Risco" as RISK
+participant "Gerenciador de Eventos" as EV
+database "BD Eventos" as DB
+participant "Servico de Notificacao" as NOT
+actor "Agente Defesa Civil" as AG
+actor "Morador" as M
+
+F -> GW : enviarDado(payload, origem, timestamp)
+GW -> GW : autenticar origem
+GW -> ING : encaminhar(payload)
+ING -> ING : normalizar e pseudonimizar dados pessoais
+ING -> BR : publicar(DadoRecebido)
+ING --> GW : 202 Accepted
+GW --> F : 202 Accepted
+
+BR -> VAL : consumir(DadoRecebido)
+VAL -> VAL : checar formato, faixa e duplicidade
+alt dado invalido
+  VAL -> DB : registrar(descartado, motivo)
+else dado valido
+  VAL -> CONF : calcularConfianca(dado)
+  CONF -> DB : buscarCorroboracoes(area, janela)
+  DB --> CONF : registros proximos
+  CONF --> VAL : confianca = 80 (Alta)
+  VAL -> RISK : classificarRisco(dado)
+  RISK --> VAL : risco = Alto
+  VAL -> EV : criarOuAtualizarEvento(dado, risco, confianca)
+  EV -> DB : salvar(evento)
+  alt risco >= Alto e confianca >= 75
+    EV -> EV : estado = Alerta emitido
+  else confianca entre 50 e 74
+    EV -> EV : estado = Em validacao
+    EV -> AG : solicitarValidacao(evento)
+    AG --> EV : confirmar(evento)
+    EV -> EV : estado = Alerta emitido
+  end
+  EV -> BR : publicar(AlertaEmitido)
+  BR -> NOT : consumir(AlertaEmitido)
+  NOT -> DB : buscarUsuarios(areaAfetada, preferencias)
+  DB --> NOT : lista de usuarios
+  NOT -> M : enviarPush("Alagamento - risco Alto")
+  NOT -> DB : registrarNotificacao(usuario, alerta)
+  EV -> EV : estado = Em monitoramento
+end
+@enduml
