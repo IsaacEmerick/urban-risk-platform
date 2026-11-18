@@ -10,7 +10,8 @@ import SeloRisco from './SeloRisco.jsx'
 import { classeRisco } from './apresentacao.js'
 
 // children: linha extra opcional (ex.: em Meus registros, "Registrado hoje, 17:42 · 2 confirmações")
-export default function CardAlerta({ evento, titulo = 'h3', children }) {
+// rodape: depois do carimbo (ex.: botões Confirmar e Descartar da Fila de validação)
+export default function CardAlerta({ evento, titulo = 'h3', children, rodape }) {
   const Titulo = titulo
   const dado = dadoPrincipal(evento)
   return (
@@ -35,6 +36,7 @@ export default function CardAlerta({ evento, titulo = 'h3', children }) {
       {children}
       {/* carimbo numa linha própria: fica sempre no mesmo lugar, qualquer que seja a largura dos selos */}
       <CarimboEvento evento={evento} />
+      {rodape}
     </article>
   )
 }

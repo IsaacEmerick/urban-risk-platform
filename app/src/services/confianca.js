@@ -47,29 +47,39 @@ export function calcularConfianca(dado, { agora = new Date(), outrosDados = [] }
   const base = BASE_CONFIANCA[dado.origem]
   if (base == null) throw new Error(`Origem desconhecida: ${dado.origem}`)
 
-  const ajustes = [{ descricao: `Base da origem ${dado.origem}`, pontos: base }]
+  // curto: rótulo do resumo de uma linha (Fila de validação)
+  const ajustes = [{ descricao: `Base da origem ${dado.origem}`, curto: dado.origem, pontos: base }]
 
   const confirmacoes = Math.min(dado.confirmacoes ?? 0, AJUSTES_CONFIANCA.maxConfirmacoes)
   if (confirmacoes > 0) {
+    const descricao = confirmacoes === 1 ? '1 confirmação de morador' : `${confirmacoes} confirmações de moradores`
     ajustes.push({
-      descricao: confirmacoes === 1 ? '1 confirmação de morador' : `${confirmacoes} confirmações de moradores`,
+      descricao,
+      curto: confirmacoes === 1 ? '1 confirmação' : `${confirmacoes} confirmações`,
       pontos: confirmacoes * AJUSTES_CONFIANCA.porConfirmacao,
     })
   }
   if (estaCorroborado(dado, outrosDados)) {
-    ajustes.push({ descricao: 'Corroborado por Sensor ou Base pública (500 m, 30 min)', pontos: AJUSTES_CONFIANCA.corroborado })
+    ajustes.push({ descricao: 'Corroborado por Sensor ou Base pública (500 m, 30 min)', curto: 'corroborado', pontos: AJUSTES_CONFIANCA.corroborado })
   }
   if (dado.fotoGeolocalizada) {
-    ajustes.push({ descricao: 'Foto geolocalizada', pontos: AJUSTES_CONFIANCA.fotoGeolocalizada })
+    ajustes.push({ descricao: 'Foto geolocalizada', curto: 'foto', pontos: AJUSTES_CONFIANCA.fotoGeolocalizada })
   }
   if (estaDesatualizado(dado, agora)) {
-    ajustes.push({ descricao: 'Dado desatualizado', pontos: AJUSTES_CONFIANCA.desatualizado })
+    ajustes.push({ descricao: 'Dado desatualizado', curto: 'desatualizado', pontos: AJUSTES_CONFIANCA.desatualizado })
   }
   if (dado.origem === ORIGENS.SENSOR && dado.falhaSensor) {
-    ajustes.push({ descricao: 'Sensor com leitura fora da faixa ou falha recente', pontos: AJUSTES_CONFIANCA.sensorComFalha })
+    ajustes.push({ descricao: 'Sensor com leitura fora da faixa ou falha recente', curto: 'falha do sensor', pontos: AJUSTES_CONFIANCA.sensorComFalha })
   }
 
   const soma = ajustes.reduce((total, ajuste) => total + ajuste.pontos, 0)
   const valor = Math.max(0, Math.min(100, soma)) // limita a 0–100
   return { valor, faixa: faixaConfianca(valor), ajustes }
+}
+
+// Resumo de uma linha: "Comunidade 40 + 2 confirmações (20) + foto (5) = 65"; "Sensor 90 − falha do sensor (30) = 60"
+export function resumoConfianca({ valor, ajustes }) {
+  const [base, ...resto] = ajustes
+  const partes = resto.map((a) => `${a.pontos < 0 ? '−' : '+'} ${a.curto} (${Math.abs(a.pontos)})`)
+  return [`${base.curto} ${base.pontos}`, ...partes, `= ${valor}`].join(' ')
 }

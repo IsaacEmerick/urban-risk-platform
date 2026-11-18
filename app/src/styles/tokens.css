@@ -106,4 +106,14 @@
   --sublinhado-distancia: 0.18em;
 
   --duracao: 160ms;
+
+  /* Gráficos (Análises): uma série só, na cor institucional; trilho claro; traço da meta em tinta */
+  --grafico-barra: #0e5a6e;
+  --grafico-trilho: #e3e8ec;
+  --grafico-meta: #16232e;
+  --grafico-altura-barra: 14px;
+  --grafico-altura-meta: 18px;
+  --grafico-largura-rotulo: 9.5rem;
+  --meta-ok: #1f7a3f; /* ícone "dentro da meta" (5,4:1) */
+  --meta-fora: #b1221b; /* ícone "fora da meta" (6,7:1) */
 }

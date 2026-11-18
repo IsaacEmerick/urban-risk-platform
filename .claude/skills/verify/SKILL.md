@@ -27,14 +27,22 @@ await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login prov
 - **Ana (fluxo 1):** Notificações (5 iniciais, 2 não lidas) → esperar a aba virar "Notificações, 3 não lidas"
   (~16 s com `?demo=1`) → abrir a `.notificacao--nova` → Detalhe → selo de confiança → Origem e confiança → Painel
   (marcador do rio vira Crítico em ~38 s).
-- **Ana (fluxo 2):** aba Alertas (6 ativos; filtros de tipo, Risco e Estado) → aba Registrar: Alagamento →
+- **Ana (fluxo 2):** aba Alertas (9 ativos; filtros de tipo, Risco e Estado) → aba Registrar: Alagamento →
   Continuar (posição já marcada na rua Jatobá, Parque Viana) → altura "Na canela" → Enviar = 5 toques contando a aba
   → "Registro enviado" (Crítico, Reportado, Baixa • 40; 45 com foto) → Ver meus registros (novo + evt-04 + evt-07)
   → Painel (círculo aproximado do novo evento) → Alertas → evt-04 ("Você registrou esta ocorrência") →
   evt-02 → **Também vejo isso** → "Alta • 75; estado: Em monitoramento" e aba "Notificações, 3 não lidas".
   Registrar perto do evt-02 (≤ 300 m) **antes** de confirmar junta o registro a ele (RN04) e tira o botão.
 - **Carlos:** `/alertas/evt-03` (Confirmar alerta, Encerrar, Cancelar alerta), `/alertas/evt-06` (Encerrar,
-  Descartar evento), `/alertas/evt-02` (aviso da Fila de validação).
+  Descartar evento), `/alertas/evt-02` (aviso da Fila de validação). Confirmar alerta no evt-03 → a Ana recebe
+  "Alerta confirmado" na Central (captura `central-notificacoes`).
+- **Carlos (Fila e Análises):** aba Fila = evt-02 (58,8) → evt-10 (45,0) → evt-09 (45,0) → evt-11 (13,8). A Ana
+  confirma o evt-02 antes (ele sai da Fila). Carlos: Confirmar no card do evt-10 → "Sim, confirmar" → "Alerta emitido
+  (risco Alto)"; Descartar no evt-11 → "Sim, descartar". Análises: botões 7 dias / 30 dias; as metas mudam na hora.
+  Cancelar alerta (Detalhe do evt-10) sobe o falso alerta.
+- **Juliana:** aba Publicar status → Bairro Jardim Maria Helena, previsão +3 h, 2500 afetados, "Sim" → prévia "Risco
+  Crítico" → Publicar status → "Meus status (2)" (novo + evt-06) → "Nova situação" Normalizado → Atualizar situação
+  (risco Baixo) → dá para voltar a "Em atendimento" enquanto ativo. A Ana recebe "Interrupção de serviço – risco Crítico".
 
 ## Capturas (docs/prints, 390 px, escala 2×)
 - `deviceScaleFactor: 2`; antes de capturar, aumente a janela até `document.documentElement.scrollHeight` e use
@@ -44,6 +52,12 @@ await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login prov
 - Cada página de login precisa de um **contexto novo** (`b.newContext()`): o login fica no `localStorage`.
 
 ## Pegadinhas
+- Para trocar de perfil sem perder os dados: Perfil → Sair → "Entrar como …" (nunca `goto`).
+- Na Fila, cada card tem os próprios botões: filtre o card (`.card-alerta` com `hasText`) antes de clicar.
+- As Análises de 7 dias perdem o hist-05 (criado há exatamente 7 dias) segundos depois de carregar; os números de
+  7 dias na tela diferem de um cálculo com "agora" fixo. O simulador também muda as metas: o alerta do rio (evt-01,
+  confiança 90) entra como alerta emitido ~2 min depois de abrir (~16 s com `?demo=1`).
+- No campo datetime-local, `fill()` usa o formato `AAAA-MM-DDTHH:mm`.
 - **Os dados ficam em memória:** `page.goto()` recarrega e reinicia tudo (ações do agente somem). Depois de uma
   ação, navegue pelos links/abas do app.
 - O `title` do marcador do Leaflet só muda porque a `key` do marcador inclui o risco; procure por

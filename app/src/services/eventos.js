@@ -1,5 +1,5 @@
 // Agrupamento de dados em eventos (RN04), consolidação (RN07) e metas de qualidade dos alertas (RNF11)
-import { ESTADOS, FAIXAS_CONFIANCA, MINUTO, REGRAS } from './parametros.js'
+import { ESTADOS, FAIXAS_CONFIANCA, MINUTO, ORIGENS, REGRAS } from './parametros.js'
 import { distanciaMetros } from './geo.js'
 import { calcularConfianca, faixaConfianca } from './confianca.js'
 import { classificarRisco, maiorRisco } from './risco.js'
@@ -24,6 +24,31 @@ export function agruparDado(dado, eventos) {
         ),
     ) ?? null
   )
+}
+
+// Mesma fonte = mesmo fonteId (um sensor, uma estação, um status publicado pelo operador).
+// Registros da Comunidade nunca contam como mesma fonte: cada morador é uma pessoa diferente.
+export function mesmaFonte(a, b) {
+  return a.origem !== ORIGENS.COMUNIDADE && b.origem !== ORIGENS.COMUNIDADE && Boolean(a.fonteId) && a.fonteId === b.fonteId
+}
+
+// Evento ativo que já tem um dado desta fonte. Encerrado ou Descartado não é reaproveitado.
+export function eventoDaMesmaFonte(dado, eventos) {
+  return eventos.find((evento) => eventoAtivo(evento) && evento.dados.some((d) => mesmaFonte(d, dado))) ?? null
+}
+
+// Fila de validação (RF04, RF12): só eventos Em validação, maior prioridade primeiro.
+// Empate → o que está Em validação há mais tempo vem antes (seção 4.3: nada fica esquecido na fila).
+export function filaDeValidacao(eventos) {
+  const entrouEmValidacao = (e) => e.historico.findLast((h) => h.estado === ESTADOS.EM_VALIDACAO).em
+  return eventos
+    .filter((e) => e.estado === ESTADOS.EM_VALIDACAO)
+    .sort((a, b) => b.prioridade - a.prioridade || entrouEmValidacao(a) - entrouEmValidacao(b))
+}
+
+// Lista de alertas (RF08): maior prioridade primeiro; empate → o atualizado mais recente (seção 4.3)
+export function ordenarPorPrioridade(eventos) {
+  return [...eventos].sort((a, b) => b.prioridade - a.prioridade || b.atualizadoEm - a.atualizadoEm)
 }
 
 // Calcula confiança e risco de cada dado e aplica a RN07:

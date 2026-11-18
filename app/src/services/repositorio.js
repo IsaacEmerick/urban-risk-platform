@@ -7,7 +7,7 @@ import eventosHistoricosJson from '../data/eventos-historicos.json'
 import sensoresJson from '../data/sensores.json'
 import usuariosJson from '../data/usuarios.json'
 import { ESTADOS, MINUTO } from './parametros.js'
-import { agruparDado, consolidarEvento, dadoPrincipal, eventoAtivo } from './eventos.js'
+import { agruparDado, consolidarEvento, dadoPrincipal, eventoAtivo, eventoDaMesmaFonte, mesmaFonte } from './eventos.js'
 import { faixaConfianca } from './confianca.js'
 import {
   EFEITOS,
@@ -41,7 +41,7 @@ function prepararDado(dadoJson, evento, sensores, agora) {
     atualizadoEm: minutosAtras(agora, atualizadoMinutosAtras ?? min),
     medicoes: {
       ...outrasMedicoes,
-      ...(sensor && { cotaTransbordamentoM: sensor.cotaTransbordamentoM }),
+      ...(sensor?.cotaTransbordamentoM != null && { cotaTransbordamentoM: sensor.cotaTransbordamentoM }),
       ...(inicioMinutosAtras != null && { inicio: minutosAtras(agora, inicioMinutosAtras) }),
       ...(previsaoMinutosAdiante != null && { previsaoNormalizacao: minutosAtras(agora, -previsaoMinutosAdiante) }),
     },
@@ -196,11 +196,13 @@ export function criarRepositorio({
 
   // Recebe um dado novo (sensor, base pública ou comunidade)
   function receberDado(dado, momento = new Date()) {
-    const existente = agruparDado(dado, estado.eventos) // RN04
+    // Leitura nova da mesma fonte (o mesmo sensor, o mesmo status publicado) vai para o evento ativo
+    // que já tem essa fonte, mesmo fora da janela de 60 min da RN04; senão, vale a RN04.
+    const existente = eventoDaMesmaFonte(dado, estado.eventos) ?? agruparDado(dado, estado.eventos)
     let evento
     if (existente) {
-      // Uma leitura nova da mesma fonte (ex.: o mesmo sensor) atualiza o dado anterior
-      const semDadoAntigo = existente.dados.filter((d) => !(dado.fonteId && d.fonteId === dado.fonteId))
+      // A leitura nova substitui a anterior da mesma fonte no evento
+      const semDadoAntigo = existente.dados.filter((d) => !mesmaFonte(d, dado))
       evento = { ...existente, dados: [...semDadoAntigo, dado] }
     } else {
       evento = {
@@ -217,6 +219,8 @@ export function criarRepositorio({
         riscoBaixoDesde: null,
         confirmadoPor: [],
         vulnerabilidades: [],
+        // Interrupção de serviço: o raio afetado é a área informada pelo operador (RN06, RF18)
+        ...(dado.raioAfetadoM != null && { raioAfetadoM: dado.raioAfetadoM }),
         criadoEm: momento,
         historico: [{ estado: 'Reportado', em: momento }],
         dados: [dado],
@@ -291,6 +295,8 @@ export function criarRepositorio({
     receberDado,
     // Registro comunitário (RF03): o dado do morador segue o mesmo caminho dos outros dados
     registrarOcorrencia: (dado, momento = dado.registradoEm) => receberDado(dado, momento),
+    // Publicar status (RF18): o status da operadora também segue o mesmo caminho
+    publicarStatus: (dado, momento = dado.atualizadoEm) => receberDado(dado, momento),
     confirmarOcorrencia,
     executarAcao,
     registrarLeituraSensor,

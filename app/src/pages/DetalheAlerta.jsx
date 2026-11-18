@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import CarimboEvento from '../components/CarimboEvento.jsx'
+import ConfirmacaoEmLinha from '../components/ConfirmacaoEmLinha.jsx'
 import EtiquetaNaoConfirmado from '../components/EtiquetaNaoConfirmado.jsx'
 import Icone from '../components/Icone.jsx'
 import MapaEventos from '../components/MapaEventos.jsx'
@@ -34,7 +35,6 @@ export default function DetalheAlerta() {
   const repositorio = useRepositorio()
   const { usuario } = usePerfil()
   const agora = useAgora(30_000)
-  const [pendente, setPendente] = useState(null) // ação aguardando "Sim"
   const [resultado, setResultado] = useState('')
   const [resultadoConfirmacao, setResultadoConfirmacao] = useState('')
 
@@ -71,7 +71,6 @@ export default function DetalheAlerta() {
 
   const executar = (acao) => {
     repositorio.executarAcao(evento.id, acao.acao)
-    setPendente(null)
     setResultado(RESULTADOS[acao.id])
   }
 
@@ -183,37 +182,7 @@ export default function DetalheAlerta() {
           <h2 id="titulo-acoes" className="titulo-secao">
             Ações da Defesa Civil
           </h2>
-          {pendente ? (
-            <div className="confirmacao" role="alertdialog" aria-labelledby="texto-confirmacao">
-              <p id="texto-confirmacao">{pendente.confirmacao}</p>
-              <div className="confirmacao__botoes">
-                <button
-                  type="button"
-                  className={pendente.id === 'cancelarAlerta' ? 'botao botao--perigo' : 'botao botao--primario'}
-                  onClick={() => executar(pendente)}
-                  autoFocus
-                >
-                  Sim, {pendente.rotulo.toLowerCase()}
-                </button>
-                <button type="button" className="botao botao--secundario" onClick={() => setPendente(null)}>
-                  Não, manter
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="acoes-agente__botoes">
-              {acoes.map((acao) => (
-                <button
-                  key={acao.id}
-                  type="button"
-                  className={acao.id === 'confirmarAlerta' ? 'botao botao--primario' : acao.id === 'cancelarAlerta' ? 'botao botao--perigo-contorno' : 'botao botao--secundario'}
-                  onClick={() => (acao.confirmacao ? setPendente(acao) : executar(acao))}
-                >
-                  {acao.rotulo}
-                </button>
-              ))}
-            </div>
-          )}
+          <ConfirmacaoEmLinha acoes={acoes} aoExecutar={executar} />
         </section>
       )}
 

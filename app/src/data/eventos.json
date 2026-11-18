@@ -170,7 +170,8 @@
         "id": "dado-06-concessionaria",
         "origem": "Base pública (concessionária)",
         "fonte": "Concessionária de energia (simulada) – status publicado por Juliana",
-        "fonteId": "concessionaria-energia",
+        "fonteId": "status-energia-0001",
+        "publicadoPor": "usr-juliana",
         "descricao": "Rede de média tensão desligada após queda de árvore; equipe em campo.",
         "lat": -23.5385,
         "lng": -46.8655,
@@ -253,6 +254,95 @@
         "lng": -46.8645,
         "minutosAtras": 4320,
         "medicoes": { "chuvaMmH": 32 }
+      }
+    ]
+  },
+  {
+    "id": "evt-10",
+    "tipo": "Alagamento",
+    "titulo": "Água na altura do meio-fio em rua do Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5325,
+    "lng": -46.8675,
+    "estado": "Em validação",
+    "criadoMinutosAtras": 18,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 18 },
+      { "estado": "Em validação", "minutosAtras": 15 }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-10-morador",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-5d1c",
+        "descricao": "Rua alagada na altura do meio-fio depois da chuva da tarde; carros passando devagar.",
+        "lat": -23.5325,
+        "lng": -46.8675,
+        "minutosAtras": 18,
+        "medicoes": { "laminaCm": 15 },
+        "confirmacoes": 2
+      }
+    ]
+  },
+  {
+    "id": "evt-09",
+    "tipo": "Ilha de calor",
+    "titulo": "Sensação térmica de 39 °C no Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5285,
+    "lng": -46.8655,
+    "estado": "Em validação",
+    "criadoMinutosAtras": 9,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 9 },
+      { "estado": "Em validação", "minutosAtras": 9 }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-09-sensor",
+        "origem": "Sensor",
+        "fonte": "Sensor de temperatura – Jardim Maria Helena",
+        "fonteId": "sensor-temp-jmh-01",
+        "descricao": "Sensação térmica de 39 °C. O sensor teve falha recente: leituras fora da faixa na última hora.",
+        "lat": -23.5285,
+        "lng": -46.8655,
+        "minutosAtras": 9,
+        "atualizadoMinutosAtras": 1,
+        "medicoes": { "sensacaoTermicaC": 39 },
+        "falhaSensor": true
+      }
+    ]
+  },
+  {
+    "id": "evt-11",
+    "tipo": "Alagamento",
+    "titulo": "Alagamento abaixo do meio-fio – Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.5448,
+    "lng": -46.8645,
+    "estado": "Em validação",
+    "criadoMinutosAtras": 30,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 30 },
+      { "estado": "Em validação", "minutosAtras": 22 }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-11-morador",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-8e27",
+        "descricao": "Poça grande na esquina, abaixo do meio-fio. Bueiro entupido.",
+        "lat": -23.5448,
+        "lng": -46.8645,
+        "minutosAtras": 30,
+        "medicoes": { "laminaCm": 5 },
+        "confirmacoes": 1,
+        "fotoGeolocalizada": true
       }
     ]
   }

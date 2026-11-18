@@ -649,3 +649,245 @@
   gap: var(--esp-2);
   font-weight: var(--peso-medio);
 }
+
+/* Fila de validação */
+.fila__fatos,
+.fila__calculo {
+  font-size: var(--texto-sm);
+}
+
+.fila__calculo {
+  color: var(--cor-tinta-suave);
+}
+
+.fila__calculo-rotulo {
+  color: var(--cor-tinta);
+  font-weight: var(--peso-medio);
+}
+
+.fila__acoes {
+  position: relative;
+  z-index: 1; /* botões clicáveis por cima do link esticado do card */
+  padding-top: var(--esp-3);
+  border-top: var(--borda);
+}
+
+.fila .resultado-acao,
+.fila .lista-cards {
+  margin-top: var(--esp-4);
+}
+
+/* Publicar status (formulário) */
+.publicar__form {
+  display: grid;
+  gap: var(--esp-5);
+  margin-top: var(--esp-4);
+}
+
+.publicar .resultado-acao,
+.publicar .lista-cards {
+  margin-top: var(--esp-4);
+}
+
+.publicar__datas {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.campo {
+  display: grid;
+  gap: var(--esp-1);
+}
+
+.campo__rotulo {
+  padding: 0;
+  font-weight: var(--peso-forte);
+}
+
+.campo input {
+  width: 100%;
+  min-height: var(--alvo-toque);
+  padding: 0 var(--esp-3);
+  border: var(--borda);
+  border-color: var(--cor-linha-forte);
+  border-radius: var(--raio-selo);
+  background: var(--cor-superficie);
+  color: var(--cor-tinta);
+  font: inherit;
+}
+
+.campo select {
+  width: 100%;
+}
+
+.campo--erro input,
+.campo--erro select {
+  border-color: var(--cor-perigo);
+  border-width: var(--borda-grossa);
+}
+
+.campo__erro {
+  color: var(--cor-perigo);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+}
+
+.publicar__previa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+/* Meus status */
+.publicar__fatos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-2) var(--esp-4);
+  margin: 0;
+  font-size: var(--texto-sm);
+}
+
+.publicar__fatos dt {
+  color: var(--cor-tinta-suave);
+}
+
+.publicar__fatos dd {
+  margin: 0;
+  font-weight: var(--peso-medio);
+}
+
+.publicar__atualizar {
+  display: grid;
+  gap: var(--esp-2);
+}
+
+/* Análises */
+.analises {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.grafico__barras {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+.grafico__linha {
+  display: grid;
+  grid-template-columns: var(--grafico-largura-rotulo) 1fr auto;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+}
+
+.grafico__svg {
+  width: 100%;
+  height: var(--grafico-altura-barra);
+}
+
+.grafico__trilho {
+  fill: var(--grafico-trilho);
+}
+
+.grafico__barra {
+  fill: var(--grafico-barra);
+}
+
+.grafico__valor {
+  min-width: 2ch;
+  font-weight: var(--peso-forte);
+  text-align: right;
+}
+
+.metas {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+.meta,
+.preliminares {
+  display: grid;
+  gap: var(--esp-2);
+  padding: var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.meta__titulo {
+  font-size: var(--texto-md);
+}
+
+.meta__valor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--esp-2);
+}
+
+.meta__valor strong {
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-titulo);
+}
+
+.meta__conta {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.meta__svg {
+  width: 100%;
+  height: var(--grafico-altura-meta);
+  overflow: visible;
+}
+
+.meta__traco {
+  stroke: var(--grafico-meta);
+  stroke-width: var(--borda-grossa);
+}
+
+.meta__rodape {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+}
+
+.meta__situacao {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  font-weight: var(--peso-forte);
+}
+
+.meta__situacao--ok .icone {
+  color: var(--meta-ok);
+}
+
+.meta__situacao--fora .icone {
+  color: var(--meta-fora);
+}
+
+.preliminares__numeros {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+  margin: 0;
+}
+
+.preliminares__numeros dt {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.preliminares__numeros dd {
+  margin: 0;
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-titulo);
+}

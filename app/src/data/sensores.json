@@ -11,5 +11,19 @@
     "nivelInicialM": 3.3,
     "intervaloEsperadoMin": 5,
     "observacao": "Sensor simulado. Localização aproximada (margem do rio Cotia na altura do Jardim Maria Helena, conferida no OpenStreetMap). Cota de transbordamento e níveis são fictícios, não as cotas oficiais do rio Cotia."
+  },
+  {
+    "id": "sensor-temp-jmh-01",
+    "nome": "Sensor de temperatura – Jardim Maria Helena",
+    "grandeza": "Sensação térmica",
+    "unidade": "°C",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5285,
+    "lng": -46.8655,
+    "intervaloEsperadoMin": 5,
+    "sensacaoMinC": 38.5,
+    "sensacaoMaxC": 39.5,
+    "falhaRecente": true,
+    "observacao": "Sensor simulado, com falha recente (leituras fora da faixa na última hora). Localização e valores fictícios."
   }
 ]

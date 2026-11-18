@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import CardAlerta from '../components/CardAlerta.jsx'
 import { useRepositorio } from '../hooks/useRepositorio.js'
-import { eventoAtivo } from '../services/eventos.js'
+import { eventoAtivo, ordenarPorPrioridade } from '../services/eventos.js'
 import { ESTADOS, NIVEIS_RISCO, TIPOS } from '../services/parametros.js'
 
 const TODOS = 'todos'
@@ -21,13 +21,13 @@ export default function ListaAlertas() {
   const [risco, setRisco] = useState(TODOS)
   const [estado, setEstado] = useState(ATIVOS)
 
-  const eventos = repositorio
-    .listarEventos()
-    .filter((e) => tipo === TODOS || e.tipo === tipo)
-    .filter((e) => risco === TODOS || e.risco === risco)
-    .filter((e) => aceitaEstado(e, estado))
-    // maior prioridade primeiro; empate → o mais recente
-    .sort((a, b) => b.prioridade - a.prioridade || b.atualizadoEm - a.atualizadoEm)
+  const eventos = ordenarPorPrioridade(
+    repositorio
+      .listarEventos()
+      .filter((e) => tipo === TODOS || e.tipo === tipo)
+      .filter((e) => risco === TODOS || e.risco === risco)
+      .filter((e) => aceitaEstado(e, estado)),
+  )
 
   const filtrosPadrao = tipo === TODOS && risco === TODOS && estado === ATIVOS
   const limparFiltros = () => {

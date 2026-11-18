@@ -7,7 +7,7 @@ import Icone from '../components/Icone.jsx'
 import MapaEventos from '../components/MapaEventos.jsx'
 import { classeRisco } from '../components/apresentacao.js'
 import { useRepositorio } from '../hooks/useRepositorio.js'
-import { alertasAtivos, eventoAtivo } from '../services/eventos.js'
+import { alertasAtivos, eventoAtivo, ordenarPorPrioridade } from '../services/eventos.js'
 import { NIVEIS_RISCO, TIPOS } from '../services/parametros.js'
 
 const TODOS = 'todos'
@@ -17,12 +17,14 @@ export default function Painel() {
   const [tipo, setTipo] = useState(TODOS)
   const [bairro, setBairro] = useState(TODOS)
 
-  const ativos = repositorio
-    .listarEventos()
-    .filter(eventoAtivo)
-    .filter((e) => tipo === TODOS || e.tipo === tipo)
-    .filter((e) => bairro === TODOS || e.bairro === bairro)
-    .sort((a, b) => b.prioridade - a.prioridade) // seção 4.3
+  // seção 4.3: maior prioridade primeiro; empate → o atualizado mais recente
+  const ativos = ordenarPorPrioridade(
+    repositorio
+      .listarEventos()
+      .filter(eventoAtivo)
+      .filter((e) => tipo === TODOS || e.tipo === tipo)
+      .filter((e) => bairro === TODOS || e.bairro === bairro),
+  )
   const alertas = alertasAtivos(ativos)
   const ultimaAtualizacao = ativos.length ? new Date(Math.max(...ativos.map((e) => e.atualizadoEm))) : null
 

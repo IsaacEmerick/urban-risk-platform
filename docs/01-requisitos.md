@@ -39,10 +39,10 @@ evento que tem estado, risco, confiança e prioridade.
 | Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (Alerta, "Alerta confirmado", "Alerta cancelado") e link para o alerta                                                          | RF10, RF11             | Morador          |
 | Registro comunitário     | Tipo; localização automática (ajuste opcional); altura da água (Alagamento); descrição opcional com sugestões e foto opcional; em até 3 passos                                  | RF03                   | Morador          |
 | Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                                                | RF03, RF17             | Morador          |
-| Fila de validação        | Só eventos Em validação, por prioridade, com os botões Confirmar e Descartar                                                                                                    | RF04, RF12             | Agente           |
-| Análises                 | Gráficos por tipo de risco, região e período; alertas preliminares à parte: quantos houve e quantos foram confirmados depois                                                    | RF14                   | Agente, operador |
+| Fila de validação        | Só eventos Em validação, por prioridade (desempate: há mais tempo na fila), com selos, resumo da confiança e os botões Confirmar e Descartar                                    | RF04, RF12             | Agente           |
+| Análises                 | Período de 7 ou 30 dias; gráficos por tipo de risco e por bairro; as duas metas do RNF11 ao vivo; alertas preliminares à parte: quantos houve e quantos foram confirmados depois | RF14                   | Agente, operador |
 | Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta                                                                                                                        | RF16                   | Todos            |
-| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"                                        | RF18                   | Operador         |
+| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"; "Meus status" para trocar a situação | RF18                   | Operador         |
 | Perfil                   | Atalhos: dados do usuário, Preferências, Privacidade e meus dados e sair; o morador também tem Meus registros                                                                   | RF15                   | Todos            |
 
 ## 2. Requisitos funcionais
@@ -135,6 +135,12 @@ OpenStreetMap, não limites oficiais.
 - O status publicado entra na plataforma como dado de origem **Base pública (concessionária)**,
   com base de confiança 80 (seção 4.1).
 - A situação **Normalizado** leva o risco a **Baixo**; pela RN05, o evento é encerrado após 30 min.
+- O **serviço** vem do perfil da operadora (no protótipo, a Juliana é da concessionária de energia:
+  "Energia elétrica"). A **área** é um bairro (centro e raio aproximados) ou um ponto no mapa com
+  raio; ela vira o raio afetado da RN06.
+- Cada status publicado é uma **fonte própria**. Em "Meus status", a operadora troca a situação
+  livremente enquanto o evento estiver ativo; a atualização é uma leitura nova da mesma fonte e
+  substitui a anterior no evento (ver "Interpretações adotadas").
 
 RF01 e RF02 não têm tela própria porque são integrações automáticas. O resultado delas aparece no
 Painel e na tela Origem e confiança, como origem dos dados.
@@ -263,6 +269,13 @@ A prioridade ordena a Lista de alertas e a Fila de validação.
 P varia de 0 a 110 e é arredondada para **1 casa decimal** (ex.: 58,75 → 58,8). **Exemplo:** alagamento Alto (R = 3) com confiança 80 perto de uma escola do
 Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
 
+**Desempate (mesma prioridade):**
+
+- **Fila de validação:** vem primeiro o evento que está **Em validação há mais tempo**. Justificativa:
+  justiça na fila; nenhum evento fica esquecido esperando o agente.
+- **Lista de alertas (e Painel):** vem primeiro o evento **atualizado mais recentemente**. Justificativa:
+  a informação mais nova aparece primeiro.
+
 ### 4.4 Regras RN01–RN07
 
 | ID   | Regra                                                                                                                                                                                                                                                                                                                                                                                                                                           | Onde aparece                                                                                   |
@@ -280,7 +293,11 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
 - **Leitura nova da mesma fonte (RN04, RN07):** quando uma fonte que se atualiza (por exemplo, o
   sensor do rio Cotia) envia uma leitura nova, ela **substitui a leitura anterior** dessa fonte no
   evento. Assim, a RN07 compara só o valor atual de cada fonte, o risco pode baixar quando o nível
-  desce, e a RN05 consegue encerrar o evento.
+  desce, e a RN05 consegue encerrar o evento. A leitura vai para o evento **ativo** que já tem essa
+  fonte, mesmo fora da janela de 60 min da RN04 (ex.: status atualizado 90 min depois); evento
+  Encerrado ou Descartado não é reaproveitado, e a leitura seguinte cria um evento novo. Mesma
+  fonte = mesmo identificador (um sensor, uma estação, um status publicado); registros da
+  Comunidade de pessoas diferentes nunca contam como mesma fonte.
 - **Escalada (RN01, RN06):** há escalada quando o risco do evento **sobe** em relação ao último
   alerta **e chega a Alto ou Crítico**. Subir de Baixo para Moderado não é escalada. Se o evento
   nunca alertou, a escalada gera o primeiro alerta; se já alertou, o alerta é reenviado.

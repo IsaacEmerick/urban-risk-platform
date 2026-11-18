@@ -56,6 +56,10 @@ a inundações do SGB (Barueri, 2017).
   a cota de transbordamento (fictícia) fica no cadastro do sensor. No simulador, o nível sobe aos poucos
   para demonstrar o alerta antecipado.
 - Eventos de alagamento no Jardim Maria Helena.
+- Sensor de temperatura no Jardim Maria Helena com falha recente (evt-09: 90 − 30 = 60, Em validação): a cada tique
+  o simulador manda uma leitura de 38,5 a 39,5 °C com falhaSensor, que substitui a anterior (não fica desatualizado).
+- Fila de validação ao carregar: evt-02 (58,8) → evt-10 e evt-09 (45,0; evt-10 há mais tempo) → evt-11 (13,8).
+  No vídeo, a Ana confirma o evt-02; o Carlos confirma o evt-10 e descarta o evt-11.
 - A área de interesse da Ana cobre o Parque Viana e o Jardim Maria Helena.
 
 ## Glossário — use exatamente estes nomes em todos os artefatos
@@ -85,11 +89,14 @@ a inundações do SGB (Barueri, 2017).
   Base pública (concessionária) 15 min. Comunidade: não se aplica.
 - Status publicado pelo operador (RF18, tela "Publicar status") entra como Base pública (concessionária), base 80.
   O formulário pede situação, início, previsão de normalização, nº estimado de afetados e
-  "atinge hospital, escola ou abastecimento crítico?" (entradas do `classificarRisco()`).
+  "atinge hospital, escola ou abastecimento crítico?" (entradas do `classificarRisco()`). O serviço vem do perfil
+  (Juliana: "Energia elétrica"); a área é bairro ou ponto + raio. Um fonteId por status; em "Meus status" a situação
+  pode ser trocada livremente enquanto o evento estiver ativo.
   Duração = previsão − início; se a previsão já passou, vale o tempo decorrido desde o início.
   "Normalizado" leva o risco a Baixo, e a RN05 encerra o evento em 30 min.
 - Cancelar alerta (agente, RF12): Alerta emitido ou Em monitoramento → Descartado, com notificação "Alerta cancelado".
   Falso alerta (RNF11) = eventos que passaram por Alerta emitido e foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
+  A tela Análises calcula as duas metas ao vivo, no período escolhido (7 ou 30 dias, pela data de criação do evento).
   Ao emitir alerta (comum, preliminar ou escalada) o evento guarda `riscoAlertado` e `confiancaAlertada`; a 2ª meta
   do RNF11 (≥ 90% dos alertas Alto/Crítico com confiança Alta) usa `confiancaAlertada`.
 - Fila de validação lista só eventos Em validação (Confirmar, Descartar). Confirmar alerta (tira a marca
@@ -104,6 +111,7 @@ a inundações do SGB (Barueri, 2017).
 - Faixas de risco usam ≥ e < (sem lacunas); se dois critérios se aplicam, vale o nível mais alto.
 - Prioridade P = R × 25 × (C/100) + V, com R = 1..4 (Baixo..Crítico), C = confiança, V = +10 área vulnerável
   (hospital, escola, comunidade vulnerável ou área suscetível a inundação na carta do SGB, Barueri 2017; aplicado uma vez só).
+  Desempate: na Fila, o evento Em validação há mais tempo primeiro; na Lista e no Painel, o atualizado mais recente.
 - RN01 alerta automático só com risco ≥ Alto e confiança ≥ 75. Depois de confirmado (por confiança ou pelo agente),
   o evento emite novos alertas por escalada de risco sem nova checagem de confiança.
 - RN02 confiança 50–74 → Em validação (fila do agente); se Crítico, alerta preliminar "não confirmado",
@@ -120,7 +128,8 @@ a inundações do SGB (Barueri, 2017).
   afetado; sem renotificar em < 15 min, salvo escalada.
 - RN07 risco e confiança do evento = maior valor entre os dados agrupados.
 - Interpretações (escritas no 01-requisitos.md): corroboração exige mesmo tipo e outra fonte; leitura nova da
-  mesma fonte substitui a anterior no evento; escalada = risco sobe e chega a ≥ Alto. Prioridade com 1 casa decimal.
+  mesma fonte substitui a anterior no evento ativo que já tem essa fonte (mesmo fora dos 60 min da RN04; Encerrado ou
+  Descartado não é reaproveitado; registros da Comunidade nunca são mesma fonte); escalada = risco sobe e chega a ≥ Alto. Prioridade com 1 casa decimal.
 - RNF08: no mapa público, a localização de registros da Comunidade passa por `localizacaoPublica()` (~100 m).
 
 As funções `calcularConfianca()`, `classificarRisco()` e `calcularPrioridade()` em `app/src/services/`
