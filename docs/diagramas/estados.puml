@@ -19,7 +19,7 @@ Confirmado --> AlertaEmitido : [risco >= Alto] / notificarUsuarios
 Confirmado --> EmMonitoramento : [risco < Alto]
 AlertaEmitido --> EmMonitoramento : notificacaoEnviada
 EmMonitoramento --> AlertaEmitido : riscoEscalou / reenviarAlerta
-EmMonitoramento --> Encerrado : [abaixo do limiar por 30 min] ou agenteEncerra
+EmMonitoramento --> Encerrado : [risco Baixo por 30 min] ou agenteEncerra
 Encerrado --> [*]
 Descartado --> [*]
 @enduml
