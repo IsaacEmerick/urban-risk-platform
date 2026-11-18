@@ -47,7 +47,7 @@ describe('simulador do sensor do rio Cotia (a cada 15 s)', () => {
     // a leitura nova substitui a anterior do mesmo sensor dentro do evento
     expect(evt01().dados).toHaveLength(1)
     expect(evt01().dados[0].medicoes.nivelRioM).toBe(3.4)
-    expect(repo.listarEventos()).toHaveLength(8) // nenhum evento novo
+    expect(repo.listarEventos()).toHaveLength(28) // 8 atuais + 20 históricos: nenhum evento novo
   })
 
   it('alerta antecipado: na cota de alerta (falta 0,50 m) o risco vira Alto e a Ana é notificada', () => {

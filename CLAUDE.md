@@ -103,7 +103,8 @@ a inundações do SGB (Barueri, 2017).
 - RN01 alerta automático só com risco ≥ Alto e confiança ≥ 75. Depois de confirmado (por confiança ou pelo agente),
   o evento emite novos alertas por escalada de risco sem nova checagem de confiança.
 - RN02 confiança 50–74 → Em validação (fila do agente); se Crítico, alerta preliminar "não confirmado",
-  que perde a marca quando o agente confirma (transição interna em Em monitoramento).
+  que perde a marca quando o agente confirma (transição interna em Em monitoramento). A notificação é do
+  tipo Alerta com a marca `naoConfirmado` (etiqueta "não confirmado" no card), não um tipo próprio.
 - RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h. Se a confiança subir, valem RN01/RN02.
 - RN04 mesmo tipo a ≤ 300 m e ≤ 60 min → mesmo evento.
 - RN05 encerra com risco Baixo por 30 min ou por ação do agente.
@@ -111,6 +112,9 @@ a inundações do SGB (Barueri, 2017).
   Interrupção = área informada pelo operador); alcança se distância(centro da área, evento) ≤ raio da área + raio
   afetado; sem renotificar em < 15 min, salvo escalada.
 - RN07 risco e confiança do evento = maior valor entre os dados agrupados.
+- Interpretações (escritas no 01-requisitos.md): corroboração exige mesmo tipo e outra fonte; leitura nova da
+  mesma fonte substitui a anterior no evento; escalada = risco sobe e chega a ≥ Alto. Prioridade com 1 casa decimal.
+- RNF08: no mapa público, a localização de registros da Comunidade passa por `localizacaoPublica()` (~100 m).
 
 As funções `calcularConfianca()`, `classificarRisco()` e `calcularPrioridade()` em `app/src/services/`
 devem implementar exatamente essas regras. Se uma regra mudar, mude o documento e o código juntos.

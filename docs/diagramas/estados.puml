@@ -19,7 +19,7 @@ Reportado --> Confirmado : [confiança >= 75]
 Reportado --> EmValidacao : [50 <= confiança < 75]
 Reportado --> Descartado : timeout [sem confirmação em 2 h]
 EmValidacao --> Confirmado : agenteConfirma ou [confiança >= 75]
-EmValidacao --> AlertaEmitido : [risco = Crítico] / emitirAlertaPreliminar
+EmValidacao --> AlertaEmitido : [risco = Crítico e confiança < 75] / emitirAlertaPreliminar
 EmValidacao --> Descartado : agenteRejeita
 Confirmado --> AlertaEmitido : [risco >= Alto] / notificarUsuarios
 Confirmado --> EmMonitoramento : [risco < Alto]

@@ -61,8 +61,10 @@ describe('dados simulados', () => {
     eventos.flatMap((e) => e.dados).forEach((d) => expect(d).not.toHaveProperty('autorId'))
   })
 
-  it('taxa de falso alerta dos dados simulados (RNF11)', () => {
-    expect(taxaFalsoAlerta(eventos)).toMatchObject({ emitidos: 4, falsos: 1 })
+  it('taxa de falso alerta dos dados simulados fica abaixo da meta de 10% (RNF11)', () => {
+    const { emitidos, falsos, taxa } = taxaFalsoAlerta(eventos)
+    expect({ emitidos, falsos }).toEqual({ emitidos: 22, falsos: 2 })
+    expect(taxa).toBeLessThan(0.1) // 2 ÷ 22 ≈ 9,1%
   })
 
   it('as ações do agente funcionam sobre os dados simulados', () => {
@@ -73,12 +75,75 @@ describe('dados simulados', () => {
   })
 })
 
+describe('eventos históricos (últimos 30 dias)', () => {
+  const historicos = eventos.filter((e) => e.id.startsWith('hist-'))
+  const TRINTA_DIAS = 30 * 24 * 60 * 60 * 1000
+
+  it('são 20, todos encerrados ou descartados, criados nos últimos 30 dias', () => {
+    expect(historicos).toHaveLength(20)
+    historicos.forEach((e) => {
+      expect(['Encerrado', 'Descartado']).toContain(e.estado)
+      expect(AGORA - e.criadoEm).toBeLessThanOrEqual(TRINTA_DIAS)
+    })
+  })
+
+  it('exatamente 1 deles foi descartado depois de um alerta', () => {
+    const descartadosAposAlerta = historicos.filter(
+      (e) => e.estado === 'Descartado' && e.historico.some((h) => h.estado === 'Alerta emitido'),
+    )
+    expect(descartadosAposAlerta.map((e) => e.id)).toEqual(['hist-13'])
+  })
+
+  it('cobrem os 3 tipos de risco e os 2 bairros (série para Análises)', () => {
+    expect(new Set(historicos.map((e) => e.tipo))).toEqual(new Set(Object.values(TIPOS)))
+    expect(new Set(historicos.map((e) => e.bairro))).toEqual(new Set(['Parque Viana', 'Jardim Maria Helena']))
+  })
+
+  it('histórico em ordem cronológica e riscoAlertado igual ao risco da medição', () => {
+    historicos.forEach((e) => {
+      const tempos = e.historico.map((h) => h.em.getTime())
+      expect(tempos, e.id).toEqual([...tempos].sort((a, b) => a - b))
+      // Interrupções já normalizadas hoje classificam como Baixo; o risco do alerta fica em riscoAlertado
+      if (e.riscoAlertado && e.tipo !== TIPOS.INTERRUPCAO) expect(e.risco, e.id).toBe(e.riscoAlertado)
+      if (!e.riscoAlertado) expect(['Baixo', 'Moderado'], e.id).toContain(e.risco)
+    })
+  })
+})
+
+describe('repositório — alerta preliminar (RN02) usa o tipo "Alerta" com a marca "não confirmado"', () => {
+  it('registro Crítico com confiança Média notifica como Alerta com naoConfirmado', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    // registro de morador novo no Jardim Maria Helena, longe dos eventos existentes: 40 + 2 confirmações = 60
+    r.receberDado(
+      {
+        id: 'novo-1',
+        tipo: 'Alagamento',
+        origem: 'Comunidade',
+        bairro: 'Jardim Maria Helena',
+        lat: -23.5235,
+        lng: -46.8665,
+        registradoEm: AGORA,
+        atualizadoEm: AGORA,
+        medicoes: { laminaCm: 40 },
+        confirmacoes: 2,
+      },
+      AGORA,
+    )
+    const notificacoes = r.listarNotificacoes('usr-ana')
+    expect(notificacoes).toHaveLength(1)
+    expect(notificacoes[0]).toMatchObject({ tipo: 'Alerta', naoConfirmado: true, risco: 'Crítico' })
+    const tipos = new Set(r.listarUsuarios().flatMap((u) => r.listarNotificacoes(u.id).map((n) => n.tipo)))
+    expect([...tipos]).toEqual(['Alerta'])
+  })
+})
+
 describe('repositório — ações do agente com notificações', () => {
   it('Confirmar na fila: evt-02 vira alerta e notifica a Ana; cancelar avisa com "Alerta cancelado"', () => {
     const r = criarRepositorio({ agora: AGORA })
     const confirmado = r.executarAcao('evt-02', 'agenteConfirma', AGORA)
     expect(confirmado.estado).toBe('Em monitoramento')
     expect(r.listarNotificacoes('usr-ana').map((n) => n.tipo)).toEqual(['Alerta'])
+    expect(r.listarNotificacoes('usr-ana')[0].naoConfirmado).toBe(false) // alerta comum, sem etiqueta
 
     r.executarAcao('evt-02', 'agenteRejeita', AGORA)
     expect(r.obterEvento('evt-02').estado).toBe('Descartado')

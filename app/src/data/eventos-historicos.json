@@ -1,0 +1,1001 @@
+[
+  {
+    "id": "hist-01",
+    "tipo": "Alagamento",
+    "titulo": "Rio Cotia na cota de alerta perto da ponte",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.529,
+    "lng": -46.8622,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 2940,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 2940
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 2940
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 2940
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 2939
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 2760
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-01",
+        "origem": "Sensor",
+        "fonte": "Sensor de nível – Rio Cotia",
+        "fonteId": "sensor-cotia-01",
+        "descricao": "Rio Cotia na cota de alerta perto da ponte",
+        "lat": -23.529,
+        "lng": -46.8622,
+        "minutosAtras": 2940,
+        "medicoes": {
+          "nivelRioM": 3.85
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-02",
+    "tipo": "Alagamento",
+    "titulo": "Chuva forte no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.5402,
+    "lng": -46.8661,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 5880,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 5880
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 5880
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 5880
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 5879
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 5760
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-02",
+        "origem": "Base pública",
+        "fonte": "CEMADEN (simulado)",
+        "fonteId": "cemaden-pluviometro",
+        "descricao": "Chuva forte no Parque Viana",
+        "lat": -23.5402,
+        "lng": -46.8661,
+        "minutosAtras": 5880,
+        "medicoes": {
+          "chuvaMmH": 38
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-03",
+    "tipo": "Ilha de calor",
+    "titulo": "Sensação térmica de 39,5 °C no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.541,
+    "lng": -46.8669,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 7440,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 7440
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 7440
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 7440
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 7439
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 7140
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-03",
+        "origem": "Base pública",
+        "fonte": "INMET (simulado)",
+        "fonteId": "inmet-barueri",
+        "descricao": "Sensação térmica de 39,5 °C no Parque Viana",
+        "lat": -23.541,
+        "lng": -46.8669,
+        "minutosAtras": 7440,
+        "medicoes": {
+          "sensacaoTermicaC": 39.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-04",
+    "tipo": "Interrupção de serviço",
+    "titulo": "Falta de energia para cerca de 12 mil pessoas",
+    "bairro": "Parque Viana",
+    "lat": -23.5398,
+    "lng": -46.8676,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 8820,
+    "raioAfetadoM": 900,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 8820
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 8820
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 8820
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 8819
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 8300
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-04",
+        "origem": "Base pública (concessionária)",
+        "fonte": "Concessionária de energia (simulada)",
+        "fonteId": "concessionaria-energia",
+        "descricao": "Falta de energia para cerca de 12 mil pessoas",
+        "lat": -23.5398,
+        "lng": -46.8676,
+        "minutosAtras": 8820,
+        "medicoes": {
+          "servico": "Energia elétrica",
+          "situacao": "Normalizado",
+          "inicioMinutosAtras": 9180,
+          "previsaoMinutosAdiante": -8700,
+          "pessoasAfetadas": 12000,
+          "atingeServicoCritico": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-05",
+    "tipo": "Alagamento",
+    "titulo": "Rua alagada no Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5285,
+    "lng": -46.8655,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 10080,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 10080
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 10080
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 10080
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 10079
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 9930
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-05",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-4c12",
+        "descricao": "Rua alagada no Jardim Maria Helena",
+        "lat": -23.5285,
+        "lng": -46.8655,
+        "minutosAtras": 10080,
+        "medicoes": {
+          "laminaCm": 25
+        },
+        "confirmacoes": 3,
+        "fotoGeolocalizada": true
+      }
+    ]
+  },
+  {
+    "id": "hist-06",
+    "tipo": "Alagamento",
+    "titulo": "Rio Cotia transbordou perto da ponte",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.529,
+    "lng": -46.8622,
+    "estado": "Encerrado",
+    "riscoAlertado": "Crítico",
+    "criadoMinutosAtras": 11460,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 11460
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 11460
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 11460
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 11459
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 11100
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-06",
+        "origem": "Sensor",
+        "fonte": "Sensor de nível – Rio Cotia",
+        "fonteId": "sensor-cotia-01",
+        "descricao": "Rio Cotia transbordou perto da ponte",
+        "lat": -23.529,
+        "lng": -46.8622,
+        "minutosAtras": 11460,
+        "medicoes": {
+          "nivelRioM": 4.28
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-07",
+    "tipo": "Ilha de calor",
+    "titulo": "Sensação térmica de 42,5 °C no Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5293,
+    "lng": -46.8638,
+    "estado": "Encerrado",
+    "riscoAlertado": "Crítico",
+    "criadoMinutosAtras": 13140,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 13140
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 13140
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 13140
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 13139
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 12900
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-07",
+        "origem": "Base pública",
+        "fonte": "INMET (simulado)",
+        "fonteId": "inmet-barueri",
+        "descricao": "Sensação térmica de 42,5 °C no Jardim Maria Helena",
+        "lat": -23.5293,
+        "lng": -46.8638,
+        "minutosAtras": 13140,
+        "medicoes": {
+          "sensacaoTermicaC": 42.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-08",
+    "tipo": "Alagamento",
+    "titulo": "Temporal de 55 mm/h no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.5418,
+    "lng": -46.8702,
+    "estado": "Encerrado",
+    "riscoAlertado": "Crítico",
+    "criadoMinutosAtras": 14460,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 14460
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 14460
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 14460
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 14459
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 14260
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-08",
+        "origem": "Base pública",
+        "fonte": "CEMADEN (simulado)",
+        "fonteId": "cemaden-pluviometro",
+        "descricao": "Temporal de 55 mm/h no Parque Viana",
+        "lat": -23.5418,
+        "lng": -46.8702,
+        "minutosAtras": 14460,
+        "medicoes": {
+          "chuvaMmH": 55
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-09",
+    "tipo": "Interrupção de serviço",
+    "titulo": "Falta de água atingindo escola do bairro",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5296,
+    "lng": -46.8645,
+    "estado": "Encerrado",
+    "riscoAlertado": "Crítico",
+    "criadoMinutosAtras": 16320,
+    "raioAfetadoM": 600,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 16320
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 16320
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 16320
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 16319
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 16020
+      }
+    ],
+    "vulnerabilidades": [
+      "escola"
+    ],
+    "dados": [
+      {
+        "id": "dado-hist-09",
+        "origem": "Base pública (concessionária)",
+        "fonte": "Concessionária de água (simulada)",
+        "fonteId": "concessionaria-agua",
+        "descricao": "Falta de água atingindo escola do bairro",
+        "lat": -23.5296,
+        "lng": -46.8645,
+        "minutosAtras": 16320,
+        "medicoes": {
+          "servico": "Abastecimento de água",
+          "situacao": "Normalizado",
+          "inicioMinutosAtras": 16440,
+          "previsaoMinutosAdiante": -16140,
+          "pessoasAfetadas": 4000,
+          "atingeServicoCritico": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-10",
+    "tipo": "Alagamento",
+    "titulo": "Água acumulada na rua da praça",
+    "bairro": "Parque Viana",
+    "lat": -23.5431,
+    "lng": -46.8689,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 17280,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 17280
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 17280
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 17280
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 17279
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 17190
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-10",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-1e88",
+        "descricao": "Água acumulada na rua da praça",
+        "lat": -23.5431,
+        "lng": -46.8689,
+        "minutosAtras": 17280,
+        "medicoes": {
+          "laminaCm": 18
+        },
+        "confirmacoes": 3,
+        "fotoGeolocalizada": true
+      }
+    ]
+  },
+  {
+    "id": "hist-11",
+    "tipo": "Ilha de calor",
+    "titulo": "Sensação térmica de 34 °C no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.541,
+    "lng": -46.8669,
+    "estado": "Encerrado",
+    "criadoMinutosAtras": 19020,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 19020
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 19020
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 19020
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 18780
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-11",
+        "origem": "Base pública",
+        "fonte": "INMET (simulado)",
+        "fonteId": "inmet-barueri",
+        "descricao": "Sensação térmica de 34 °C no Parque Viana",
+        "lat": -23.541,
+        "lng": -46.8669,
+        "minutosAtras": 19020,
+        "medicoes": {
+          "sensacaoTermicaC": 34
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-12",
+    "tipo": "Alagamento",
+    "titulo": "Rio Cotia na cota de alerta perto da ponte",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.529,
+    "lng": -46.8622,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 21480,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 21480
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 21480
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 21480
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 21479
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 21270
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-12",
+        "origem": "Sensor",
+        "fonte": "Sensor de nível – Rio Cotia",
+        "fonteId": "sensor-cotia-01",
+        "descricao": "Rio Cotia na cota de alerta perto da ponte",
+        "lat": -23.529,
+        "lng": -46.8622,
+        "minutosAtras": 21480,
+        "medicoes": {
+          "nivelRioM": 3.9
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-13",
+    "tipo": "Alagamento",
+    "titulo": "Chuva forte registrada no Parque Viana (alerta cancelado)",
+    "bairro": "Parque Viana",
+    "lat": -23.5393,
+    "lng": -46.8648,
+    "estado": "Descartado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 23160,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 23160
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 23160
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 23160
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 23159
+      },
+      {
+        "estado": "Descartado",
+        "minutosAtras": 23135
+      }
+    ],
+    "motivoDescarte": "Agente cancelou o alerta: a chuva forte ficou concentrada fora do bairro, sem acúmulo de água no local.",
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-13",
+        "origem": "Base pública",
+        "fonte": "CEMADEN (simulado)",
+        "fonteId": "cemaden-pluviometro",
+        "descricao": "Chuva forte registrada no Parque Viana (alerta cancelado)",
+        "lat": -23.5393,
+        "lng": -46.8648,
+        "minutosAtras": 23160,
+        "medicoes": {
+          "chuvaMmH": 28
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-14",
+    "tipo": "Ilha de calor",
+    "titulo": "Sensação térmica de 38,5 °C no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.541,
+    "lng": -46.8669,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 26160,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 26160
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 26160
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 26160
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 26159
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 25890
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-14",
+        "origem": "Base pública",
+        "fonte": "INMET (simulado)",
+        "fonteId": "inmet-barueri",
+        "descricao": "Sensação térmica de 38,5 °C no Parque Viana",
+        "lat": -23.541,
+        "lng": -46.8669,
+        "minutosAtras": 26160,
+        "medicoes": {
+          "sensacaoTermicaC": 38.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-15",
+    "tipo": "Interrupção de serviço",
+    "titulo": "Falta de energia por 7 h no Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5302,
+    "lng": -46.8631,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 27720,
+    "raioAfetadoM": 700,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 27720
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 27720
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 27720
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 27719
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 27270
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-15",
+        "origem": "Base pública (concessionária)",
+        "fonte": "Concessionária de energia (simulada)",
+        "fonteId": "concessionaria-energia",
+        "descricao": "Falta de energia por 7 h no Jardim Maria Helena",
+        "lat": -23.5302,
+        "lng": -46.8631,
+        "minutosAtras": 27720,
+        "medicoes": {
+          "servico": "Energia elétrica",
+          "situacao": "Normalizado",
+          "inicioMinutosAtras": 28080,
+          "previsaoMinutosAdiante": -27660,
+          "pessoasAfetadas": 2500,
+          "atingeServicoCritico": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-16",
+    "tipo": "Alagamento",
+    "titulo": "Água acima do joelho no Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5278,
+    "lng": -46.8662,
+    "estado": "Encerrado",
+    "riscoAlertado": "Crítico",
+    "criadoMinutosAtras": 30180,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 30180
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 30180
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 30180
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 30179
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 29940
+      }
+    ],
+    "vulnerabilidades": [
+      "comunidade_vulneravel"
+    ],
+    "dados": [
+      {
+        "id": "dado-hist-16",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-4c12",
+        "descricao": "Água acima do joelho no Jardim Maria Helena",
+        "lat": -23.5278,
+        "lng": -46.8662,
+        "minutosAtras": 30180,
+        "medicoes": {
+          "laminaCm": 32
+        },
+        "confirmacoes": 3,
+        "fotoGeolocalizada": true
+      }
+    ]
+  },
+  {
+    "id": "hist-17",
+    "tipo": "Alagamento",
+    "titulo": "Chuva moderada no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.5402,
+    "lng": -46.8661,
+    "estado": "Encerrado",
+    "criadoMinutosAtras": 33180,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 33180
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 33180
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 33180
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 33090
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-17",
+        "origem": "Base pública",
+        "fonte": "CEMADEN (simulado)",
+        "fonteId": "cemaden-pluviometro",
+        "descricao": "Chuva moderada no Parque Viana",
+        "lat": -23.5402,
+        "lng": -46.8661,
+        "minutosAtras": 33180,
+        "medicoes": {
+          "chuvaMmH": 15
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-18",
+    "tipo": "Ilha de calor",
+    "titulo": "Sensação térmica de 40 °C no Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5293,
+    "lng": -46.8638,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 36180,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 36180
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 36180
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 36180
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 36179
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 35880
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-18",
+        "origem": "Base pública",
+        "fonte": "INMET (simulado)",
+        "fonteId": "inmet-barueri",
+        "descricao": "Sensação térmica de 40 °C no Jardim Maria Helena",
+        "lat": -23.5293,
+        "lng": -46.8638,
+        "minutosAtras": 36180,
+        "medicoes": {
+          "sensacaoTermicaC": 40
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-19",
+    "tipo": "Alagamento",
+    "titulo": "Rio Cotia transbordou perto da ponte",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.529,
+    "lng": -46.8622,
+    "estado": "Encerrado",
+    "riscoAlertado": "Crítico",
+    "criadoMinutosAtras": 38700,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 38700
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 38700
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 38700
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 38699
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 38280
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-19",
+        "origem": "Sensor",
+        "fonte": "Sensor de nível – Rio Cotia",
+        "fonteId": "sensor-cotia-01",
+        "descricao": "Rio Cotia transbordou perto da ponte",
+        "lat": -23.529,
+        "lng": -46.8622,
+        "minutosAtras": 38700,
+        "medicoes": {
+          "nivelRioM": 4.25
+        }
+      }
+    ]
+  },
+  {
+    "id": "hist-20",
+    "tipo": "Alagamento",
+    "titulo": "Chuva forte no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.5418,
+    "lng": -46.8702,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 41760,
+    "historico": [
+      {
+        "estado": "Reportado",
+        "minutosAtras": 41760
+      },
+      {
+        "estado": "Confirmado",
+        "minutosAtras": 41760
+      },
+      {
+        "estado": "Alerta emitido",
+        "minutosAtras": 41760
+      },
+      {
+        "estado": "Em monitoramento",
+        "minutosAtras": 41759
+      },
+      {
+        "estado": "Encerrado",
+        "minutosAtras": 41610
+      }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-hist-20",
+        "origem": "Base pública",
+        "fonte": "CEMADEN (simulado)",
+        "fonteId": "cemaden-pluviometro",
+        "descricao": "Chuva forte no Parque Viana",
+        "lat": -23.5418,
+        "lng": -46.8702,
+        "minutosAtras": 41760,
+        "medicoes": {
+          "chuvaMmH": 30
+        }
+      }
+    ]
+  }
+]

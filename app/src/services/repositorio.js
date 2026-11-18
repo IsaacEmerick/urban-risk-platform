@@ -3,6 +3,7 @@
 // confiança → risco → agrupamento (RN04) → consolidação (RN07) → estados → notificação (RN06).
 import bairrosJson from '../data/bairros.json'
 import eventosJson from '../data/eventos.json'
+import eventosHistoricosJson from '../data/eventos-historicos.json'
 import sensoresJson from '../data/sensores.json'
 import usuariosJson from '../data/usuarios.json'
 import { MINUTO } from './parametros.js'
@@ -60,7 +61,8 @@ function prepararEvento(eventoJson, sensores, agora) {
 
 export function criarRepositorio({
   agora = new Date(),
-  eventos = eventosJson,
+  // Eventos atuais + histórico dos últimos 30 dias (base da tela Análises e do RNF11)
+  eventos = [...eventosJson, ...eventosHistoricosJson],
   sensores = sensoresJson,
   usuarios = usuariosJson,
   bairros = bairrosJson,
@@ -108,6 +110,8 @@ export function criarRepositorio({
         tipo,
         titulo: `${evento.tipo} – risco ${evento.risco}`,
         risco: evento.risco,
+        // Alerta preliminar (RN02): mesmo tipo "Alerta", com a etiqueta "não confirmado" no card
+        naoConfirmado: tipo === 'Alerta' && Boolean(evento.naoConfirmado),
         em: momento,
         lida: false,
       })
@@ -118,8 +122,7 @@ export function criarRepositorio({
   function aplicarEfeitos(evento, efeitos, momento) {
     let atual = evento
     if (efeitos.some((ef) => EFEITOS_DE_ALERTA.includes(ef))) {
-      const tipo = efeitos.includes(EFEITOS.ALERTA_PRELIMINAR) ? 'Alerta preliminar (não confirmado)' : 'Alerta'
-      notificar(atual, tipo, momento)
+      notificar(atual, 'Alerta', momento)
       atual = notificacaoEnviada(atual, momento).evento // Alerta emitido → Em monitoramento
     }
     if (efeitos.includes(EFEITOS.NOTIFICAR_CANCELAMENTO)) notificar(atual, 'Alerta cancelado', momento)
