@@ -68,6 +68,7 @@
     "estado": "Em monitoramento",
     "naoConfirmado": true,
     "riscoAlertado": "Crítico",
+    "confiancaAlertada": 60,
     "criadoMinutosAtras": 25,
     "historico": [
       { "estado": "Reportado", "minutosAtras": 25 },
@@ -125,6 +126,7 @@
     "lng": -46.8669,
     "estado": "Em monitoramento",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 40,
     "historico": [
       { "estado": "Reportado", "minutosAtras": 40 },
@@ -194,6 +196,7 @@
     "lng": -46.8695,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 75,
     "criadoMinutosAtras": 1440,
     "historico": [
       { "estado": "Reportado", "minutosAtras": 1440 },
@@ -228,6 +231,7 @@
     "lng": -46.8645,
     "estado": "Descartado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 4320,
     "historico": [
       { "estado": "Reportado", "minutosAtras": 4320 },

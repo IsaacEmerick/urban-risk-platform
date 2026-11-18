@@ -1,5 +1,5 @@
-// Agrupamento de dados em eventos (RN04), consolidação (RN07) e falso alerta (RNF11)
-import { ESTADOS, MINUTO, REGRAS } from './parametros.js'
+// Agrupamento de dados em eventos (RN04), consolidação (RN07) e metas de qualidade dos alertas (RNF11)
+import { ESTADOS, FAIXAS_CONFIANCA, MINUTO, REGRAS } from './parametros.js'
 import { distanciaMetros } from './geo.js'
 import { calcularConfianca, faixaConfianca } from './confianca.js'
 import { classificarRisco, maiorRisco } from './risco.js'
@@ -53,5 +53,18 @@ export function taxaFalsoAlerta(eventos) {
     emitidos: emitidos.length,
     falsos: falsos.length,
     taxa: emitidos.length ? falsos.length / emitidos.length : 0,
+  }
+}
+
+// RNF11, 2ª meta: ≥ 90% dos alertas de risco Alto ou Crítico com confiança Alta (≥ 75).
+// Usa a confiança guardada no momento do alerta (confiancaAlertada), e não a de agora:
+// um dado antigo de sensor perde 20 pontos por estar desatualizado, mas tinha 90 quando alertou.
+export function taxaAlertasConfiancaAlta(eventos) {
+  const alertas = eventos.filter((e) => passouPorAlerta(e) && ['Alto', 'Crítico'].includes(e.riscoAlertado))
+  const comConfiancaAlta = alertas.filter((e) => (e.confiancaAlertada ?? 0) >= FAIXAS_CONFIANCA.alta)
+  return {
+    alertas: alertas.length,
+    comConfiancaAlta: comConfiancaAlta.length,
+    taxa: alertas.length ? comConfiancaAlta.length / alertas.length : 0,
   }
 }

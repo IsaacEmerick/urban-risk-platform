@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { agruparDado, consolidarEvento, taxaFalsoAlerta } from './eventos.js'
+import { agruparDado, consolidarEvento, taxaAlertasConfiancaAlta, taxaFalsoAlerta } from './eventos.js'
 import { deslocarParaNorte } from './geo.js'
 import { MINUTO } from './parametros.js'
 
@@ -75,5 +75,35 @@ describe('RNF11 — taxa de falso alerta', () => {
   })
   it('sem alertas, taxa 0', () => {
     expect(taxaFalsoAlerta([]).taxa).toBe(0)
+  })
+})
+
+describe('RNF11 (2ª meta) — alertas Alto/Crítico com confiança Alta no momento do alerta', () => {
+  const alertado = (riscoAlertado, confiancaAlertada, extras = {}) => ({
+    estado: 'Em monitoramento',
+    historico: [{ estado: 'Alerta emitido' }],
+    riscoAlertado,
+    confiancaAlertada,
+    confianca: 50, // confiança de agora (ex.: dado desatualizado): não deve ser usada
+    ...extras,
+  })
+
+  it('usa confiancaAlertada: 75 conta como Alta, 74 não', () => {
+    const r = taxaAlertasConfiancaAlta([alertado('Alto', 75), alertado('Crítico', 90), alertado('Alto', 74), alertado('Crítico', 60)])
+    expect(r).toEqual({ alertas: 4, comConfiancaAlta: 2, taxa: 0.5 })
+  })
+
+  it('ignora eventos que nunca alertaram', () => {
+    const semAlerta = { estado: 'Em monitoramento', historico: [{ estado: 'Confirmado' }], riscoAlertado: null, confiancaAlertada: null }
+    expect(taxaAlertasConfiancaAlta([alertado('Alto', 90), semAlerta])).toEqual({ alertas: 1, comConfiancaAlta: 1, taxa: 1 })
+  })
+
+  it('conta alertas descartados depois (também foram alertas emitidos)', () => {
+    const r = taxaAlertasConfiancaAlta([alertado('Alto', 85, { estado: 'Descartado' })])
+    expect(r.alertas).toBe(1)
+  })
+
+  it('sem alertas, taxa 0', () => {
+    expect(taxaAlertasConfiancaAlta([]).taxa).toBe(0)
   })
 })

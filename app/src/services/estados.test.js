@@ -92,6 +92,37 @@ describe('Em validação (RN02)', () => {
   })
 })
 
+describe('confiancaAlertada — confiança guardada no momento do alerta (RNF11)', () => {
+  it('alerta comum (Confirmado → Alerta emitido) guarda a confiança do momento', () => {
+    const r = avaliar(evento('Reportado', { confianca: 82, risco: 'Alto' }), AGORA)
+    expect(r.evento).toMatchObject({ estado: 'Alerta emitido', riscoAlertado: 'Alto', confiancaAlertada: 82 })
+  })
+
+  it('alerta preliminar (Em validação, Crítico) guarda a confiança Média do momento', () => {
+    const r = avaliar(evento('Em validação', { confianca: 60, risco: 'Crítico' }), AGORA)
+    expect(r.evento).toMatchObject({ naoConfirmado: true, riscoAlertado: 'Crítico', confiancaAlertada: 60 })
+  })
+
+  it('escalada atualiza para a confiança do novo alerta', () => {
+    const e = evento('Em monitoramento', { risco: 'Crítico', confianca: 95, riscoAlertado: 'Alto', confiancaAlertada: 82 })
+    const r = avaliar(e, AGORA)
+    expect(r.evento).toMatchObject({ riscoAlertado: 'Crítico', confiancaAlertada: 95 })
+  })
+
+  it('sem alerta, não grava confiancaAlertada', () => {
+    const r = avaliar(evento('Reportado', { confianca: 90, risco: 'Moderado', confiancaAlertada: null }), AGORA)
+    expect(r.evento.estado).toBe('Em monitoramento')
+    expect(r.evento.confiancaAlertada).toBeNull()
+  })
+
+  it('a confiança do evento pode cair depois (dado desatualizado); a guardada continua a do alerta', () => {
+    const alertado = avaliar(evento('Reportado', { confianca: 90, risco: 'Alto' }), AGORA).evento
+    const depois = avaliar({ ...notificacaoEnviada(alertado, AGORA).evento, confianca: 70 }, AGORA).evento
+    expect(depois.confianca).toBe(70)
+    expect(depois.confiancaAlertada).toBe(90)
+  })
+})
+
 describe('Confirmado', () => {
   it('risco < Alto → Em monitoramento', () => {
     expect(avaliar(evento('Confirmado', { confianca: 90 }), AGORA).evento.estado).toBe('Em monitoramento')

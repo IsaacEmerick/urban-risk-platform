@@ -8,6 +8,7 @@
     "lng": -46.8622,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 90,
     "criadoMinutosAtras": 2940,
     "historico": [
       {
@@ -57,6 +58,7 @@
     "lng": -46.8661,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 5880,
     "historico": [
       {
@@ -106,6 +108,7 @@
     "lng": -46.8669,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 7440,
     "historico": [
       {
@@ -155,6 +158,7 @@
     "lng": -46.8676,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 80,
     "criadoMinutosAtras": 8820,
     "raioAfetadoM": 900,
     "historico": [
@@ -210,6 +214,7 @@
     "lng": -46.8655,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 75,
     "criadoMinutosAtras": 10080,
     "historico": [
       {
@@ -261,6 +266,7 @@
     "lng": -46.8622,
     "estado": "Encerrado",
     "riscoAlertado": "Crítico",
+    "confiancaAlertada": 90,
     "criadoMinutosAtras": 11460,
     "historico": [
       {
@@ -310,6 +316,7 @@
     "lng": -46.8638,
     "estado": "Encerrado",
     "riscoAlertado": "Crítico",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 13140,
     "historico": [
       {
@@ -359,6 +366,7 @@
     "lng": -46.8702,
     "estado": "Encerrado",
     "riscoAlertado": "Crítico",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 14460,
     "historico": [
       {
@@ -408,6 +416,7 @@
     "lng": -46.8645,
     "estado": "Encerrado",
     "riscoAlertado": "Crítico",
+    "confiancaAlertada": 80,
     "criadoMinutosAtras": 16320,
     "raioAfetadoM": 600,
     "historico": [
@@ -465,6 +474,7 @@
     "lng": -46.8689,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 75,
     "criadoMinutosAtras": 17280,
     "historico": [
       {
@@ -560,6 +570,7 @@
     "lng": -46.8622,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 90,
     "criadoMinutosAtras": 21480,
     "historico": [
       {
@@ -609,6 +620,7 @@
     "lng": -46.8648,
     "estado": "Descartado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 23160,
     "historico": [
       {
@@ -659,6 +671,7 @@
     "lng": -46.8669,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 26160,
     "historico": [
       {
@@ -708,6 +721,7 @@
     "lng": -46.8631,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 80,
     "criadoMinutosAtras": 27720,
     "raioAfetadoM": 700,
     "historico": [
@@ -763,6 +777,7 @@
     "lng": -46.8662,
     "estado": "Encerrado",
     "riscoAlertado": "Crítico",
+    "confiancaAlertada": 75,
     "criadoMinutosAtras": 30180,
     "historico": [
       {
@@ -860,6 +875,7 @@
     "lng": -46.8638,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 36180,
     "historico": [
       {
@@ -909,6 +925,7 @@
     "lng": -46.8622,
     "estado": "Encerrado",
     "riscoAlertado": "Crítico",
+    "confiancaAlertada": 90,
     "criadoMinutosAtras": 38700,
     "historico": [
       {
@@ -958,6 +975,7 @@
     "lng": -46.8702,
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
+    "confiancaAlertada": 85,
     "criadoMinutosAtras": 41760,
     "historico": [
       {

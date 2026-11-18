@@ -90,6 +90,8 @@ a inundações do SGB (Barueri, 2017).
   "Normalizado" leva o risco a Baixo, e a RN05 encerra o evento em 30 min.
 - Cancelar alerta (agente, RF12): Alerta emitido ou Em monitoramento → Descartado, com notificação "Alerta cancelado".
   Falso alerta (RNF11) = eventos que passaram por Alerta emitido e foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
+  Ao emitir alerta (comum, preliminar ou escalada) o evento guarda `riscoAlertado` e `confiancaAlertada`; a 2ª meta
+  do RNF11 (≥ 90% dos alertas Alto/Crítico com confiança Alta) usa `confiancaAlertada`.
 - Fila de validação lista só eventos Em validação (Confirmar, Descartar). Confirmar alerta (tira a marca
   "não confirmado" do alerta preliminar), Encerrar e Cancelar alerta ficam no Detalhe do alerta.
 - Alagamento por nível do rio (falta = cota de transbordamento − nível; parâmetros fictícios, não cotas oficiais):

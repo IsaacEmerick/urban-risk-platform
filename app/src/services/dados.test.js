@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest'
 import { criarRepositorio } from './repositorio.js'
 import { avaliar, agenteConfirma, agenteRejeita } from './estados.js'
-import { taxaFalsoAlerta } from './eventos.js'
+import { taxaAlertasConfiancaAlta, taxaFalsoAlerta } from './eventos.js'
 import { ESTADOS, NIVEIS_RISCO, ORIGENS, TIPOS } from './parametros.js'
 
 const AGORA = new Date('2026-11-17T18:00:00-03:00')
@@ -65,6 +65,18 @@ describe('dados simulados', () => {
     const { emitidos, falsos, taxa } = taxaFalsoAlerta(eventos)
     expect({ emitidos, falsos }).toEqual({ emitidos: 22, falsos: 2 })
     expect(taxa).toBeLessThan(0.1) // 2 ÷ 22 ≈ 9,1%
+  })
+
+  it('todo evento que alertou tem confiancaAlertada', () => {
+    eventos
+      .filter((e) => e.riscoAlertado)
+      .forEach((e) => expect(e.confiancaAlertada, e.id).toBeGreaterThan(0))
+  })
+
+  it('2ª meta do RNF11: ≥ 90% dos alertas Alto/Crítico com confiança Alta no momento do alerta', () => {
+    const { alertas, comConfiancaAlta, taxa } = taxaAlertasConfiancaAlta(eventos)
+    expect({ alertas, comConfiancaAlta }).toEqual({ alertas: 22, comConfiancaAlta: 21 }) // só o evt-03 (preliminar, 60)
+    expect(taxa).toBeGreaterThanOrEqual(0.9) // 21 ÷ 22 ≈ 95,5%
   })
 
   it('as ações do agente funcionam sobre os dados simulados', () => {
@@ -142,6 +154,8 @@ describe('repositório — ações do agente com notificações', () => {
     const r = criarRepositorio({ agora: AGORA })
     const confirmado = r.executarAcao('evt-02', 'agenteConfirma', AGORA)
     expect(confirmado.estado).toBe('Em monitoramento')
+    // confirmado pelo agente com confiança Média: o alerta guarda 65 (conta contra a 2ª meta do RNF11)
+    expect(confirmado).toMatchObject({ riscoAlertado: 'Alto', confiancaAlertada: 65 })
     expect(r.listarNotificacoes('usr-ana').map((n) => n.tipo)).toEqual(['Alerta'])
     expect(r.listarNotificacoes('usr-ana')[0].naoConfirmado).toBe(false) // alerta comum, sem etiqueta
 

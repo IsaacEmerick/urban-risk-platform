@@ -51,6 +51,7 @@ function prepararEvento(eventoJson, sensores, agora) {
   return {
     naoConfirmado: false,
     riscoAlertado: null,
+    confiancaAlertada: null,
     riscoBaixoDesde: null,
     ...resto,
     criadoEm: minutosAtras(agora, criadoMinutosAtras),
@@ -148,6 +149,7 @@ export function criarRepositorio({
         estado: 'Reportado',
         naoConfirmado: false,
         riscoAlertado: null,
+        confiancaAlertada: null,
         riscoBaixoDesde: null,
         vulnerabilidades: [],
         criadoEm: momento,

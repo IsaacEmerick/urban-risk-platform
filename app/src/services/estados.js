@@ -46,7 +46,7 @@ function passoAutomatico(evento, agora) {
       // RN02: Crítico com confiança Média → alerta preliminar "não confirmado"
       if (risco === 'Crítico') {
         return {
-          evento: irPara(evento, ESTADOS.ALERTA_EMITIDO, agora, { naoConfirmado: true, riscoAlertado: risco }),
+          evento: irPara(evento, ESTADOS.ALERTA_EMITIDO, agora, { naoConfirmado: true, riscoAlertado: risco, confiancaAlertada: confianca }),
           efeito: EFEITOS.ALERTA_PRELIMINAR,
         }
       }
@@ -56,7 +56,7 @@ function passoAutomatico(evento, agora) {
       // Alerta só com risco ≥ Alto
       if (riscoAltoOuMais(risco)) {
         return {
-          evento: irPara(evento, ESTADOS.ALERTA_EMITIDO, agora, { riscoAlertado: risco }),
+          evento: irPara(evento, ESTADOS.ALERTA_EMITIDO, agora, { riscoAlertado: risco, confiancaAlertada: confianca }),
           efeito: EFEITOS.NOTIFICAR_USUARIOS,
         }
       }
@@ -67,7 +67,7 @@ function passoAutomatico(evento, agora) {
       // RN01: o evento já foi confirmado, então a escalada alerta sem nova checagem de confiança.
       if (riscoAltoOuMais(risco) && (!evento.riscoAlertado || compararRisco(risco, evento.riscoAlertado) > 0)) {
         return {
-          evento: irPara(evento, ESTADOS.ALERTA_EMITIDO, agora, { riscoAlertado: risco }),
+          evento: irPara(evento, ESTADOS.ALERTA_EMITIDO, agora, { riscoAlertado: risco, confiancaAlertada: confianca }),
           // Nunca alertou → primeiro alerta (notificarUsuarios); já alertou → reenviarAlerta
           efeito: evento.riscoAlertado ? EFEITOS.REENVIAR_ALERTA : EFEITOS.NOTIFICAR_USUARIOS,
         }

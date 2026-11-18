@@ -61,6 +61,7 @@ describe('simulador do sensor do rio Cotia (a cada 15 s)', () => {
     expect(evt01().historico.map((h) => h.estado)).toContain('Alerta emitido')
     expect(alertasDaAna()).toHaveLength(1)
     expect(alertasDaAna()[0]).toMatchObject({ tipo: 'Alerta', risco: 'Alto' })
+    expect(evt01().confiancaAlertada).toBe(90) // confiança do sensor no momento da escalada
   })
 
   it('ao transbordar escala para Crítico e renotifica (escalada, RN06)', () => {
