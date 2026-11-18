@@ -1,0 +1,15 @@
+[
+  {
+    "id": "sensor-cotia-01",
+    "nome": "Sensor de nível – Rio Cotia (ponte Jd. Maria Helena–Vila Lourdes)",
+    "grandeza": "Nível do rio",
+    "unidade": "m",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.529,
+    "lng": -46.8622,
+    "cotaTransbordamentoM": 4.2,
+    "nivelInicialM": 3.3,
+    "intervaloEsperadoMin": 5,
+    "observacao": "Sensor simulado. Localização aproximada (margem do rio Cotia na altura do Jardim Maria Helena, conferida no OpenStreetMap). Cota de transbordamento e níveis são fictícios, não as cotas oficiais do rio Cotia."
+  }
+]

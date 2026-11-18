@@ -1,0 +1,54 @@
+[
+  {
+    "id": "usr-ana",
+    "nome": "Ana",
+    "perfil": "morador",
+    "descricao": "Moradora do Parque Viana",
+    "email": "ana@exemplo.com",
+    "pseudonimo": "p-7f3a",
+    "areasInteresse": [
+      { "tipo": "bairro", "bairro": "Parque Viana" },
+      { "tipo": "bairro", "bairro": "Jardim Maria Helena" }
+    ],
+    "tiposRisco": ["Alagamento", "Ilha de calor", "Interrupção de serviço"],
+    "canais": ["Push", "SMS"],
+    "consentimentos": [
+      { "finalidade": "Cadastro e autenticação", "concedidoEm": "2026-10-02T19:14:00-03:00" },
+      { "finalidade": "Áreas de interesse e notificações de risco", "concedidoEm": "2026-10-02T19:15:00-03:00" }
+    ]
+  },
+  {
+    "id": "usr-carlos",
+    "nome": "Carlos",
+    "perfil": "agente",
+    "descricao": "Agente da Defesa Civil de Barueri",
+    "email": "carlos@exemplo.com",
+    "pseudonimo": "p-c21d",
+    "areasInteresse": [
+      { "tipo": "bairro", "bairro": "Parque Viana" },
+      { "tipo": "bairro", "bairro": "Jardim Maria Helena" }
+    ],
+    "tiposRisco": ["Alagamento", "Ilha de calor", "Interrupção de serviço"],
+    "canais": ["Push", "E-mail"],
+    "consentimentos": [
+      { "finalidade": "Cadastro e autenticação", "concedidoEm": "2026-09-15T08:30:00-03:00" }
+    ]
+  },
+  {
+    "id": "usr-juliana",
+    "nome": "Juliana",
+    "perfil": "operador",
+    "descricao": "Operadora do centro de operações da concessionária de energia",
+    "email": "juliana@exemplo.com",
+    "pseudonimo": "p-9b40",
+    "areasInteresse": [
+      { "tipo": "bairro", "bairro": "Parque Viana" },
+      { "tipo": "bairro", "bairro": "Jardim Maria Helena" }
+    ],
+    "tiposRisco": ["Alagamento", "Interrupção de serviço"],
+    "canais": ["Push", "E-mail"],
+    "consentimentos": [
+      { "finalidade": "Cadastro e autenticação", "concedidoEm": "2026-09-20T10:05:00-03:00" }
+    ]
+  }
+]

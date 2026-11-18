@@ -52,7 +52,9 @@ a inundações do SGB (Barueri, 2017).
 
 ### Dados simulados (`app/src/data/`) — valores sempre fictícios
 
-- Um sensor de nível do rio Cotia perto da ponte Jardim Maria Helena–Vila Lourdes.
+- Um sensor de nível do rio Cotia perto da ponte Jardim Maria Helena–Vila Lourdes: informa o nível em metros;
+  a cota de transbordamento (fictícia) fica no cadastro do sensor. No simulador, o nível sobe aos poucos
+  para demonstrar o alerta antecipado.
 - Eventos de alagamento no Jardim Maria Helena.
 - A área de interesse da Ana cobre o Parque Viana e o Jardim Maria Helena.
 
@@ -88,7 +90,11 @@ a inundações do SGB (Barueri, 2017).
   "Normalizado" leva o risco a Baixo, e a RN05 encerra o evento em 30 min.
 - Cancelar alerta (agente, RF12): Alerta emitido ou Em monitoramento → Descartado, com notificação "Alerta cancelado".
   Falso alerta (RNF11) = eventos que passaram por Alerta emitido e foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
-- Fila de validação lista só eventos Em validação (Confirmar, Descartar). Encerrar e Cancelar alerta ficam no Detalhe do alerta.
+- Fila de validação lista só eventos Em validação (Confirmar, Descartar). Confirmar alerta (tira a marca
+  "não confirmado" do alerta preliminar), Encerrar e Cancelar alerta ficam no Detalhe do alerta.
+- Alagamento por nível do rio (falta = cota de transbordamento − nível; parâmetros fictícios, não cotas oficiais):
+  Moderado falta ≤ 1,0 m; Alto falta ≤ 0,5 m; Crítico transbordou (falta < 0). Vale o maior entre nível do rio,
+  lâmina d'água em via e chuva.
 - Áreas de interesse (RF13): por bairro ou por ponto no mapa com raio (ex.: 1 km).
 - Faixas de risco usam ≥ e < (sem lacunas); se dois critérios se aplicam, vale o nível mais alto.
 - Prioridade P = R × 25 × (C/100) + V, com R = 1..4 (Baixo..Crítico), C = confiança, V = +10 área vulnerável

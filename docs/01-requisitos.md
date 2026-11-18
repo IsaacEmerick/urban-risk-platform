@@ -28,22 +28,22 @@ evento que tem estado, risco, confiança e prioridade.
 
 ### Telas do protótipo e rastreabilidade
 
-| Tela                     | Conteúdo principal                                                                                                                       | RF                     | Perfil           |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------- |
-| Login / Cadastro         | Escolha do perfil (morador, agente, operador), aceite de termos e consentimento LGPD                                                     | RF15, RF16             | Todos            |
-| Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta                               | RF13                   | Todos            |
-| Painel                   | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região                                                   | RF01, RF02, RF07       | Todos            |
-| Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança                                                                    | RF08                   | Todos            |
-| Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Encerrar" e "Cancelar alerta" (agente)                      | RF06, RF08, RF12, RF17 | Todos            |
-| Origem e confiança       | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado                                                   | RF01, RF02, RF05, RF09 | Todos            |
-| Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (incluindo "Alerta cancelado") e link para o alerta                                       | RF10, RF11             | Morador          |
-| Registro comunitário     | Tipo, localização automática, descrição e foto opcional, em até 3 passos                                                                 | RF03                   | Morador          |
-| Meus registros           | Estado de cada registro e confirmações recebidas                                                                                         | RF03, RF17             | Morador          |
-| Fila de validação        | Só eventos Em validação, por prioridade, com os botões Confirmar e Descartar                                                             | RF04, RF12             | Agente           |
-| Análises                 | Gráficos por tipo de risco, região e período                                                                                             | RF14                   | Agente, operador |
-| Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta                                                                                 | RF16                   | Todos            |
-| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?" | RF18                   | Operador         |
-| Perfil                   | Atalhos: dados do usuário, Preferências, Privacidade e meus dados e sair; o morador também tem Meus registros                            | RF15                   | Todos            |
+| Tela                     | Conteúdo principal                                                                                                                                          | RF                     | Perfil           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------- |
+| Login / Cadastro         | Escolha do perfil (morador, agente, operador), aceite de termos e consentimento LGPD                                                                        | RF15, RF16             | Todos            |
+| Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta                                                  | RF13                   | Todos            |
+| Painel                   | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região                                                                      | RF01, RF02, RF07       | Todos            |
+| Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança                                                                                       | RF08                   | Todos            |
+| Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Confirmar alerta" (alerta preliminar), "Encerrar" e "Cancelar alerta" (agente) | RF06, RF08, RF12, RF17 | Todos            |
+| Origem e confiança       | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado                                                                      | RF01, RF02, RF05, RF09 | Todos            |
+| Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (incluindo "Alerta cancelado") e link para o alerta                                                          | RF10, RF11             | Morador          |
+| Registro comunitário     | Tipo, localização automática, descrição e foto opcional, em até 3 passos                                                                                    | RF03                   | Morador          |
+| Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                            | RF03, RF17             | Morador          |
+| Fila de validação        | Só eventos Em validação, por prioridade, com os botões Confirmar e Descartar                                                                                | RF04, RF12             | Agente           |
+| Análises                 | Gráficos por tipo de risco, região e período                                                                                                                | RF14                   | Agente, operador |
+| Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta                                                                                                    | RF16                   | Todos            |
+| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"                    | RF18                   | Operador         |
+| Perfil                   | Atalhos: dados do usuário, Preferências, Privacidade e meus dados e sair; o morador também tem Meus registros                                               | RF15                   | Todos            |
 
 ## 2. Requisitos funcionais
 
@@ -79,7 +79,9 @@ para **Descartado**, e quem
 recebeu o alerta é avisado com uma notificação do tipo "Alerta cancelado" (RF10, RF11). Esses
 cancelamentos são a base da medição de falso alerta do RNF11. Confirmar e Descartar ficam na Fila
 de validação, que lista só eventos Em validação; Encerrar e Cancelar alerta ficam no Detalhe do
-alerta.
+alerta. Também no Detalhe do alerta fica o botão **Confirmar alerta**, com que o agente confirma um
+alerta preliminar marcado como "não confirmado" (RN02): o evento já está Em monitoramento, fora da
+Fila de validação, e a confirmação só remove a marca (transição interna do Diagrama de Estados).
 
 **Sobre o RF18:**
 
@@ -177,16 +179,22 @@ nível d'água a 300 m registra a mesma situação 10 min depois (+15), a confia
 
 ### 4.2 Nível de risco do evento — `classificarRisco()`
 
-| Tipo                   | Moderado                                                | Alto                                                    | Crítico                                          |
-| ---------------------- | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------ |
-| Alagamento             | Chuva ≥ 10 e < 25 mm/h                                  | Lâmina d'água ≥ 10 e ≤ 30 cm, ou chuva ≥ 25 e ≤ 50 mm/h | Lâmina d'água > 30 cm, ou chuva > 50 mm/h        |
-| Ilha de calor          | Sensação térmica ≥ 32 e < 38 °C                         | ≥ 38 e < 42 °C                                          | ≥ 42 °C                                          |
-| Interrupção de serviço | Duração ≥ 2 e ≤ 6 h, ou 1 mil a 10 mil pessoas afetadas | Duração > 6 h, ou mais de 10 mil pessoas afetadas       | Atinge hospital, escola ou abastecimento crítico |
+| Tipo                      | Moderado                                                      | Alto                                                       | Crítico                                          |
+| ------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| Alagamento                | Chuva ≥ 10 e < 25 mm/h                                        | Lâmina d'água ≥ 10 e ≤ 30 cm, ou chuva ≥ 25 e ≤ 50 mm/h    | Lâmina d'água > 30 cm, ou chuva > 50 mm/h        |
+| Alagamento (nível do rio) | Faltam ≤ 1,0 m (e > 0,5 m) para transbordar (cota de atenção) | Faltam ≤ 0,5 m (e ≥ 0 m) para transbordar (cota de alerta) | Transbordou (nível acima da margem)              |
+| Ilha de calor             | Sensação térmica ≥ 32 e < 38 °C                               | ≥ 38 e < 42 °C                                             | ≥ 42 °C                                          |
+| Interrupção de serviço    | Duração ≥ 2 e ≤ 6 h, ou 1 mil a 10 mil pessoas afetadas       | Duração > 6 h, ou mais de 10 mil pessoas afetadas          | Atinge hospital, escola ou abastecimento crítico |
 
+- **Nível do rio:** o sensor de nível informa o nível do rio em metros; a **cota de transbordamento**
+  fica no cadastro de cada sensor, e o critério usa quanto falta para a água chegar a ela
+  (falta = cota − nível). As cotas de atenção (1,0 m) e de alerta (0,5 m) e a cota de transbordamento
+  do sensor do rio Cotia são **parâmetros fictícios do protótipo**, não as cotas oficiais do rio Cotia.
 - Abaixo do limiar de Moderado, o risco é **Baixo**.
 - Interrupção de serviço com situação **Normalizado** (RF18) tem risco **Baixo**.
 - A duração da interrupção é calculada a partir do início e da previsão de normalização (ver RF18).
-- Quando mais de um critério se aplica (por exemplo, chuva e lâmina d'água), vale o **nível mais alto**.
+- Quando mais de um critério se aplica (por exemplo, nível do rio, lâmina d'água em via e chuva), vale
+  o **nível mais alto**.
 - O risco do evento segue a regra RN07.
 
 ### 4.3 Prioridade do alerta — `calcularPrioridade()`

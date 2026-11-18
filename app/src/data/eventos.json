@@ -1,0 +1,255 @@
+[
+  {
+    "id": "evt-01",
+    "tipo": "Alagamento",
+    "titulo": "Rio Cotia subindo perto da ponte Jd. Maria Helena–Vila Lourdes",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.529,
+    "lng": -46.8622,
+    "estado": "Em monitoramento",
+    "criadoMinutosAtras": 50,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 50 },
+      { "estado": "Confirmado", "minutosAtras": 50 },
+      { "estado": "Em monitoramento", "minutosAtras": 50 }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-01-sensor",
+        "origem": "Sensor",
+        "fonte": "Sensor de nível – Rio Cotia",
+        "fonteId": "sensor-cotia-01",
+        "descricao": "Nível do rio em 3,30 m (faltam 0,90 m para a cota de transbordamento)",
+        "lat": -23.529,
+        "lng": -46.8622,
+        "minutosAtras": 1,
+        "medicoes": { "nivelRioM": 3.3 }
+      }
+    ]
+  },
+  {
+    "id": "evt-02",
+    "tipo": "Alagamento",
+    "titulo": "Rua alagada perto da escola do Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.5415,
+    "lng": -46.868,
+    "estado": "Em validação",
+    "criadoMinutosAtras": 12,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 12 },
+      { "estado": "Em validação", "minutosAtras": 6 }
+    ],
+    "vulnerabilidades": ["escola"],
+    "dados": [
+      {
+        "id": "dado-02-ana",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-7f3a",
+        "descricao": "Água na altura do meio-fio, carros desviando pela calçada.",
+        "lat": -23.5415,
+        "lng": -46.868,
+        "minutosAtras": 12,
+        "medicoes": { "laminaCm": 20 },
+        "confirmacoes": 2,
+        "fotoGeolocalizada": true
+      }
+    ]
+  },
+  {
+    "id": "evt-03",
+    "tipo": "Alagamento",
+    "titulo": "Água acima do joelho em rua do Jardim Maria Helena",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5262,
+    "lng": -46.868,
+    "estado": "Em monitoramento",
+    "naoConfirmado": true,
+    "riscoAlertado": "Crítico",
+    "criadoMinutosAtras": 25,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 25 },
+      { "estado": "Em validação", "minutosAtras": 22 },
+      { "estado": "Alerta emitido", "minutosAtras": 22 },
+      { "estado": "Em monitoramento", "minutosAtras": 21 }
+    ],
+    "vulnerabilidades": ["comunidade_vulneravel"],
+    "dados": [
+      {
+        "id": "dado-03-morador",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-4c12",
+        "descricao": "Lâmina d'água de uns 35 cm, moradores tirando móveis do chão.",
+        "lat": -23.5262,
+        "lng": -46.868,
+        "minutosAtras": 25,
+        "medicoes": { "laminaCm": 35 },
+        "confirmacoes": 2
+      }
+    ]
+  },
+  {
+    "id": "evt-04",
+    "tipo": "Alagamento",
+    "titulo": "Bueiro entupido e água acumulando na calçada",
+    "bairro": "Parque Viana",
+    "lat": -23.5395,
+    "lng": -46.865,
+    "estado": "Reportado",
+    "criadoMinutosAtras": 20,
+    "historico": [{ "estado": "Reportado", "minutosAtras": 20 }],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-04-morador",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-1e88",
+        "descricao": "Bueiro entupido na esquina, água começando a acumular.",
+        "lat": -23.5395,
+        "lng": -46.865,
+        "minutosAtras": 20,
+        "medicoes": { "laminaCm": 5 }
+      }
+    ]
+  },
+  {
+    "id": "evt-05",
+    "tipo": "Ilha de calor",
+    "titulo": "Sensação térmica de 39 °C no Parque Viana",
+    "bairro": "Parque Viana",
+    "lat": -23.541,
+    "lng": -46.8669,
+    "estado": "Em monitoramento",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 40,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 40 },
+      { "estado": "Confirmado", "minutosAtras": 40 },
+      { "estado": "Alerta emitido", "minutosAtras": 40 },
+      { "estado": "Em monitoramento", "minutosAtras": 39 }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-05-inmet",
+        "origem": "Base pública",
+        "fonte": "INMET (simulado)",
+        "fonteId": "inmet-barueri",
+        "descricao": "Temperatura de 34 °C com umidade baixa; sensação térmica de 39 °C.",
+        "lat": -23.541,
+        "lng": -46.8669,
+        "minutosAtras": 8,
+        "medicoes": { "sensacaoTermicaC": 39 }
+      }
+    ]
+  },
+  {
+    "id": "evt-06",
+    "tipo": "Interrupção de serviço",
+    "titulo": "Falta de energia entre Parque Viana e Jardim Maria Helena",
+    "bairro": "Parque Viana",
+    "lat": -23.5385,
+    "lng": -46.8655,
+    "estado": "Em monitoramento",
+    "criadoMinutosAtras": 90,
+    "raioAfetadoM": 800,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 90 },
+      { "estado": "Confirmado", "minutosAtras": 90 },
+      { "estado": "Em monitoramento", "minutosAtras": 90 }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-06-concessionaria",
+        "origem": "Base pública (concessionária)",
+        "fonte": "Concessionária de energia (simulada) – status publicado por Juliana",
+        "fonteId": "concessionaria-energia",
+        "descricao": "Rede de média tensão desligada após queda de árvore; equipe em campo.",
+        "lat": -23.5385,
+        "lng": -46.8655,
+        "minutosAtras": 90,
+        "atualizadoMinutosAtras": 10,
+        "medicoes": {
+          "servico": "Energia elétrica",
+          "situacao": "Em atendimento",
+          "inicioMinutosAtras": 90,
+          "previsaoMinutosAdiante": 150,
+          "pessoasAfetadas": 3500,
+          "atingeServicoCritico": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "evt-07",
+    "tipo": "Alagamento",
+    "titulo": "Alagamento na rua da praça do Parque Viana (ontem)",
+    "bairro": "Parque Viana",
+    "lat": -23.5425,
+    "lng": -46.8695,
+    "estado": "Encerrado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 1440,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 1440 },
+      { "estado": "Confirmado", "minutosAtras": 1430 },
+      { "estado": "Alerta emitido", "minutosAtras": 1430 },
+      { "estado": "Em monitoramento", "minutosAtras": 1429 },
+      { "estado": "Encerrado", "minutosAtras": 1290 }
+    ],
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-07-ana",
+        "origem": "Comunidade",
+        "fonte": "Registro de morador (app)",
+        "autorPseudonimo": "p-7f3a",
+        "descricao": "Rua tomada pela água depois da pancada de chuva do fim da tarde.",
+        "lat": -23.5425,
+        "lng": -46.8695,
+        "minutosAtras": 1440,
+        "medicoes": { "laminaCm": 15 },
+        "confirmacoes": 3,
+        "fotoGeolocalizada": true
+      }
+    ]
+  },
+  {
+    "id": "evt-08",
+    "tipo": "Alagamento",
+    "titulo": "Chuva forte registrada por pluviômetro (alerta cancelado)",
+    "bairro": "Jardim Maria Helena",
+    "lat": -23.5305,
+    "lng": -46.8645,
+    "estado": "Descartado",
+    "riscoAlertado": "Alto",
+    "criadoMinutosAtras": 4320,
+    "historico": [
+      { "estado": "Reportado", "minutosAtras": 4320 },
+      { "estado": "Confirmado", "minutosAtras": 4320 },
+      { "estado": "Alerta emitido", "minutosAtras": 4320 },
+      { "estado": "Em monitoramento", "minutosAtras": 4319 },
+      { "estado": "Descartado", "minutosAtras": 4290 }
+    ],
+    "motivoDescarte": "Agente cancelou o alerta: leitura do pluviômetro com defeito, sem chuva no local.",
+    "vulnerabilidades": [],
+    "dados": [
+      {
+        "id": "dado-08-cemaden",
+        "origem": "Base pública",
+        "fonte": "CEMADEN (simulado)",
+        "fonteId": "cemaden-pluviometro",
+        "descricao": "Chuva de 32 mm/h no pluviômetro.",
+        "lat": -23.5305,
+        "lng": -46.8645,
+        "minutosAtras": 4320,
+        "medicoes": { "chuvaMmH": 32 }
+      }
+    ]
+  }
+]
