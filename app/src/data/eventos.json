@@ -44,15 +44,15 @@
     "vulnerabilidades": ["escola"],
     "dados": [
       {
-        "id": "dado-02-ana",
+        "id": "dado-02-vizinha",
         "origem": "Comunidade",
         "fonte": "Registro de morador (app)",
-        "autorPseudonimo": "p-7f3a",
+        "autorPseudonimo": "p-2b9e",
         "descricao": "Água na altura do meio-fio, carros desviando pela calçada.",
         "lat": -23.5415,
         "lng": -46.868,
         "minutosAtras": 12,
-        "medicoes": { "laminaCm": 20 },
+        "medicoes": { "laminaCm": 15 },
         "confirmacoes": 2,
         "fotoGeolocalizada": true
       }
@@ -83,11 +83,11 @@
         "origem": "Comunidade",
         "fonte": "Registro de morador (app)",
         "autorPseudonimo": "p-4c12",
-        "descricao": "Lâmina d'água de uns 35 cm, moradores tirando móveis do chão.",
+        "descricao": "Lâmina d'água de uns 50 cm, moradores tirando móveis do chão.",
         "lat": -23.5262,
         "lng": -46.868,
         "minutosAtras": 25,
-        "medicoes": { "laminaCm": 35 },
+        "medicoes": { "laminaCm": 50 },
         "confirmacoes": 2
       }
     ]
@@ -105,10 +105,10 @@
     "vulnerabilidades": [],
     "dados": [
       {
-        "id": "dado-04-morador",
+        "id": "dado-04-ana",
         "origem": "Comunidade",
         "fonte": "Registro de morador (app)",
-        "autorPseudonimo": "p-1e88",
+        "autorPseudonimo": "p-7f3a",
         "descricao": "Bueiro entupido na esquina, água começando a acumular.",
         "lat": -23.5395,
         "lng": -46.865,

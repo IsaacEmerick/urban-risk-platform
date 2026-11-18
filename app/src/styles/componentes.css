@@ -460,3 +460,96 @@
   width: 75%;
   height: 75%;
 }
+
+/* Mapa do Registro comunitário: pino da posição (arrastável) */
+.mapa--seletor {
+  height: var(--altura-mapa-seletor);
+}
+
+.pino-posicao {
+  display: grid;
+  place-items: center;
+  width: var(--tamanho-pino);
+  height: var(--tamanho-pino);
+  color: var(--cor-institucional);
+  filter: drop-shadow(0 1px 1px var(--cor-superficie));
+}
+
+.pino-posicao svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--cor-institucional-claro);
+}
+
+/* Opções grandes (tipo de risco, altura da água): ícone + texto, alvo de toque largo */
+.opcoes {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+.opcoes--duas {
+  grid-template-columns: 1fr 1fr;
+}
+
+.opcao {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--esp-1);
+  min-height: calc(var(--alvo-toque) * 2);
+  padding: var(--esp-3);
+  border: var(--borda-grossa) solid var(--cor-linha-forte);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+  color: var(--cor-tinta);
+  text-align: center;
+  transition: background var(--duracao), border-color var(--duracao);
+}
+
+.opcao:hover {
+  border-color: var(--cor-institucional);
+}
+
+.opcao[aria-pressed='true'] {
+  border-color: var(--cor-institucional);
+  background: var(--cor-institucional-claro);
+  box-shadow: inset 0 0 0 1px var(--cor-institucional);
+}
+
+.opcao__icone {
+  width: var(--tamanho-icone-opcao);
+  height: var(--tamanho-icone-opcao);
+  color: var(--cor-institucional);
+}
+
+.opcao__rotulo {
+  font-size: var(--texto-md);
+  font-weight: var(--peso-forte);
+  line-height: var(--entrelinha-titulo);
+}
+
+.opcao__detalhe {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+/* Botão largo (ação principal de um passo) e botão com cara de link */
+.botao--largo {
+  width: 100%;
+}
+
+.botao-link {
+  justify-self: start;
+  min-height: var(--alvo-toque);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cor-institucional);
+  font-weight: var(--peso-forte);
+  text-decoration: underline;
+  text-underline-offset: var(--sublinhado-distancia);
+}
+
+a.botao {
+  text-decoration: none;
+}

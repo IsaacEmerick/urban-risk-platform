@@ -28,22 +28,22 @@ evento que tem estado, risco, confiança e prioridade.
 
 ### Telas do protótipo e rastreabilidade
 
-| Tela                     | Conteúdo principal                                                                                                                                          | RF                     | Perfil           |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------- |
-| Login / Cadastro         | Escolha do perfil (morador, agente, operador), aceite de termos e consentimento LGPD                                                                        | RF15, RF16             | Todos            |
-| Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta                                                  | RF13                   | Todos            |
-| Painel                   | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região                                                                      | RF01, RF02, RF07       | Todos            |
-| Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança                                                                                       | RF08                   | Todos            |
+| Tela                     | Conteúdo principal                                                                                                                                                              | RF                     | Perfil           |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------- |
+| Login / Cadastro         | Escolha do perfil (morador, agente, operador), aceite de termos e consentimento LGPD                                                                                            | RF15, RF16             | Todos            |
+| Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta                                                                      | RF13                   | Todos            |
+| Painel                   | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região                                                                                          | RF01, RF02, RF07       | Todos            |
+| Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança                                                                                                           | RF08                   | Todos            |
 | Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Confirmar alerta" (alerta preliminar), "Encerrar", "Cancelar alerta" e "Descartar evento" (agente) | RF06, RF08, RF12, RF17 | Todos            |
-| Origem e confiança       | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado                                                                      | RF01, RF02, RF05, RF09 | Todos            |
-| Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (incluindo "Alerta cancelado") e link para o alerta                                                          | RF10, RF11             | Morador          |
-| Registro comunitário     | Tipo, localização automática, descrição e foto opcional, em até 3 passos                                                                                    | RF03                   | Morador          |
-| Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                            | RF03, RF17             | Morador          |
-| Fila de validação        | Só eventos Em validação, por prioridade, com os botões Confirmar e Descartar                                                                                | RF04, RF12             | Agente           |
-| Análises                 | Gráficos por tipo de risco, região e período; alertas preliminares à parte: quantos houve e quantos foram confirmados depois                                | RF14                   | Agente, operador |
-| Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta                                                                                                    | RF16                   | Todos            |
-| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"                    | RF18                   | Operador         |
-| Perfil                   | Atalhos: dados do usuário, Preferências, Privacidade e meus dados e sair; o morador também tem Meus registros                                               | RF15                   | Todos            |
+| Origem e confiança       | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado                                                                                          | RF01, RF02, RF05, RF09 | Todos            |
+| Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (incluindo "Alerta cancelado") e link para o alerta                                                                              | RF10, RF11             | Morador          |
+| Registro comunitário     | Tipo, localização automática, descrição e foto opcional, em até 3 passos                                                                                                        | RF03                   | Morador          |
+| Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                                                | RF03, RF17             | Morador          |
+| Fila de validação        | Só eventos Em validação, por prioridade, com os botões Confirmar e Descartar                                                                                                    | RF04, RF12             | Agente           |
+| Análises                 | Gráficos por tipo de risco, região e período; alertas preliminares à parte: quantos houve e quantos foram confirmados depois                                                    | RF14                   | Agente, operador |
+| Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta                                                                                                                        | RF16                   | Todos            |
+| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"                                        | RF18                   | Operador         |
+| Perfil                   | Atalhos: dados do usuário, Preferências, Privacidade e meus dados e sair; o morador também tem Meus registros                                                                   | RF15                   | Todos            |
 
 ## 2. Requisitos funcionais
 
@@ -73,6 +73,29 @@ evento que tem estado, risco, confiança e prioridade.
 | RF16 | O sistema deve permitir que o titular consulte, exporte e exclua seus dados pessoais e revogue consentimentos.                                                                                                                                    | Média      | Todas           | Login / Cadastro, Privacidade e meus dados         |
 | RF17 | O sistema deve permitir que outros moradores confirmem uma ocorrência já registrada.                                                                                                                                                              | Baixa      | Ana             | Detalhe do alerta, Meus registros                  |
 | RF18 | O sistema deve permitir que o operador publique o status de uma interrupção de serviço, com serviço afetado, área, situação, início, previsão de normalização, número estimado de afetados e se atinge hospital, escola ou abastecimento crítico. | Média      | Juliana         | Publicar status                                    |
+
+**Sobre o RF03:** o registro tem **3 passos** (RNF06). (1) **Tipo de risco**. (2) **Local**: a posição
+atual já vem marcada no mapa e ajustá-la é opcional; o bairro é o mais próximo entre os de
+`bairros.json`, e um aviso lembra que, no mapa público, a posição aparece aproximada (~100 m, RNF08).
+(3) **Como está**: para **Alagamento**, o morador escolhe até onde a água chegou, com referências
+que qualquer pessoa consegue avaliar; o valor em centímetros entra como lâmina d'água e é
+classificado pela seção 4.2, sem regra nova:
+
+| Até onde a água chegou? | Lâmina d'água | Risco   |
+| ----------------------- | ------------- | ------- |
+| Abaixo do meio-fio      | ≈ 5 cm        | Baixo   |
+| Na altura do meio-fio   | ≈ 15 cm       | Alto    |
+| Na canela               | ≈ 35 cm       | Crítico |
+| Acima do joelho         | ≈ 50 cm       | Crítico |
+
+Ilha de calor e Interrupção de serviço não têm medição informada pelo morador: o registro fica com
+risco Baixo até ser agrupado (RN04) com um dado de Sensor ou Base pública, que dá o risco pela RN07.
+A **descrição é opcional**, com sugestões de um toque ("Rua alagada", "Carro ilhado", "Água entrando
+em casa", "Bueiro entupido") e campo livre. O **título** do evento é gerado a partir do tipo, da
+altura da água e do bairro (ex.: "Alagamento na altura do meio-fio – Parque Viana"). A **foto** é
+opcional; no protótipo, a foto tirada pelo app guarda a posição e conta como foto geolocalizada (+5).
+O registro segue o mesmo caminho dos outros dados (confiança, risco, RN04, estados) e aparece no
+Painel; Meus registros mostra o estado, a confiança atual e as confirmações recebidas.
 
 **Sobre o RF12:** cancelar um alerta leva o evento de **Alerta emitido** ou de **Em monitoramento**
 para **Descartado**, e quem
@@ -185,10 +208,11 @@ intervalo esperado**.
 
 O resultado é limitado a **0–100** e convertido em faixa: **Alta ≥ 75**, **Média 50–74**, **Baixa < 50**.
 
-**Exemplo:** registro de Ana sobre alagamento na sua rua no Parque Viana: base Comunidade 40
-\+ 2 confirmações de vizinhos (+20) + foto geolocalizada (+5) = **65 (Média)**. Quando um sensor de
-nível d'água a 300 m registra a mesma situação 10 min depois (+15), a confiança sobe para
-**80 (Alta)**. A tela Origem e confiança mostra essa decomposição.
+**Exemplo:** registro de uma vizinha da Ana sobre alagamento na rua da escola do Parque Viana:
+base Comunidade 40 + 2 confirmações de vizinhos (+20) + foto geolocalizada (+5) = **65 (Média)**.
+Se a Ana também confirma ("Também vejo isso", RF17), a 3ª confirmação (+10) leva a confiança a
+**75 (Alta)**. Ou, se um sensor de nível d'água a 300 m registra a mesma situação 10 min depois
+(+15), a confiança sobe para **80 (Alta)**. A tela Origem e confiança mostra essa decomposição.
 
 **Corroboração:** só conta como corroboração um dado de Sensor ou Base pública (inclusive
 concessionária) do **mesmo tipo de risco** e de **outra fonte**. Leituras repetidas do mesmo sensor
@@ -257,3 +281,10 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
   confirmado" e não emite um alerta novo; por isso, um alerta preliminar sempre conta como alerta sem
   confiança Alta na segunda meta do RNF11. A tela Análises mostra os alertas preliminares à parte
   (quantos houve e quantos foram confirmados depois), para essa diferença ficar visível.
+- **Confirmação de morador (RF17):** cada morador confirma um evento **uma única vez**, e **quem
+  registrou não confirma o próprio registro** — nem o evento ao qual o seu registro foi agrupado pela
+  RN04. A confirmação vale para o **primeiro registro da Comunidade** do evento (o registro original)
+  e só aparece em eventos ativos que têm registro da Comunidade. Acima de 3 confirmações, a contagem
+  continua (Meus registros), mas a confiança não soma mais pontos. Depois da confirmação, o evento é
+  reavaliado como em qualquer dado novo: se a confiança chega a 75 e o risco é ≥ Alto, valem a RN01 e
+  o alerta.

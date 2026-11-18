@@ -489,3 +489,163 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Lista de alertas */
+.lista-alertas,
+.meus-registros {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.lista-alertas .cabecalho-tela,
+.meus-registros .cabecalho-tela {
+  margin-bottom: 0;
+}
+
+.linha-campos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-3) var(--esp-5);
+}
+
+.campo-filtro {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+/* Registro comunitário */
+.registro {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.passos {
+  display: grid;
+  gap: var(--esp-2);
+}
+
+.passos__texto {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+}
+
+.passos__trilho {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--esp-1);
+}
+
+.passos__segmento {
+  height: var(--altura-passo);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-linha);
+}
+
+.passos__segmento--feito {
+  background: var(--cor-institucional);
+}
+
+.registro__titulo {
+  font-size: var(--texto-xl);
+}
+
+.registro__instrucao {
+  font-size: var(--texto-md);
+}
+
+.registro__local {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.grupo {
+  display: grid;
+  gap: var(--esp-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.grupo__legenda {
+  margin-bottom: var(--esp-3);
+  padding: 0;
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-forte);
+}
+
+.grupo__opcional {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-normal);
+}
+
+.campo-texto textarea {
+  width: 100%;
+  padding: var(--esp-2) var(--esp-3);
+  border: var(--borda);
+  border-color: var(--cor-linha-forte);
+  border-radius: var(--raio-selo);
+  background: var(--cor-superficie);
+  color: var(--cor-tinta);
+  font: inherit;
+  resize: vertical;
+}
+
+.campo-foto {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  min-height: var(--alvo-toque);
+  padding: var(--esp-2) var(--esp-4);
+  border: var(--borda-grossa) dashed var(--cor-linha-forte);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+  color: var(--cor-institucional);
+  font-weight: var(--peso-forte);
+  cursor: pointer;
+}
+
+.campo-foto:focus-within {
+  box-shadow: var(--foco);
+}
+
+/* Confirmação de envio */
+.registro-enviado {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+}
+
+.registro-enviado__icone {
+  flex: none;
+  width: var(--tamanho-icone-opcao);
+  height: var(--tamanho-icone-opcao);
+  color: var(--risco-baixo);
+}
+
+.registro__proximo {
+  font-size: var(--texto-md);
+}
+
+.registro__botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-3);
+}
+
+/* Meus registros e "Também vejo isso" */
+.card-alerta__registro {
+  font-size: var(--texto-sm);
+}
+
+.tambem-vejo__contagem {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-weight: var(--peso-medio);
+}

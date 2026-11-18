@@ -19,6 +19,7 @@ import {
   notificacaoEnviada,
 } from './estados.js'
 import { deveNotificar, resolverAreas } from './notificacao.js'
+import { aplicarConfirmacao } from './confirmacao.js'
 
 const MAX_LEITURAS_GUARDADAS = 40
 
@@ -54,6 +55,7 @@ function prepararEvento(eventoJson, sensores, agora) {
     riscoAlertado: null,
     confiancaAlertada: null,
     riscoBaixoDesde: null,
+    confirmadoPor: [], // ids dos moradores que tocaram em "Também vejo isso" (RF17)
     ...resto,
     criadoEm: minutosAtras(agora, criadoMinutosAtras),
     historico: historico.map((h) => ({ estado: h.estado, em: minutosAtras(agora, h.minutosAtras) })),
@@ -179,7 +181,7 @@ export function criarRepositorio({
       evento = {
         id: `evt-${Date.now()}-${proximoId++}`,
         tipo: dado.tipo,
-        titulo: dado.descricao,
+        titulo: dado.titulo ?? dado.descricao, // o registro comunitário traz um título gerado (RF03)
         bairro: dado.bairro,
         lat: dado.lat,
         lng: dado.lng,
@@ -188,6 +190,7 @@ export function criarRepositorio({
         riscoAlertado: null,
         confiancaAlertada: null,
         riscoBaixoDesde: null,
+        confirmadoPor: [],
         vulnerabilidades: [],
         criadoEm: momento,
         historico: [{ estado: 'Reportado', em: momento }],
@@ -195,12 +198,27 @@ export function criarRepositorio({
       }
       estado.eventos = [...estado.eventos, evento]
     }
+    return reavaliar(evento, momento)
+  }
+
+  // Mesmo caminho para dado novo e confirmação: grava o evento, recalcula confiança, risco e RN07,
+  // aplica as transições automáticas (RN01–RN03) e executa os efeitos (notificação, RN06)
+  function reavaliar(evento, momento) {
     substituirEvento(evento)
-    recalcularTodos(momento) // confiança, risco e RN07
+    recalcularTodos(momento)
     const resultado = avaliar(estado.eventos.find((e) => e.id === evento.id), momento)
     substituirEvento(aplicarEfeitos(resultado.evento, resultado.efeitos, momento))
     avisarInscritos()
     return estado.eventos.find((e) => e.id === evento.id)
+  }
+
+  // "Também vejo isso" (RF17): +1 confirmação de morador e reavaliação do evento.
+  // Ex.: evt-02 (65) + 1 confirmação = 75 → Confirmado → Alerta emitido (RN01).
+  function confirmarOcorrencia(eventoId, usuarioId, momento = new Date()) {
+    const evento = estado.eventos.find((e) => e.id === eventoId)
+    if (!evento) throw new Error(`Evento não encontrado: ${eventoId}`)
+    const usuario = estado.usuarios.find((u) => u.id === usuarioId)
+    return reavaliar(aplicarConfirmacao(evento, usuario), momento)
   }
 
   // Ações do agente (Fila de validação e Detalhe do alerta)
@@ -246,6 +264,9 @@ export function criarRepositorio({
     marcarComoLida,
     marcarTodasComoLidas,
     receberDado,
+    // Registro comunitário (RF03): o dado do morador segue o mesmo caminho dos outros dados
+    registrarOcorrencia: (dado, momento = dado.registradoEm) => receberDado(dado, momento),
+    confirmarOcorrencia,
     executarAcao,
     registrarLeituraSensor,
     recalcular: (momento = new Date()) => {

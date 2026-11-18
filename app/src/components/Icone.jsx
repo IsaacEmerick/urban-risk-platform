@@ -19,7 +19,20 @@ const ICONES = {
   'Base pública (concessionária)': ['<path d="M9 3v5M15 3v5"/>', '<path d="M6 8h12v3a6 6 0 0 1-12 0z"/>', '<path d="M12 17v4"/>'],
   Comunidade: ['<circle cx="9" cy="8" r="3"/>', '<path d="M3.5 20a5.5 5.5 0 0 1 11 0"/>', '<circle cx="17" cy="9" r="2.5"/>', '<path d="M15.5 14.2A4.5 4.5 0 0 1 21 18.5"/>'],
 
+  // Tipos de risco (Registro comunitário)
+  Alagamento: ['<path d="M12 3s-5 5.6-5 9a5 5 0 0 0 10 0c0-3.4-5-9-5-9z"/>', '<path d="M2 21c1.7 0 1.7-1.2 3.3-1.2S7 21 8.7 21s1.7-1.2 3.3-1.2 1.7 1.2 3.3 1.2 1.7-1.2 3.3-1.2S20.3 21 22 21"/>'],
+  'Ilha de calor': ['<path d="M10 4.5a2 2 0 0 1 4 0v9.6a4 4 0 1 1-4 0z"/>', '<path d="M12 10v7"/>', '<path d="M18 4v2M20.5 7.5h-2M18.2 10.3l1.4 1.4"/>'],
+  'Interrupção de serviço': ['<path d="M13 2.5L5.5 13H11l-1 8.5L17.5 11H12z"/>', '<path d="M3 3l18 18"/>'],
+
+  // Altura da água: rua com meio-fio (as duas primeiras) e pessoa (as duas últimas); a onda sobe
+  'agua-abaixoMeioFio': ['<path d="M2 21.5h20"/>', '<path d="M14 21.5v-5h8"/>', '<path d="M2 19.5c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1"/>'],
+  'agua-meioFio': ['<path d="M2 21.5h20"/>', '<path d="M14 21.5v-5h8"/>', '<path d="M2 16.5c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1"/>'],
+  'agua-canela': ['<circle cx="12" cy="3.5" r="2"/>', '<path d="M12 6v8M8 9.5h8M12 14l-3 7.5M12 14l3 7.5"/>', '<path d="M2 18.5c1.7 0 1.7-1 3.3-1s1.7 1 3.4 1 1.6-1 3.3-1 1.7 1 3.3 1 1.7-1 3.4-1 1.6 1 3.3 1"/>'],
+  'agua-joelho': ['<circle cx="12" cy="3.5" r="2"/>', '<path d="M12 6v8M8 9.5h8M12 14l-3 7.5M12 14l3 7.5"/>', '<path d="M2 14.5c1.7 0 1.7-1 3.3-1s1.7 1 3.4 1 1.6-1 3.3-1 1.7 1 3.3 1 1.7-1 3.4-1 1.6 1 3.3 1"/>'],
+
   // Interface
+  camera: ['<path d="M3.5 8h3.5l2-3h6l2 3h3.5v11.5h-17z"/>', '<circle cx="12" cy="13.5" r="3.5"/>'],
+  confirmado: ['<circle cx="12" cy="12" r="9.5"/>', '<path d="M7.5 12.3l3 3 6-6.3"/>'],
   sino: ['<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/>', '<path d="M10 20.5a2 2 0 0 0 4 0"/>'],
   relogio: ['<circle cx="12" cy="12" r="9"/>', '<path d="M12 7v5l3 2"/>'],
   voltar: ['<path d="M15 5l-7 7 7 7"/>'],

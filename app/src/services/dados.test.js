@@ -57,7 +57,8 @@ describe('dados simulados', () => {
   it('registros da Ana aparecem só pelo pseudônimo (LGPD)', () => {
     const ana = repo.obterUsuario('usr-ana')
     const registros = eventos.flatMap((e) => e.dados).filter((d) => d.autorPseudonimo === ana.pseudonimo)
-    expect(registros.map((d) => d.id).sort()).toEqual(['dado-02-ana', 'dado-07-ana'])
+    // evt-02 é de uma vizinha (a Ana confirma na demonstração); evt-04 e evt-07 são da Ana
+    expect(registros.map((d) => d.id).sort()).toEqual(['dado-04-ana', 'dado-07-ana'])
     eventos.flatMap((e) => e.dados).forEach((d) => expect(d).not.toHaveProperty('autorId'))
   })
 

@@ -76,6 +76,10 @@
   --altura-barra: 64px;
   --altura-mapa: 55vh;
   --altura-mini-mapa: 180px;
+  --altura-mapa-seletor: 40vh; /* passo 2 do Registro comunitário: mapa e botão Continuar cabem na tela */
+  --tamanho-pino: 40px;
+  --tamanho-icone-opcao: 2.25rem;
+  --altura-passo: 6px;
   --tamanho-marcador: 32px;
   --tamanho-icone: 1.25em;
   --alvo-toque: 44px; /* área mínima de toque */

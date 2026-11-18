@@ -15,6 +15,7 @@ import { useAgora } from '../hooks/useAgora.js'
 import { useRepositorio } from '../hooks/useRepositorio.js'
 import { PERFIS } from '../navegacao.js'
 import { acoesDisponiveis } from '../services/acoesAgente.js'
+import { MOTIVOS, podeConfirmar } from '../services/confirmacao.js'
 import { dadoPrincipal } from '../services/eventos.js'
 import { formatarDataHora } from '../services/formatar.js'
 import { ESTADOS, ORIGENS } from '../services/parametros.js'
@@ -35,6 +36,7 @@ export default function DetalheAlerta() {
   const agora = useAgora(30_000)
   const [pendente, setPendente] = useState(null) // ação aguardando "Sim"
   const [resultado, setResultado] = useState('')
+  const [resultadoConfirmacao, setResultadoConfirmacao] = useState('')
 
   const evento = repositorio.obterEvento(id)
   if (!evento) {
@@ -51,6 +53,21 @@ export default function DetalheAlerta() {
   const leituraRio = evento.dados.find((d) => d.medicoes?.nivelRioM != null)
   const soComunidade = evento.dados.every((d) => d.origem === ORIGENS.COMUNIDADE)
   const acoes = acoesDisponiveis(evento, usuario.perfil)
+
+  // "Também vejo isso" (RF17): só para morador, em evento ativo com registro da Comunidade
+  const confirmacao = podeConfirmar(evento, usuario)
+  const mostrarConfirmacao = confirmacao.pode || [MOTIVOS.PROPRIO_REGISTRO, MOTIVOS.JA_CONFIRMOU].includes(confirmacao.motivo)
+  const confirmacoesMoradores = evento.dados.reduce((total, d) => total + (d.confirmacoes ?? 0), 0)
+
+  const confirmar = () => {
+    const alertasAntes = evento.historico.filter((h) => h.estado === ESTADOS.ALERTA_EMITIDO).length
+    const depois = repositorio.confirmarOcorrencia(evento.id, usuario.id)
+    const alertou = depois.historico.filter((h) => h.estado === ESTADOS.ALERTA_EMITIDO).length > alertasAntes
+    setResultadoConfirmacao(
+      `Obrigado! Sua confirmação foi registrada. Confiança agora: ${depois.faixaConfianca} • ${depois.confianca}; estado: ${depois.estado}.` +
+        (alertou ? ' Com isso, o alerta foi enviado para quem acompanha a região.' : ''),
+    )
+  }
 
   const executar = (acao) => {
     repositorio.executarAcao(evento.id, acao.acao)
@@ -101,6 +118,36 @@ export default function DetalheAlerta() {
           <Icone nome="seguir" />
         </Link>
       </section>
+
+      {mostrarConfirmacao && (
+        <section className="bloco tambem-vejo" aria-labelledby="titulo-tambem-vejo">
+          <h2 id="titulo-tambem-vejo" className="titulo-secao">
+            Você também vê isso?
+          </h2>
+          <p className="tambem-vejo__contagem">
+            <Icone nome="Comunidade" />
+            {confirmacoesMoradores === 0
+              ? 'Nenhum morador confirmou ainda'
+              : `${confirmacoesMoradores} ${confirmacoesMoradores === 1 ? 'morador confirmou' : 'moradores confirmaram'}`}
+          </p>
+          {confirmacao.pode && (
+            <>
+              <p className="nota">Se você está vendo esta situação agora, confirme. Cada confirmação soma 10 pontos na confiança (até 3).</p>
+              <button type="button" className="botao botao--primario botao--largo" onClick={confirmar}>
+                <Icone nome="confirmado" />
+                Também vejo isso
+              </button>
+            </>
+          )}
+          {confirmacao.motivo === MOTIVOS.PROPRIO_REGISTRO && (
+            <p className="nota">Você registrou esta ocorrência. A confirmação vem de outros moradores.</p>
+          )}
+          {confirmacao.motivo === MOTIVOS.JA_CONFIRMOU && !resultadoConfirmacao && <p className="nota">Você já confirmou esta ocorrência.</p>}
+          <p className="resultado-acao" role="status">
+            {resultadoConfirmacao}
+          </p>
+        </section>
+      )}
 
       <section className="bloco" aria-labelledby="titulo-local">
         <h2 id="titulo-local" className="titulo-secao">

@@ -9,7 +9,8 @@ import SeloOrigem from './SeloOrigem.jsx'
 import SeloRisco from './SeloRisco.jsx'
 import { classeRisco } from './apresentacao.js'
 
-export default function CardAlerta({ evento, titulo = 'h3' }) {
+// children: linha extra opcional (ex.: em Meus registros, "Registrado hoje, 17:42 · 2 confirmações")
+export default function CardAlerta({ evento, titulo = 'h3', children }) {
   const Titulo = titulo
   const dado = dadoPrincipal(evento)
   return (
@@ -31,6 +32,7 @@ export default function CardAlerta({ evento, titulo = 'h3' }) {
         <SeloOrigem origem={dado.origem} />
         <SeloConfianca valor={evento.confianca} faixa={evento.faixaConfianca} eventoId={evento.id} />
       </div>
+      {children}
       {/* carimbo numa linha própria: fica sempre no mesmo lugar, qualquer que seja a largura dos selos */}
       <CarimboAtualizacao em={evento.atualizadoEm} />
     </article>
