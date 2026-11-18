@@ -30,8 +30,9 @@ export default function CardAlerta({ evento, titulo = 'h3' }) {
       <div className="linha-selos">
         <SeloOrigem origem={dado.origem} />
         <SeloConfianca valor={evento.confianca} faixa={evento.faixaConfianca} eventoId={evento.id} />
-        <CarimboAtualizacao em={evento.atualizadoEm} />
       </div>
+      {/* carimbo numa linha própria: fica sempre no mesmo lugar, qualquer que seja a largura dos selos */}
+      <CarimboAtualizacao em={evento.atualizadoEm} />
     </article>
   )
 }

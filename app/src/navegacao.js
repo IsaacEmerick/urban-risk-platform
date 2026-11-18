@@ -38,7 +38,7 @@ export const ABAS = {
   ],
   [PERFIS.AGENTE]: [
     { rotulo: 'Painel', tela: 'painel' },
-    { rotulo: 'Fila de validação', tela: 'fila' },
+    { rotulo: 'Fila', tela: 'fila' }, // rótulo curto na barra; a tela se chama Fila de validação
     { rotulo: 'Alertas', tela: 'alertas' },
     { rotulo: 'Análises', tela: 'analises' },
     { rotulo: 'Perfil', tela: 'perfil' },

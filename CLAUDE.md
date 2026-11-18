@@ -131,7 +131,7 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
 - Todo card e detalhe mostra: selo de origem, selo de confiança ("Alta • 82") e "atualizado há X s".
 - Navegação inferior por perfil:
   - Morador: Painel, Alertas, Registrar, Notificações, Perfil.
-  - Agente: Painel, Fila de validação, Alertas, Análises, Perfil.
+  - Agente: Painel, Fila, Alertas, Análises, Perfil. ("Fila" é o rótulo curto da aba; a tela se chama Fila de validação.)
   - Operador: Painel, Publicar status, Alertas, Análises, Perfil.
 - Perfil (RF15), para todos: dados do usuário, Preferências, Privacidade e meus dados (todos são titulares na LGPD)
   e sair. O morador também tem Meus registros.

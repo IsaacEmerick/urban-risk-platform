@@ -614,7 +614,7 @@
   {
     "id": "hist-13",
     "tipo": "Alagamento",
-    "titulo": "Chuva forte registrada no Parque Viana (alerta cancelado)",
+    "titulo": "Chuva forte registrada no Parque Viana",
     "bairro": "Parque Viana",
     "lat": -23.5393,
     "lng": -46.8648,
@@ -652,7 +652,7 @@
         "origem": "Base pública",
         "fonte": "CEMADEN (simulado)",
         "fonteId": "cemaden-pluviometro",
-        "descricao": "Chuva forte registrada no Parque Viana (alerta cancelado)",
+        "descricao": "Chuva forte registrada no Parque Viana",
         "lat": -23.5393,
         "lng": -46.8648,
         "minutosAtras": 23160,

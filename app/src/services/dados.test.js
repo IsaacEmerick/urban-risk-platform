@@ -199,3 +199,18 @@ describe('repositório — notificações iniciais e status lida (RF10, RF11)', 
     expect(avisos).toBe(2)
   })
 })
+
+describe('notificação guarda o retrato do momento do envio', () => {
+  it('risco, confiança e origem do alerta, mesmo depois de o evento mudar', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    const evt05 = r.listarNotificacoes('usr-ana').find((n) => n.eventoId === 'evt-05')
+    expect(evt05).toMatchObject({ risco: 'Alto', confianca: 85, faixaConfianca: 'Alta', origem: 'Base pública' })
+    // evt-08: hoje o dado está desatualizado (85 − 20 = 65), mas o alerta saiu com 85
+    expect(r.obterEvento('evt-08').confianca).toBe(65)
+    const evt08 = r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === 'evt-08')
+    expect(evt08.map((n) => [n.tipo, n.risco, n.confianca])).toEqual([
+      ['Alerta', 'Alto', 85],
+      ['Alerta cancelado', 'Alto', 85],
+    ])
+  })
+})

@@ -52,7 +52,7 @@ export function calcularConfianca(dado, { agora = new Date(), outrosDados = [] }
   const confirmacoes = Math.min(dado.confirmacoes ?? 0, AJUSTES_CONFIANCA.maxConfirmacoes)
   if (confirmacoes > 0) {
     ajustes.push({
-      descricao: `${confirmacoes} confirmação(ões) de morador`,
+      descricao: confirmacoes === 1 ? '1 confirmação de morador' : `${confirmacoes} confirmações de moradores`,
       pontos: confirmacoes * AJUSTES_CONFIANCA.porConfirmacao,
     })
   }

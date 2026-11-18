@@ -11,7 +11,7 @@ import { classeRisco } from '../components/apresentacao.js'
 import { usePerfil } from '../contexto/PerfilContext.jsx'
 import { useAgora } from '../hooks/useAgora.js'
 import { useRepositorio } from '../hooks/useRepositorio.js'
-import { dadoPrincipal } from '../services/eventos.js'
+import { eventoAtivo } from '../services/eventos.js'
 import { formatarDataHora } from '../services/formatar.js'
 
 const FILTROS = [
@@ -72,7 +72,7 @@ export default function CentralNotificacoes() {
             const nova = !vistasAoAbrir.current.has(n.id)
             const classes = [
               'notificacao',
-              `risco-faixa--${classeRisco(n.risco)}`,
+              n.tipo === 'Alerta cancelado' ? 'risco-faixa--cancelado' : `risco-faixa--${classeRisco(n.risco)}`,
               n.lida ? 'notificacao--lida' : 'notificacao--nao-lida',
               n.tipo === 'Alerta cancelado' && 'notificacao--cancelado',
               nova && 'notificacao--nova',
@@ -94,12 +94,14 @@ export default function CentralNotificacoes() {
                   </Link>
                 </h2>
                 {evento && <p className="notificacao__evento">{evento.titulo}</p>}
+                {/* Retrato do momento do envio: risco, origem e confiança do alerta, não os valores de agora */}
                 <div className="linha-selos">
-                  <SeloRisco risco={n.risco} />
-                  {evento && <SeloOrigem origem={dadoPrincipal(evento).origem} />}
-                  {evento && <SeloConfianca valor={evento.confianca} faixa={evento.faixaConfianca} eventoId={evento.id} />}
-                  {evento && <CarimboAtualizacao em={evento.atualizadoEm} />}
+                  <SeloRisco risco={n.risco} cancelado={n.tipo === 'Alerta cancelado'} />
+                  <SeloOrigem origem={n.origem} />
+                  <SeloConfianca valor={n.confianca} faixa={n.faixaConfianca} eventoId={n.eventoId} />
                 </div>
+                {/* Evento ainda ativo: mostra quando foi atualizado. Encerrado ou descartado: a data e a hora bastam */}
+                {evento && eventoAtivo(evento) && <CarimboAtualizacao em={evento.atualizadoEm} />}
               </li>
             )
           })}

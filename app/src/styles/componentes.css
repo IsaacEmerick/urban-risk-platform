@@ -408,3 +408,55 @@
   border-radius: var(--raio-card);
   background: var(--cor-superficie);
 }
+
+/* Alerta cancelado: selo e faixa apagados */
+.risco--cancelado {
+  background: var(--risco-cancelado);
+  color: var(--risco-cancelado-texto);
+}
+.risco-faixa--cancelado {
+  border-left-color: var(--risco-cancelado);
+}
+
+/* Área aproximada (RNF08): círculo de ~100 m no lugar do pino; as cores vêm dos tokens via classe */
+.area-aproximada {
+  stroke: var(--cor-tinta);
+  stroke-width: var(--borda-grossa);
+  fill-opacity: var(--area-opacidade);
+}
+.area-aproximada--baixo {
+  fill: var(--risco-baixo);
+}
+.area-aproximada--moderado {
+  fill: var(--risco-moderado);
+}
+.area-aproximada--alto {
+  fill: var(--risco-alto);
+}
+.area-aproximada--critico {
+  fill: var(--risco-critico);
+}
+
+.marcador--area {
+  background: var(--cor-linha);
+  box-shadow: none;
+}
+
+/* Símbolo do risco no centro da área aproximada (não é pino: só o ícone, para cumprir cor + ícone) */
+.simbolo-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tamanho-marcador);
+  height: var(--tamanho-marcador);
+  color: var(--cor-tinta);
+}
+.simbolo-area--critico,
+.simbolo-area--alto,
+.simbolo-area--baixo {
+  color: var(--cor-sobre-escuro);
+}
+.simbolo-area svg {
+  width: 75%;
+  height: 75%;
+}

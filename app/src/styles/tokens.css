@@ -29,6 +29,11 @@
   --risco-critico: #b1221b; /* texto branco 6,7:1 */
   --risco-critico-texto: #ffffff;
   --risco-critico-claro: #fbe1df;
+  --risco-cancelado: #e3e8ec; /* selo apagado do "Alerta cancelado": texto tinta-suave 5,8:1 */
+  --risco-cancelado-texto: #4a5866;
+
+  /* Área aproximada no mapa (RNF08): círculo de ~100 m */
+  --area-opacidade: 0.6;
 
   /* Tipografia: uma família só, feita para baixa visão (Braille Institute) */
   --fonte: 'Atkinson Hyperlegible Next Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;

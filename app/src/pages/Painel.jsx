@@ -74,6 +74,10 @@ export default function Painel() {
               {risco}
             </li>
           ))}
+          <li>
+            <span className="marcador marcador--legenda marcador--area" aria-hidden="true" />
+            Posição aproximada (cerca de 100 m): só registros de moradores
+          </li>
         </ul>
       </section>
 

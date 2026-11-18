@@ -10,7 +10,7 @@ describe('navegação por perfil', () => {
   it('abas exatamente como no CLAUDE.md', () => {
     const rotulos = (perfil) => ABAS[perfil].map((a) => a.rotulo)
     expect(rotulos(PERFIS.MORADOR)).toEqual(['Painel', 'Alertas', 'Registrar', 'Notificações', 'Perfil'])
-    expect(rotulos(PERFIS.AGENTE)).toEqual(['Painel', 'Fila de validação', 'Alertas', 'Análises', 'Perfil'])
+    expect(rotulos(PERFIS.AGENTE)).toEqual(['Painel', 'Fila', 'Alertas', 'Análises', 'Perfil'])
     expect(rotulos(PERFIS.OPERADOR)).toEqual(['Painel', 'Publicar status', 'Alertas', 'Análises', 'Perfil'])
   })
 

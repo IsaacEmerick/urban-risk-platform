@@ -35,12 +35,12 @@ describe('posicaoPublicaEvento — posição no mapa público (Painel e Detalhe)
 
   it('evento só da Comunidade → posição arredondada (~100 m)', () => {
     const evento = { lat: -23.541537, lng: -46.868042, dados: [morador] }
-    expect(posicaoPublicaEvento(evento)).toEqual({ lat: -23.542, lng: -46.868 })
+    expect(posicaoPublicaEvento(evento)).toEqual({ lat: -23.542, lng: -46.868, aproximada: true })
   })
 
   it('evento com dado de Sensor → posição do sensor, nunca a do morador', () => {
     const evento = { lat: morador.lat, lng: morador.lng, dados: [morador, sensor] }
-    expect(posicaoPublicaEvento(evento)).toEqual({ lat: -23.529, lng: -46.8622 })
+    expect(posicaoPublicaEvento(evento)).toEqual({ lat: -23.529, lng: -46.8622, aproximada: false })
   })
 
   it('posicaoPublicaDado arredonda só registros da Comunidade', () => {

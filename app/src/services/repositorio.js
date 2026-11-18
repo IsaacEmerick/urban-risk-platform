@@ -7,7 +7,8 @@ import eventosHistoricosJson from '../data/eventos-historicos.json'
 import sensoresJson from '../data/sensores.json'
 import usuariosJson from '../data/usuarios.json'
 import { ESTADOS, MINUTO } from './parametros.js'
-import { agruparDado, consolidarEvento, eventoAtivo } from './eventos.js'
+import { agruparDado, consolidarEvento, dadoPrincipal, eventoAtivo } from './eventos.js'
+import { faixaConfianca } from './confianca.js'
 import {
   EFEITOS,
   EFEITOS_DE_ALERTA,
@@ -106,11 +107,16 @@ export function criarRepositorio({
         const ultimaNotificacao = ultima ? { em: ultima.em, risco: ultima.risco } : null
         if (!deveNotificar(usuario, evento, { agora: momento, ultimaNotificacao })) return
       }
-      adicionarNotificacao(usuario, evento, tipo, { risco: evento.risco, em: momento, lida: false })
+      adicionarNotificacao(usuario, evento, tipo, { em: momento, lida: false })
     })
   }
 
-  function adicionarNotificacao(usuario, evento, tipo, { risco, em, lida }) {
+  // A notificação é um registro do passado: guarda o risco, a confiança e a origem do momento do
+  // envio (riscoAlertado / confiancaAlertada do último alerta), e não os valores recalculados depois.
+  // O "Alerta cancelado" repete os valores do alerta que foi cancelado.
+  function adicionarNotificacao(usuario, evento, tipo, { em, lida }) {
+    const risco = evento.riscoAlertado ?? evento.risco
+    const confianca = evento.confiancaAlertada ?? evento.confianca
     estado.notificacoes.push({
       id: `ntf-${proximoId++}`,
       usuarioId: usuario.id,
@@ -118,6 +124,9 @@ export function criarRepositorio({
       tipo,
       titulo: `${evento.tipo} – risco ${risco}`,
       risco,
+      confianca,
+      faixaConfianca: faixaConfianca(confianca),
+      origem: dadoPrincipal(evento).origem,
       // Alerta preliminar (RN02): mesmo tipo "Alerta", com a etiqueta "não confirmado" no card
       naoConfirmado: tipo === 'Alerta' && Boolean(evento.naoConfirmado),
       em,
@@ -139,13 +148,9 @@ export function criarRepositorio({
         const canceladoEm = evento.estado === ESTADOS.DESCARTADO ? horarioDe(evento, ESTADOS.DESCARTADO) : null
         estado.usuarios.forEach((usuario) => {
           if (!deveNotificar(usuario, evento, { agora: alertaEm })) return
-          adicionarNotificacao(usuario, evento, 'Alerta', { risco: evento.riscoAlertado, em: alertaEm, lida: !eventoAtivo(evento) })
+          adicionarNotificacao(usuario, evento, 'Alerta', { em: alertaEm, lida: !eventoAtivo(evento) })
           if (canceladoEm) {
-            adicionarNotificacao(usuario, evento, 'Alerta cancelado', {
-              risco: evento.riscoAlertado,
-              em: canceladoEm,
-              lida: !eventoAtivo(evento),
-            })
+            adicionarNotificacao(usuario, evento, 'Alerta cancelado', { em: canceladoEm, lida: !eventoAtivo(evento) })
           }
         })
       })

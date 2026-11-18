@@ -142,3 +142,12 @@ describe('exemplo do documento (seção 4.1)', () => {
     expect(comSensor).toMatchObject({ valor: 80, faixa: 'Alta' })
   })
 })
+
+describe('texto dos ajustes (tela Origem e confiança)', () => {
+  const descricoes = (confirmacoes) => calcularConfianca(dado({ confirmacoes }), { agora: AGORA }).ajustes.map((a) => a.descricao)
+  it('singular e plural das confirmações', () => {
+    expect(descricoes(1)).toContain('1 confirmação de morador')
+    expect(descricoes(2)).toContain('2 confirmações de moradores')
+    expect(descricoes(5)).toContain('3 confirmações de moradores') // máximo de 3
+  })
+})
