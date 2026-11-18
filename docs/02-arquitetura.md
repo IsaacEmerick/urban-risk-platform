@@ -14,7 +14,7 @@ pseudonimização dentro desse componente.
 | Camada              | Componentes                                                                                                                                                                                                                            | Responsabilidade                                                                                                                                                             |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Fontes externas     | Sensor, Base pública, Comunidade                                                                                                                                                                                                       | Produzem os dados brutos. O Sensor envia leituras ao API Gateway; a Base pública é coletada pelo Serviço de Ingestão; a Comunidade registra ocorrências pelo App do Morador. |
-| Apresentação        | App do Morador, Painel do Agente / Operador, Central de Notificações                                                                                                                                                                   | Telas do protótipo. Não guardam regra de negócio: tudo passa pelo API Gateway.                                                                                               |
+| Apresentação        | App do Morador, Painel do Agente / Operador, Central de notificações                                                                                                                                                                   | Telas do protótipo. Não guardam regra de negócio: tudo passa pelo API Gateway.                                                                                               |
 | Aplicação / Negócio | API Gateway, Identidade e Consentimento (LGPD), Serviço de Ingestão, Broker de Eventos, Serviço de Validação, Motor de Confiança, Motor de Classificação de Risco, Gerenciador de Eventos, Serviço de Notificação, Serviço de Análises | Regras de negócio (confiança, risco, prioridade, RN01–RN07), processamento assíncrono dos dados e disparo dos alertas.                                                       |
 | Dados               | Eventos + geodados (PostgreSQL/PostGIS), Séries temporais (TimescaleDB), Cofre de dados pessoais, Logs de auditoria                                                                                                                    | Persistência. Os dados pessoais ficam separados dos eventos.                                                                                                                 |
 
@@ -27,7 +27,7 @@ pseudonimização dentro desse componente.
   Broker.
 - **Notificação (laranja):** o **Serviço de Notificação** consome o `AlertaEmitido` do Broker, busca
   quem tem área de interesse no raio afetado (RN06), envia o push ao App do Morador e registra a
-  notificação na **Central de Notificações**.
+  notificação na **Central de notificações**.
 - **Proteção de dados pessoais (roxo):** o **Serviço de Ingestão** pseudonimiza os dados pessoais
   logo na entrada; o **Identidade e Consentimento (LGPD)** autentica usuários e origens e guarda os
   consentimentos; o **Cofre de dados pessoais** fica separado do banco de eventos e é criptografado;
@@ -48,7 +48,7 @@ pseudonimização dentro desse componente.
 5. Com o evento **Confirmado** e risco **≥ Alto**, o **Gerenciador de Eventos** passa o evento para
    **Alerta emitido** e publica `AlertaEmitido` no **Broker de Eventos**.
 6. O **Serviço de Notificação** busca no banco quem tem área de interesse no raio afetado (RN06),
-   envia o push ao **App do Morador** e registra a notificação na **Central de Notificações**.
+   envia o push ao **App do Morador** e registra a notificação na **Central de notificações**.
 7. O **Serviço de Notificação** publica `NotificacaoEnviada`, e o **Gerenciador de Eventos** passa
    o evento para **Em monitoramento**.
 

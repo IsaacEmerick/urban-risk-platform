@@ -149,7 +149,7 @@ export default function DetalheAlerta() {
                   Sim, {pendente.rotulo.toLowerCase()}
                 </button>
                 <button type="button" className="botao botao--secundario" onClick={() => setPendente(null)}>
-                  Voltar
+                  Não, manter
                 </button>
               </div>
             </div>
