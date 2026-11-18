@@ -40,7 +40,7 @@ evento que tem estado, risco, confiança e prioridade.
 | Registro comunitário     | Tipo, localização automática, descrição e foto opcional, em até 3 passos                                                                                    | RF03                   | Morador          |
 | Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                            | RF03, RF17             | Morador          |
 | Fila de validação        | Só eventos Em validação, por prioridade, com os botões Confirmar e Descartar                                                                                | RF04, RF12             | Agente           |
-| Análises                 | Gráficos por tipo de risco, região e período                                                                                                                | RF14                   | Agente, operador |
+| Análises                 | Gráficos por tipo de risco, região e período; alertas preliminares à parte: quantos houve e quantos foram confirmados depois                                | RF14                   | Agente, operador |
 | Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta                                                                                                    | RF16                   | Todos            |
 | Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"                    | RF18                   | Operador         |
 | Perfil                   | Atalhos: dados do usuário, Preferências, Privacidade e meus dados e sair; o morador também tem Meus registros                                               | RF15                   | Todos            |
@@ -249,3 +249,8 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
 - **Escalada (RN01, RN06):** há escalada quando o risco do evento **sobe** em relação ao último
   alerta **e chega a Alto ou Crítico**. Subir de Baixo para Moderado não é escalada. Se o evento
   nunca alertou, a escalada gera o primeiro alerta; se já alertou, o alerta é reenviado.
+- **Alerta preliminar no RNF11 (RN02):** alertas preliminares contam com a confiança do momento do
+  envio; a confirmação posterior não altera o indicador. Confirmar o alerta só remove a marca "não
+  confirmado" e não emite um alerta novo; por isso, um alerta preliminar sempre conta como alerta sem
+  confiança Alta na segunda meta do RNF11. A tela Análises mostra os alertas preliminares à parte
+  (quantos houve e quantos foram confirmados depois), para essa diferença ficar visível.
