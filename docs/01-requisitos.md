@@ -33,11 +33,11 @@ evento que tem estado, risco, confiança e prioridade.
 | Login / Cadastro         | Escolha do perfil (morador, agente, operador), aceite de termos e consentimento LGPD                                                                                            | RF15, RF16             | Todos            |
 | Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta                                                                      | RF13                   | Todos            |
 | Painel                   | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região                                                                                          | RF01, RF02, RF07       | Todos            |
-| Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança                                                                                                           | RF08                   | Todos            |
+| Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança; filtros por tipo de risco, nível de risco e estado                                                       | RF08                   | Todos            |
 | Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Confirmar alerta" (alerta preliminar), "Encerrar", "Cancelar alerta" e "Descartar evento" (agente) | RF06, RF08, RF12, RF17 | Todos            |
 | Origem e confiança       | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado                                                                                          | RF01, RF02, RF05, RF09 | Todos            |
 | Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (incluindo "Alerta cancelado") e link para o alerta                                                                              | RF10, RF11             | Morador          |
-| Registro comunitário     | Tipo, localização automática, descrição e foto opcional, em até 3 passos                                                                                                        | RF03                   | Morador          |
+| Registro comunitário     | Tipo; localização automática (ajuste opcional); altura da água (Alagamento); descrição opcional com sugestões e foto opcional; em até 3 passos                                  | RF03                   | Morador          |
 | Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                                                | RF03, RF17             | Morador          |
 | Fila de validação        | Só eventos Em validação, por prioridade, com os botões Confirmar e Descartar                                                                                                    | RF04, RF12             | Agente           |
 | Análises                 | Gráficos por tipo de risco, região e período; alertas preliminares à parte: quantos houve e quantos foram confirmados depois                                                    | RF14                   | Agente, operador |
@@ -96,6 +96,14 @@ altura da água e do bairro (ex.: "Alagamento na altura do meio-fio – Parque V
 opcional; no protótipo, a foto tirada pelo app guarda a posição e conta como foto geolocalizada (+5).
 O registro segue o mesmo caminho dos outros dados (confiança, risco, RN04, estados) e aparece no
 Painel; Meus registros mostra o estado, a confiança atual e as confirmações recebidas.
+
+**Sobre o RF06 e o RF07 (risco relatado):** enquanto o evento está **Reportado** ou **Em
+validação**, o risco vem de dados ainda não confirmados. Nesses estados, o selo de risco aparece
+**vazado** (só o contorno, com a mesma cor e o mesmo ícone do nível) e com o texto "(relatado)",
+por exemplo "Risco Crítico (relatado)"; no mapa, o marcador fica vazado e com contorno tracejado. O
+selo e a tarja **cheios** ficam para eventos Confirmados ou alertados (inclusive o alerta
+preliminar). Vale para o Painel, a Lista de alertas, o Detalhe do alerta, Meus registros e a
+confirmação de envio do registro.
 
 **Sobre o RF12:** cancelar um alerta leva o evento de **Alerta emitido** ou de **Em monitoramento**
 para **Descartado**, e quem
@@ -260,7 +268,7 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
 | ID   | Regra                                                                                                                                                                                                                                                                                                                                                                                                                                           | Onde aparece                                                                                   |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | RN01 | O alerta público é emitido automaticamente apenas quando **risco ≥ Alto e confiança ≥ 75**. Depois de confirmado (por confiança ou pelo agente), o evento emite novos alertas por escalada de risco sem nova checagem de confiança.                                                                                                                                                                                                             | Estados: Reportado → Confirmado → Alerta emitido; Em monitoramento → Alerta emitido (escalada) |
-| RN02 | Com **confiança entre 50 e 74**, o evento fica **Em validação**, aguardando o agente na Fila de validação. Se o risco for **Crítico**, sai um alerta preliminar marcado como **"não confirmado"** (notificação do tipo Alerta, com a etiqueta "não confirmado" no card); quando o agente confirma, a marca é removida.                                                                                                                          | Estados: Reportado → Em validação; Em monitoramento (agenteConfirma / atualizarAlerta)         |
+| RN02 | Com **confiança entre 50 e 74**, o evento fica **Em validação**, aguardando o agente na Fila de validação. Se o risco for **Crítico**, sai um alerta preliminar marcado como **"não confirmado"** (notificação do tipo Alerta, com a etiqueta "não confirmado" no card); a marca é removida quando o agente confirma **ou** quando a confiança chega a **75** (ex.: confirmações de moradores). | Estados: Reportado → Em validação; Em monitoramento (agenteConfirma ou [confiança >= 75] / atualizarAlerta) |
 | RN03 | Com **confiança < 50**, o evento fica **Reportado** aguardando confirmações e é **Descartado** se não houver nenhuma em **2 h**. Se as confirmações elevarem a confiança, valem a RN01 ou a RN02.                                                                                                                                                                                                                                               | Estados: Reportado → Descartado                                                                |
 | RN04 | Dados do **mesmo tipo** a até **300 m** e **60 min** um do outro são agrupados no mesmo evento.                                                                                                                                                                                                                                                                                                                                                 | Serviço de Validação                                                                           |
 | RN05 | O evento é **Encerrado** quando o risco fica abaixo do limiar de Moderado (Baixo) por **30 min** seguidos ou quando o agente o encerra.                                                                                                                                                                                                                                                                                                         | Estados: Em monitoramento → Encerrado                                                          |
@@ -277,10 +285,14 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
   alerta **e chega a Alto ou Crítico**. Subir de Baixo para Moderado não é escalada. Se o evento
   nunca alertou, a escalada gera o primeiro alerta; se já alertou, o alerta é reenviado.
 - **Alerta preliminar no RNF11 (RN02):** alertas preliminares contam com a confiança do momento do
-  envio; a confirmação posterior não altera o indicador. Confirmar o alerta só remove a marca "não
-  confirmado" e não emite um alerta novo; por isso, um alerta preliminar sempre conta como alerta sem
-  confiança Alta na segunda meta do RNF11. A tela Análises mostra os alertas preliminares à parte
-  (quantos houve e quantos foram confirmados depois), para essa diferença ficar visível.
+  envio; a confirmação posterior não altera o indicador. A marca "não confirmado" sai de dois jeitos,
+  com o mesmo efeito (atualizar o alerta para quem recebeu): o agente usa "Confirmar alerta" ou a
+  confiança chega a 75 (coerente com a RN01). Nenhum dos dois emite um alerta novo nem muda a confiança
+  guardada; por isso, um alerta preliminar sempre conta como alerta sem confiança Alta na segunda meta
+  do RNF11. A tela Análises mostra os alertas preliminares à parte (quantos houve e quantos foram
+  confirmados depois, pelo agente ou pela confiança), para essa diferença ficar visível. Com os dados
+  simulados, o evt-03 (40 + 2 confirmações = 60) chega no máximo a 70 só com moradores, então continua
+  marcado até o agente confirmar.
 - **Confirmação de morador (RF17):** cada morador confirma um evento **uma única vez**, e **quem
   registrou não confirma o próprio registro** — nem o evento ao qual o seu registro foi agrupado pela
   RN04. A confirmação vale para o **primeiro registro da Comunidade** do evento (o registro original)

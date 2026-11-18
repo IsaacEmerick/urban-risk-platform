@@ -39,7 +39,7 @@ export default function ListaAlertas() {
   return (
     <div className="lista-alertas">
       <header className="cabecalho-tela">
-        <h1>Alertas</h1>
+        <h1>Lista de alertas</h1>
         <p className="cabecalho-tela__sub" aria-live="polite">
           {eventos.length} {eventos.length === 1 ? 'evento' : 'eventos'}, do mais prioritário para o menos
         </p>

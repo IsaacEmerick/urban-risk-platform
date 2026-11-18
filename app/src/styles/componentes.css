@@ -553,3 +553,107 @@
 a.botao {
   text-decoration: none;
 }
+
+/* Risco relatado (RF06, RF07): selo vazado enquanto o evento está Reportado ou Em validação.
+   Mesma cor e mesmo ícone do nível, só no contorno; o texto diz "(relatado)". */
+.risco-vazado {
+  background: var(--cor-superficie);
+  color: var(--cor-tinta);
+  box-shadow: inset 0 0 0 var(--borda-grossa) var(--cor-contorno-risco);
+}
+.risco-vazado .icone--risco,
+.risco-vazado svg {
+  color: var(--cor-contorno-risco);
+}
+.risco-vazado--baixo {
+  --cor-contorno-risco: var(--risco-baixo-contorno);
+}
+.risco-vazado--moderado {
+  --cor-contorno-risco: var(--risco-moderado-contorno);
+}
+.risco-vazado--alto {
+  --cor-contorno-risco: var(--risco-alto-contorno);
+}
+.risco-vazado--critico {
+  --cor-contorno-risco: var(--risco-critico-contorno);
+}
+
+/* No mapa: marcador vazado com borda tracejada; área aproximada clara com contorno tracejado */
+.marcador.risco-vazado {
+  border: var(--borda-grossa) dashed var(--cor-contorno-risco);
+  box-shadow: var(--sombra);
+}
+.area-aproximada--relatado {
+  stroke: var(--cor-contorno-risco);
+  stroke-dasharray: var(--tracejado-relatado);
+  fill-opacity: var(--opacidade-area-relatado);
+}
+.simbolo-area.risco-vazado {
+  background: none;
+  box-shadow: none;
+  color: var(--cor-contorno-risco);
+}
+.marcador--legenda.marcador--relatado {
+  --cor-contorno-risco: var(--cor-tinta);
+  border: var(--borda-grossa) dashed var(--cor-tinta);
+  background: var(--cor-superficie);
+}
+
+/* Card de evento relatado: a faixa lateral fica tracejada, como o selo vazado */
+.card-alerta--relatado {
+  border-left-style: dashed;
+}
+
+/* Seleção no Registro comunitário: cards (tipo, altura da água) e sugestões com o mesmo estilo —
+   contorno e fundo institucionais + um ✓ visível (não só cor) */
+.opcao {
+  position: relative;
+}
+
+.opcao__marca {
+  position: absolute;
+  top: var(--esp-2);
+  right: var(--esp-2);
+  display: grid;
+  place-items: center;
+  width: var(--tamanho-icone-tarja);
+  height: var(--tamanho-icone-tarja);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-institucional);
+  color: var(--cor-sobre-escuro);
+}
+
+.opcao__marca .icone {
+  width: var(--tamanho-icone-pequeno);
+  height: var(--tamanho-icone-pequeno);
+}
+
+.chip-escolha {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  min-height: var(--alvo-toque);
+  padding: var(--esp-2) var(--esp-3);
+  border: var(--borda-grossa) solid var(--cor-linha-forte);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+  color: var(--cor-tinta);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  transition: background var(--duracao), border-color var(--duracao);
+}
+
+.chip-escolha:hover {
+  border-color: var(--cor-institucional);
+}
+
+.chip-escolha[aria-pressed='true'] {
+  border-color: var(--cor-institucional);
+  background: var(--cor-institucional-claro);
+  box-shadow: inset 0 0 0 1px var(--cor-institucional);
+  font-weight: var(--peso-forte);
+}
+
+.chip-escolha__marca {
+  color: var(--cor-institucional);
+}

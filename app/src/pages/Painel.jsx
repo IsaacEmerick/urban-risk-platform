@@ -75,6 +75,10 @@ export default function Painel() {
             </li>
           ))}
           <li>
+            <span className="marcador marcador--legenda marcador--relatado" aria-hidden="true" />
+            Contorno tracejado: risco relatado (evento ainda não confirmado)
+          </li>
+          <li>
             <span className="marcador marcador--legenda marcador--area" aria-hidden="true" />
             Posição aproximada (cerca de 100 m): só registros de moradores
           </li>

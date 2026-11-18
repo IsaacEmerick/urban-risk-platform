@@ -29,6 +29,14 @@
   --risco-critico: #b1221b; /* texto branco 6,7:1 */
   --risco-critico-texto: #ffffff;
   --risco-critico-claro: #fbe1df;
+  /* Risco relatado (Reportado, Em validação): selo vazado, contorno e ícone na cor do nível sobre branco.
+     O amarelo puro tem 1,9:1 sobre branco; o contorno do Moderado usa um tom escuro (4,9:1). */
+  --risco-baixo-contorno: #1f7a3f;
+  --risco-moderado-contorno: #8f6a00;
+  --risco-alto-contorno: #c04d00;
+  --risco-critico-contorno: #b1221b;
+  --opacidade-area-relatado: 0.18;
+  --tracejado-relatado: 6 4;
   --risco-cancelado: #e3e8ec; /* selo apagado do "Alerta cancelado": texto tinta-suave 5,8:1 */
   --risco-cancelado-texto: #4a5866;
 

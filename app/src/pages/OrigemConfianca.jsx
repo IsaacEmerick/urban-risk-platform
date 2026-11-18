@@ -7,7 +7,7 @@ import SeloConfianca from '../components/SeloConfianca.jsx'
 import SeloOrigem from '../components/SeloOrigem.jsx'
 import { useAgora } from '../hooks/useAgora.js'
 import { useRepositorio } from '../hooks/useRepositorio.js'
-import { dadoPrincipal } from '../services/eventos.js'
+import { dadoPrincipal, eventoAtivo } from '../services/eventos.js'
 import { formatarDataHora } from '../services/formatar.js'
 import { FAIXAS_CONFIANCA, ORIGENS } from '../services/parametros.js'
 
@@ -112,7 +112,9 @@ export default function OrigemConfianca() {
               <div>
                 <dt>Última atualização</dt>
                 <dd>
-                  {formatarDataHora(dado.atualizadoEm, agora)} <CarimboAtualizacao em={dado.atualizadoEm} prefixo="" />
+                  {formatarDataHora(dado.atualizadoEm, agora)}{' '}
+                  {/* Evento encerrado ou descartado: só a data, sem "há X" */}
+                  {eventoAtivo(evento) && <CarimboAtualizacao em={dado.atualizadoEm} prefixo="" />}
                 </dd>
               </div>
               <div>

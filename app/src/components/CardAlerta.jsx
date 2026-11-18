@@ -1,8 +1,8 @@
 // Card de evento/alerta: risco, estado, origem, confiança e "atualizado há X s".
 // O card inteiro leva ao Detalhe; o selo de confiança leva à tela Origem e confiança.
 import { Link } from 'react-router-dom'
-import { dadoPrincipal } from '../services/eventos.js'
-import CarimboAtualizacao from './CarimboAtualizacao.jsx'
+import { dadoPrincipal, riscoRelatado } from '../services/eventos.js'
+import CarimboEvento from './CarimboEvento.jsx'
 import EtiquetaNaoConfirmado from './EtiquetaNaoConfirmado.jsx'
 import SeloConfianca from './SeloConfianca.jsx'
 import SeloOrigem from './SeloOrigem.jsx'
@@ -14,9 +14,9 @@ export default function CardAlerta({ evento, titulo = 'h3', children }) {
   const Titulo = titulo
   const dado = dadoPrincipal(evento)
   return (
-    <article className={`card-alerta risco-faixa--${classeRisco(evento.risco)}`}>
+    <article className={`card-alerta risco-faixa--${classeRisco(evento.risco)}${riscoRelatado(evento) ? ' card-alerta--relatado' : ''}`}>
       <div className="card-alerta__topo">
-        <SeloRisco risco={evento.risco} />
+        <SeloRisco risco={evento.risco} relatado={riscoRelatado(evento)} />
         {evento.naoConfirmado && <EtiquetaNaoConfirmado />}
         <span className="estado">{evento.estado}</span>
       </div>
@@ -34,7 +34,7 @@ export default function CardAlerta({ evento, titulo = 'h3', children }) {
       </div>
       {children}
       {/* carimbo numa linha própria: fica sempre no mesmo lugar, qualquer que seja a largura dos selos */}
-      <CarimboAtualizacao em={evento.atualizadoEm} />
+      <CarimboEvento evento={evento} />
     </article>
   )
 }

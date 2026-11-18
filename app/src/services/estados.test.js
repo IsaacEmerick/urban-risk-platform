@@ -205,6 +205,20 @@ describe('Em monitoramento', () => {
     expect(r.efeitos).toEqual([EFEITOS.ATUALIZAR_ALERTA])
   })
 
+  it('confiança chega a 75 → alerta preliminar perde a marca sozinho (transição interna, RN02)', () => {
+    const preliminar = { naoConfirmado: true, risco: 'Crítico', riscoAlertado: 'Crítico', confiancaAlertada: 65 }
+    const r = avaliar(evento('Em monitoramento', { ...preliminar, confianca: 75 }), AGORA)
+    expect(r.evento).toMatchObject({ estado: 'Em monitoramento', naoConfirmado: false, confiancaAlertada: 65 })
+    expect(r.evento.historico).toHaveLength(1) // sem estado novo
+    expect(r.efeitos).toEqual([EFEITOS.ATUALIZAR_ALERTA]) // mesmo efeito do "Confirmar alerta"
+  })
+
+  it('confiança 74 → a marca "não confirmado" continua', () => {
+    const r = avaliar(evento('Em monitoramento', { naoConfirmado: true, risco: 'Crítico', riscoAlertado: 'Crítico', confianca: 74 }), AGORA)
+    expect(r.evento.naoConfirmado).toBe(true)
+    expect(r.efeitos).toEqual([])
+  })
+
   it('cancelar alerta → Descartado com "Alerta cancelado" se houve alerta; sem aviso se não houve', () => {
     expect(agenteRejeita(evento('Em monitoramento', comAlerta), AGORA).efeitos).toEqual([EFEITOS.NOTIFICAR_CANCELAMENTO])
     expect(agenteRejeita(evento('Em monitoramento'), AGORA).efeitos).toEqual([])

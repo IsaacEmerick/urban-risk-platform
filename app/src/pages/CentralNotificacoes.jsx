@@ -38,7 +38,7 @@ export default function CentralNotificacoes() {
     <div className="central">
       <header className="cabecalho-tela cabecalho-tela--com-acao">
         <div>
-          <h1>Notificações</h1>
+          <h1>Central de notificações</h1>
           <p className="cabecalho-tela__sub" aria-live="polite">
             {naoLidas === 0 ? 'Tudo lido' : `${naoLidas} ${naoLidas === 1 ? 'não lida' : 'não lidas'}`}
           </p>

@@ -107,7 +107,8 @@ a inundações do SGB (Barueri, 2017).
 - RN01 alerta automático só com risco ≥ Alto e confiança ≥ 75. Depois de confirmado (por confiança ou pelo agente),
   o evento emite novos alertas por escalada de risco sem nova checagem de confiança.
 - RN02 confiança 50–74 → Em validação (fila do agente); se Crítico, alerta preliminar "não confirmado",
-  que perde a marca quando o agente confirma (transição interna em Em monitoramento). A notificação é do
+  que perde a marca quando o agente confirma ou quando a confiança chega a 75 (transições internas em
+  Em monitoramento, ambas com atualizarAlerta; `confiancaAlertada` não muda). A notificação é do
   tipo Alerta com a marca `naoConfirmado` (etiqueta "não confirmado" no card), não um tipo próprio.
 - RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h. Se a confiança subir, valem RN01/RN02.
 - RN04 mesmo tipo a ≤ 300 m e ≤ 60 min → mesmo evento.
@@ -128,7 +129,11 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
 - Telas e componentes usam **apenas os tokens** de `app/src/styles/tokens.css` (cores, tipografia, espaçamentos,
   raios, sombras): nenhuma cor, tamanho ou sombra solta fora desse arquivo.
 - Risco sempre com cor + ícone + texto (acessibilidade, WCAG AA). Baixo verde, Moderado amarelo, Alto laranja, Crítico vermelho.
+- Risco relatado (RF06, RF07): em eventos Reportado e Em validação, o selo e a tarja de risco são vazados (só
+  contorno, mesma cor e ícone) com o texto "Risco Crítico (relatado)"; no mapa, marcador vazado e tracejado.
+  Selo e tarja cheios só para eventos confirmados ou alertados. Regra em `riscoRelatado()`.
 - Todo card e detalhe mostra: selo de origem, selo de confiança ("Alta • 82") e "atualizado há X s".
+  Evento Encerrado ou Descartado não mostra "atualizado há X" em lugar nenhum: só a data em que terminou.
 - Navegação inferior por perfil:
   - Morador: Painel, Alertas, Registrar, Notificações, Perfil.
   - Agente: Painel, Fila, Alertas, Análises, Perfil. ("Fila" é o rótulo curto da aba; a tela se chama Fila de validação.)
@@ -142,3 +147,4 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
 - Rode `npm run build` sem erros.
 - Para telas: abra no navegador e confira o fluxo de ponta a ponta.
 - Para diagramas: confirme que participantes e estados batem com o glossário.
+- Ao fim de cada sessão de telas, rode a skill verify e o /checar-coerencia.

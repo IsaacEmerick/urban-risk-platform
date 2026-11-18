@@ -69,6 +69,26 @@ export function taxaAlertasConfiancaAlta(eventos) {
   }
 }
 
+// Risco "relatado" (RF06, RF07): enquanto o evento está Reportado ou Em validação, o risco vem de
+// dados ainda não confirmados; a tela mostra o selo vazado "Risco Crítico (relatado)".
+// Depois de Confirmado (ou de um alerta, inclusive o preliminar), o selo fica cheio.
+export function riscoRelatado(evento) {
+  return evento.estado === ESTADOS.REPORTADO || evento.estado === ESTADOS.EM_VALIDACAO
+}
+
+// Alerta preliminar (RN02): o primeiro Alerta emitido veio direto de Em validação, sem passar por Confirmado.
+export function foiAlertaPreliminar(evento) {
+  const i = evento.historico.findIndex((h) => h.estado === ESTADOS.ALERTA_EMITIDO)
+  return i > 0 && evento.historico[i - 1].estado === ESTADOS.EM_VALIDACAO
+}
+
+// Análises (RF14): preliminares à parte — quantos houve e quantos foram confirmados depois, seja pelo
+// agente ("Confirmar alerta"), seja pela confiança que chegou a Alta (RN02). Os dois tiram a marca.
+export function resumoAlertasPreliminares(eventos) {
+  const preliminares = eventos.filter(foiAlertaPreliminar)
+  return { houve: preliminares.length, confirmadosDepois: preliminares.filter((e) => !e.naoConfirmado).length }
+}
+
 // Dado que dá a confiança do evento (RN07: a maior entre os dados). É a origem mostrada no card.
 // Em empate, vale o primeiro dado recebido.
 export function dadoPrincipal(evento) {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { agruparDado, alertasAtivos, consolidarEvento, dadoPrincipal, taxaAlertasConfiancaAlta, taxaFalsoAlerta } from './eventos.js'
+import { riscoRelatado } from './eventos.js'
 import { deslocarParaNorte } from './geo.js'
 import { MINUTO } from './parametros.js'
 
@@ -122,5 +123,19 @@ describe('dadoPrincipal e alertasAtivos (telas)', () => {
       ev('encerrado', 'Encerrado', ['Alerta emitido', 'Encerrado']),
     ]
     expect(alertasAtivos(eventos).map((e) => e.id)).toEqual(['alertou'])
+  })
+})
+
+describe('riscoRelatado() — selo vazado enquanto o evento não foi confirmado (RF06, RF07)', () => {
+  it.each([
+    ['Reportado', true],
+    ['Em validação', true],
+    ['Confirmado', false],
+    ['Alerta emitido', false],
+    ['Em monitoramento', false],
+    ['Encerrado', false],
+    ['Descartado', false],
+  ])('%s → relatado = %s', (estado, esperado) => {
+    expect(riscoRelatado({ estado })).toBe(esperado)
   })
 })

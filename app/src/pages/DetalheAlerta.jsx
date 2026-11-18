@@ -2,7 +2,7 @@
 // dos estados e, para o agente, os botões Confirmar alerta, Encerrar, Cancelar alerta / Descartar evento.
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import CarimboAtualizacao from '../components/CarimboAtualizacao.jsx'
+import CarimboEvento from '../components/CarimboEvento.jsx'
 import EtiquetaNaoConfirmado from '../components/EtiquetaNaoConfirmado.jsx'
 import Icone from '../components/Icone.jsx'
 import MapaEventos from '../components/MapaEventos.jsx'
@@ -16,7 +16,7 @@ import { useRepositorio } from '../hooks/useRepositorio.js'
 import { PERFIS } from '../navegacao.js'
 import { acoesDisponiveis } from '../services/acoesAgente.js'
 import { MOTIVOS, podeConfirmar } from '../services/confirmacao.js'
-import { dadoPrincipal } from '../services/eventos.js'
+import { dadoPrincipal, riscoRelatado } from '../services/eventos.js'
 import { formatarDataHora } from '../services/formatar.js'
 import { ESTADOS, ORIGENS } from '../services/parametros.js'
 
@@ -82,7 +82,7 @@ export default function DetalheAlerta() {
         Voltar
       </button>
 
-      <SeloRisco risco={evento.risco} variante="tarja" />
+      <SeloRisco risco={evento.risco} variante="tarja" relatado={riscoRelatado(evento)} />
 
       <header className="detalhe__cabecalho">
         <h1>{evento.titulo}</h1>
@@ -96,7 +96,7 @@ export default function DetalheAlerta() {
         <div className="linha-selos">
           <SeloOrigem origem={dado.origem} />
           <SeloConfianca valor={evento.confianca} faixa={evento.faixaConfianca} eventoId={evento.id} />
-          <CarimboAtualizacao em={evento.atualizadoEm} />
+          <CarimboEvento evento={evento} />
         </div>
       </header>
 

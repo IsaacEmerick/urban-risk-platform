@@ -41,6 +41,15 @@ function proximoPasso(evento) {
   }
 }
 
+// ✓ da opção escolhida: a seleção não depende só da cor (RNF07)
+function MarcaSelecao() {
+  return (
+    <span className="opcao__marca">
+      <Icone nome="marcado" />
+    </span>
+  )
+}
+
 function IndicadorPasso({ passo }) {
   return (
     <div className="passos" aria-label={`Passo ${passo} de ${TOTAL_PASSOS}`}>
@@ -162,6 +171,7 @@ export default function RegistroComunitario() {
                 setPasso(2)
               }}
             >
+              {tipo === t && <MarcaSelecao />}
               <Icone nome={t} className="icone opcao__icone" />
               <span className="opcao__rotulo">{t}</span>
             </button>
@@ -198,6 +208,7 @@ export default function RegistroComunitario() {
                     aria-pressed={alturaAgua === a.id}
                     onClick={() => setAlturaAgua(a.id)}
                   >
+                    {alturaAgua === a.id && <MarcaSelecao />}
                     <Icone nome={`agua-${a.id}`} className="icone opcao__icone" />
                     <span className="opcao__rotulo">{a.rotulo}</span>
                     <span className="opcao__detalhe">≈ {a.cm} cm</span>
@@ -214,7 +225,8 @@ export default function RegistroComunitario() {
             {ehAlagamento && (
               <div className="filtros" role="group" aria-label="Sugestões de descrição">
                 {SUGESTOES_DESCRICAO.map((s) => (
-                  <button key={s} type="button" className="filtro" aria-pressed={sugestoes.includes(s)} onClick={() => alternarSugestao(s)}>
+                  <button key={s} type="button" className="chip-escolha" aria-pressed={sugestoes.includes(s)} onClick={() => alternarSugestao(s)}>
+                    {sugestoes.includes(s) && <Icone nome="marcado" className="icone chip-escolha__marca" />}
                     {s}
                   </button>
                 ))}

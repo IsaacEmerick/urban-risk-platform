@@ -4,6 +4,7 @@ import bairros from '../data/bairros.json'
 import { criarRepositorio } from './repositorio.js'
 import { MOTIVOS, podeConfirmar, registrosDoUsuario } from './confirmacao.js'
 import { criarDadoComunitario } from './registro.js'
+import { foiAlertaPreliminar, resumoAlertasPreliminares } from './eventos.js'
 
 const AGORA = new Date('2026-11-17T18:00:00-03:00')
 
@@ -82,6 +83,49 @@ describe('podeConfirmar()', () => {
     const depois = r2.confirmarOcorrencia('evt-02', 'usr-teste', AGORA)
     expect(depois.dados[0].confirmacoes).toBe(4)
     expect(depois.confianca).toBe(75)
+  })
+})
+
+describe('alerta preliminar + confirmações de moradores (RN02)', () => {
+  const vizinho = { id: 'usr-vizinho', perfil: 'morador', pseudonimo: 'p-0001' }
+
+  it('evt-03 (40 + 20 = 60) chega no máximo a 70 só com moradores: a marca continua', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    r.listarUsuarios().push(vizinho)
+    r.confirmarOcorrencia('evt-03', 'usr-ana', AGORA)
+    const depois = r.confirmarOcorrencia('evt-03', 'usr-vizinho', AGORA)
+    expect(depois).toMatchObject({ confianca: 70, naoConfirmado: true, estado: 'Em monitoramento' }) // 3 confirmações no máximo
+  })
+
+  it('preliminar com foto (65) + 1 confirmação = 75: perde a marca, sem alerta novo, confiancaAlertada fica 65', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    // registro de morador novo no Jardim Maria Helena, longe dos eventos: 40 + 20 + 5 (foto) = 65, Crítico
+    const preliminar = r.receberDado(
+      {
+        id: 'novo-preliminar',
+        tipo: 'Alagamento',
+        origem: 'Comunidade',
+        autorPseudonimo: 'p-0002',
+        bairro: 'Jardim Maria Helena',
+        lat: -23.5235,
+        lng: -46.8665,
+        registradoEm: AGORA,
+        atualizadoEm: AGORA,
+        medicoes: { laminaCm: 40 },
+        confirmacoes: 2,
+        fotoGeolocalizada: true,
+      },
+      AGORA,
+    )
+    expect(preliminar).toMatchObject({ confianca: 65, naoConfirmado: true, estado: 'Em monitoramento' })
+    const alertasAntes = r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === preliminar.id).length
+
+    const depois = r.confirmarOcorrencia(preliminar.id, 'usr-ana', AGORA)
+    expect(depois).toMatchObject({ confianca: 75, naoConfirmado: false, estado: 'Em monitoramento', confiancaAlertada: 65 })
+    expect(r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === preliminar.id)).toHaveLength(alertasAntes)
+    // Análises: conta como "preliminar confirmado depois", igual à confirmação do agente
+    expect(foiAlertaPreliminar(depois)).toBe(true)
+    expect(resumoAlertasPreliminares([depois])).toEqual({ houve: 1, confirmadosDepois: 1 })
   })
 })
 

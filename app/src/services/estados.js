@@ -63,6 +63,12 @@ function passoAutomatico(evento, agora) {
       return { evento: irPara(evento, ESTADOS.EM_MONITORAMENTO, agora) }
 
     case ESTADOS.EM_MONITORAMENTO:
+      // RN02: o alerta preliminar perde a marca "não confirmado" quando a confiança chega a Alta
+      // (ex.: confirmações de moradores), como faria o agente. Transição interna: o estado não muda e
+      // a confiancaAlertada continua com o valor do envio (RNF11).
+      if (evento.naoConfirmado && confianca >= FAIXAS_CONFIANCA.alta) {
+        return { evento: { ...evento, naoConfirmado: false }, efeito: EFEITOS.ATUALIZAR_ALERTA }
+      }
       // riscoEscalou: o risco subiu em relação ao último alerta e chegou a Alto ou mais.
       // RN01: o evento já foi confirmado, então a escalada alerta sem nova checagem de confiança.
       if (riscoAltoOuMais(risco) && (!evento.riscoAlertado || compararRisco(risco, evento.riscoAlertado) > 0)) {

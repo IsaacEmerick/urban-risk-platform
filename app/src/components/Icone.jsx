@@ -32,6 +32,7 @@ const ICONES = {
 
   // Interface
   camera: ['<path d="M3.5 8h3.5l2-3h6l2 3h3.5v11.5h-17z"/>', '<circle cx="12" cy="13.5" r="3.5"/>'],
+  marcado: ['<path d="M5 12.5l4.5 4.5L19 7.5"/>'],
   confirmado: ['<circle cx="12" cy="12" r="9.5"/>', '<path d="M7.5 12.3l3 3 6-6.3"/>'],
   sino: ['<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/>', '<path d="M10 20.5a2 2 0 0 0 4 0"/>'],
   relogio: ['<circle cx="12" cy="12" r="9"/>', '<path d="M12 7v5l3 2"/>'],
