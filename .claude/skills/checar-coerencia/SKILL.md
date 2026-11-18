@@ -5,7 +5,8 @@ description: Confere se requisitos, regras, diagramas, arquitetura e telas do pr
 
 Faça uma auditoria de coerência do trabalho, **sem editar nenhum arquivo**. Só relate.
 
-Leia: `CLAUDE.md`, `docs/01-requisitos.md`, `docs/diagramas/*.puml` e as telas em `app/src/pages/`.
+Leia: `CLAUDE.md`, `docs/01-requisitos.md`, `docs/02-arquitetura.md`, `docs/diagramas/*.puml`,
+`docs/diagramas/arquitetura.drawio` (nomes dos componentes no atributo `value` de cada `mxCell`) e as telas em `app/src/pages/`.
 
 Verifique e relate em tabelas curtas:
 

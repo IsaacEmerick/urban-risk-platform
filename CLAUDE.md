@@ -18,14 +18,14 @@ Depois que `docs/01-requisitos.md` existir, ele passa a ser a fonte da verdade; 
 
 ## O que precisa ser entregue (e o peso na nota)
 
-| Artefato                                                       | Pontos | Arquivo                           |
-| -------------------------------------------------------------- | ------ | --------------------------------- |
-| Protótipo funcional, mín. 8 telas                              | 4,0    | `app/`                            |
-| Requisitos (≥10 RF, ≥6 RNF ISO 25010, regras de priorização)   | 2,0    | `docs/01-requisitos.md`           |
-| Diagrama de Sequência (dado → validação → risco → notificação) | 1,0    | `docs/diagramas/sequencia.puml`   |
-| Diagrama de Estados (ciclo de vida do evento)                  | 1,0    | `docs/diagramas/estados.puml`     |
-| Arquitetura em camadas                                         | 1,0    | `docs/diagramas/arquitetura.puml` |
-| Vídeo de até 3 min                                             | 1,0    | `docs/roteiro-video.md`           |
+| Artefato                                                       | Pontos | Arquivo                                                        |
+| -------------------------------------------------------------- | ------ | -------------------------------------------------------------- |
+| Protótipo funcional, mín. 8 telas                              | 4,0    | `app/`                                                         |
+| Requisitos (≥10 RF, ≥6 RNF ISO 25010, regras de priorização)   | 2,0    | `docs/01-requisitos.md`                                        |
+| Diagrama de Sequência (dado → validação → risco → notificação) | 1,0    | `docs/diagramas/sequencia.puml`                                |
+| Diagrama de Estados (ciclo de vida do evento)                  | 1,0    | `docs/diagramas/estados.puml`                                  |
+| Arquitetura em camadas                                         | 1,0    | `docs/diagramas/arquitetura.drawio` + `docs/02-arquitetura.md` |
+| Vídeo de até 3 min                                             | 1,0    | `docs/roteiro-video.md`                                        |
 
 Telas obrigatórias: painel (mapa/visão geral), lista e detalhe de alertas, central de notificações,
 registro comunitário de ocorrência, tela de origem e nível de confiança do dado.
@@ -35,7 +35,7 @@ registro comunitário de ocorrência, tela de origem e nível de confiança do d
 
 - `app/` — React + Vite + Leaflet (OpenStreetMap). Dados simulados, sem back-end.
   - `src/pages/` telas · `src/components/` componentes · `src/services/` regras de negócio · `src/data/` dados simulados (JSON)
-- `docs/` — documentação em Markdown + `diagramas/*.puml`
+- `docs/` — documentação em Markdown + `diagramas/` (sequência e estados em `.puml`; arquitetura em `.drawio`, com posições fixas)
 - `entrega/` — PDF final gerado com Pandoc
 
 Comandos: `cd app && npm install && npm run dev` (desenvolvimento) · `npm run build` (antes do deploy na Vercel).
@@ -68,6 +68,8 @@ a inundações do SGB (Barueri, 2017).
 - Situações da interrupção (RF18): Interrupção identificada, Em atendimento, Normalização parcial, Normalizado.
 - Tipo de notificação especial: Alerta cancelado.
 - Diagramas PlantUML em UTF-8, com acentos (renderizados localmente com `-charset UTF-8`).
+  A arquitetura fica em `docs/diagramas/arquitetura.drawio`; o PNG é exportado pelo draw.io desktop.
+  Cores da arquitetura: azul = processamento de eventos, laranja = notificação, roxo = proteção de dados pessoais.
 - Componentes da arquitetura: API Gateway, Serviço de Ingestão, Broker de Eventos, Serviço de Validação,
   Motor de Confiança, Motor de Classificação de Risco, Gerenciador de Eventos, Serviço de Notificação,
   Serviço de Análises, Identidade e Consentimento (LGPD).

@@ -43,11 +43,11 @@ alertas e avisa só quem está na área afetada, sempre mostrando a **origem** d
 
 ## 2. Público-alvo
 
-| Grupo                                                         | Como usa a plataforma                                                                              |
-| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Moradores do Parque Viana e arredores                         | Recebem alertas da sua área, consultam origem e confiança, registram ocorrências                   |
+| Grupo                                                         | Como usa a plataforma                                                                                          |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Moradores do Parque Viana e arredores                         | Recebem alertas da sua área, consultam origem e confiança, registram ocorrências                               |
 | Agentes da Defesa Civil de Barueri                            | Acompanham eventos priorizados, validam, confirmam, descartam ou encerram eventos e cancelam alertas indevidos |
-| Operadores de serviços essenciais (energia, água, transporte) | Publicam o status das interrupções, acompanham os riscos da área e analisam o histórico de eventos |
+| Operadores de serviços essenciais (energia, água, transporte) | Publicam o status das interrupções, acompanham os riscos da área e analisam o histórico de eventos             |
 
 ## 3. Personas
 
@@ -63,13 +63,13 @@ alertas e avisa só quem está na área afetada, sempre mostrando a **origem** d
 
 ### Carlos — agente da Defesa Civil
 
-|                                |                                                                                                                                                 |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Perfil**                     | 45 anos, agente da Defesa Civil de Barueri, coordena uma equipe de campo.                                                                       |
-| **Objetivo**                   | Saber rapidamente onde está o risco mais grave e mais confiável, para deslocar a equipe certa.                                                  |
-| **Dores**                      | Recebe muitos relatos duplicados ou falsos. Os dados de sensores e os relatos de moradores ficam em lugares diferentes, e cruzá-los leva tempo. |
+|                                |                                                                                                                                                                                                                              |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Perfil**                     | 45 anos, agente da Defesa Civil de Barueri, coordena uma equipe de campo.                                                                                                                                                    |
+| **Objetivo**                   | Saber rapidamente onde está o risco mais grave e mais confiável, para deslocar a equipe certa.                                                                                                                               |
+| **Dores**                      | Recebe muitos relatos duplicados ou falsos. Os dados de sensores e os relatos de moradores ficam em lugares diferentes, e cruzá-los leva tempo.                                                                              |
 | **O que a plataforma entrega** | Fila de validação ordenada por prioridade (risco × confiança), com a origem de cada dado. Confirma ou descarta eventos na fila com um toque; no detalhe do alerta, encerra o evento ou cancela um alerta emitido por engano. |
-| **Fluxos no protótipo**        | Fluxo 3 (valida evento).                                                                                                                        |
+| **Fluxos no protótipo**        | Fluxo 3 (valida evento).                                                                                                                                                                                                     |
 
 ### Juliana — operadora de serviço público
 
