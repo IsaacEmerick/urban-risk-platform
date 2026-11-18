@@ -44,10 +44,11 @@ Comandos: `cd app && npm install && npm run dev` (desenvolvimento) · `npm run b
 
 Parque Viana, Barueri (SP), como **cenário ilustrativo**: ruas, sensores e eventos são simulados.
 Contexto real citado no problema: temporal que alagou o Alphaville Industrial e alerta severo da
-Defesa Civil para Barueri em out/2026 (links em [FONTE] no `docs/00-problema-personas.md`).
+Defesa Civil para Barueri em out/2026 (links das fontes no `docs/00-problema-personas.md`).
 O Parque Viana é vizinho do Jardim Maria Helena, às margens do rio Cotia (divisa Barueri–Carapicuíba).
-Os alagamentos ali são **relatos de moradores**: nunca escreva como fato. Também citados, com [FONTE]:
-convênio de desassoreamento do rio Cotia e carta de suscetibilidade a inundações do SGB (Barueri, 2017).
+Os alagamentos ali são **relatos de moradores**: nunca escreva como fato. Também citados, com link:
+convênio de desassoreamento do rio Cotia, ponte Jardim Maria Helena–Vila Lourdes e carta de suscetibilidade
+a inundações do SGB (Barueri, 2017).
 
 ### Dados simulados (`app/src/data/`) — valores sempre fictícios
 
@@ -75,6 +76,12 @@ convênio de desassoreamento do rio Cotia e carta de suscetibilidade a inundaç�
 - Desatualizado = sem atualização por mais de 2× o intervalo esperado: Sensor 5 min, Base pública 15 min,
   Base pública (concessionária) 15 min. Comunidade: não se aplica.
 - Status publicado pelo operador (RF18, tela "Publicar status") entra como Base pública (concessionária), base 80.
+  Situações: Interrupção identificada, Em atendimento, Normalização parcial, Normalizado. O formulário também pede
+  nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?" (entradas do `classificarRisco()`).
+  "Normalizado" leva o risco a Baixo, e a RN05 encerra o evento em 30 min.
+- Cancelar alerta (agente, RF12): Alerta emitido → Descartado, com notificação do tipo "Alerta cancelado".
+  Falso alerta (RNF11) = alertas que foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
+- Áreas de interesse (RF13): por bairro ou por ponto no mapa com raio (ex.: 1 km).
 - Faixas de risco usam ≥ e < (sem lacunas); se dois critérios se aplicam, vale o nível mais alto.
 - Prioridade P = R × 25 × (C/100) + V, com R = 1..4 (Baixo..Crítico), C = confiança, V = +10 área vulnerável
   (hospital, escola, comunidade vulnerável ou área suscetível a inundação na carta do SGB, Barueri 2017; aplicado uma vez só).
@@ -93,7 +100,10 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
 
 - Risco sempre com cor + ícone + texto (acessibilidade, WCAG AA). Baixo verde, Moderado amarelo, Alto laranja, Crítico vermelho.
 - Todo card e detalhe mostra: selo de origem, selo de confiança ("Alta • 82") e "atualizado há X s".
-- Navegação inferior do morador: Painel, Alertas, Registrar, Notificações, Perfil.
+- Navegação inferior por perfil:
+  - Morador: Painel, Alertas, Registrar, Notificações, Perfil.
+  - Agente: Painel, Fila de validação, Alertas, Análises, Perfil.
+  - Operador: Painel, Publicar status, Alertas, Análises, Perfil.
 - Dados realistas (bairros, horários, mm/h, °C). Nada de lorem ipsum.
 
 ## Antes de dizer que uma tarefa terminou

@@ -18,6 +18,7 @@ EmValidacao --> Descartado : agenteRejeita ou [dado invalido]
 Confirmado --> AlertaEmitido : [risco >= Alto] / notificarUsuarios
 Confirmado --> EmMonitoramento : [risco < Alto]
 AlertaEmitido --> EmMonitoramento : notificacaoEnviada
+AlertaEmitido --> Descartado : agenteRejeita / notificarCancelamento
 EmMonitoramento --> AlertaEmitido : riscoEscalou / reenviarAlerta
 EmMonitoramento --> Encerrado : [risco Baixo por 30 min] ou agenteEncerra
 Encerrado --> [*]

@@ -22,11 +22,23 @@ exatamente os números abaixo.
 registro de morador). **Evento** é o agrupamento de dados sobre a mesma situação (regra RN04); é o
 evento que tem estado, risco, confiança e prioridade.
 
-### Telas do protótipo citadas nos requisitos
+### Telas do protótipo e rastreabilidade
 
-Login / Cadastro · Preferências · Painel · Lista de alertas · Detalhe do alerta · Origem e confiança ·
-Central de notificações · Registro comunitário · Meus registros · Fila de validação · Análises ·
-Privacidade e meus dados · Publicar status.
+| Tela | Conteúdo principal | RF | Perfil |
+| --- | --- | --- | --- |
+| Login / Cadastro | Escolha do perfil (morador, agente, operador), aceite de termos e consentimento LGPD | RF15, RF16 | Todos |
+| Preferências | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta | RF13 | Morador |
+| Painel | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região | RF01, RF02, RF07 | Todos |
+| Lista de alertas | Cards ordenados por prioridade, com risco, estado, origem e confiança | RF08 | Todos |
+| Detalhe do alerta | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botão "Cancelar alerta" (agente) | RF06, RF08, RF12, RF17 | Todos |
+| Origem e confiança | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado | RF01, RF02, RF05, RF09 | Todos |
+| Central de notificações | Histórico, lidas e não lidas, filtros por tipo (incluindo "Alerta cancelado") e link para o alerta | RF10, RF11 | Morador |
+| Registro comunitário | Tipo, localização automática, descrição e foto opcional, em até 3 passos | RF03 | Morador |
+| Meus registros | Estado de cada registro e confirmações recebidas | RF03, RF17 | Morador |
+| Fila de validação | Eventos por prioridade com os botões Confirmar, Descartar, Encerrar e Cancelar alerta | RF04, RF12 | Agente |
+| Análises | Gráficos por tipo de risco, região e período | RF14 | Agente, operador |
+| Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta | RF16 | Morador |
+| Publicar status | Serviço, área, situação, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?" | RF18 | Operador |
 
 ## 2. Requisitos funcionais
 
@@ -47,18 +59,29 @@ Privacidade e meus dados · Publicar status.
 | RF07 | O sistema deve exibir um painel com mapa dos eventos ativos, indicadores e filtros por tipo de risco e região.                                          | Alta       | Todas           | Painel                                             |
 | RF08 | O sistema deve listar os alertas ordenados por prioridade (seção 4.3) e exibir o detalhe de cada um.                                                    | Alta       | Ana, Carlos     | Lista de alertas, Detalhe do alerta                |
 | RF09 | O sistema deve mostrar, para cada dado, a origem (Sensor, Base pública ou Comunidade), o horário da última atualização e o nível de confiança.          | Alta       | Todas           | Origem e confiança                                 |
-| RF10 | O sistema deve enviar notificações (push, SMS ou e-mail) aos usuários cuja área de interesse foi afetada, conforme a regra RN06.                        | Alta       | Ana             | Central de notificações                            |
-| RF11 | O sistema deve manter uma central de notificações com histórico, status lida/não lida e filtros.                                                        | Média      | Ana             | Central de notificações                            |
-| RF12 | O sistema deve permitir que o agente confirme, descarte ou encerre um evento.                                                                           | Alta       | Carlos          | Fila de validação                                  |
-| RF13 | O sistema deve permitir que o usuário defina áreas de interesse, tipos de risco e canais de alerta.                                                     | Média      | Ana             | Preferências                                       |
+| RF10 | O sistema deve enviar notificações (push, SMS ou e-mail) aos usuários cuja área de interesse foi afetada, conforme a regra RN06, e avisar do cancelamento quem recebeu um alerta cancelado. | Alta       | Ana             | Central de notificações                            |
+| RF11 | O sistema deve manter uma central de notificações com histórico, status lida/não lida e filtros por tipo, incluindo o tipo "Alerta cancelado".          | Média      | Ana             | Central de notificações                            |
+| RF12 | O sistema deve permitir que o agente confirme, descarte ou encerre um evento e cancele um alerta já emitido.                                            | Alta       | Carlos          | Fila de validação, Detalhe do alerta               |
+| RF13 | O sistema deve permitir que o usuário defina áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), além de tipos de risco e canais de alerta. | Média      | Ana             | Preferências                                       |
 | RF14 | O sistema deve gerar análises históricas de eventos por tipo de risco, região e período.                                                                | Média      | Carlos, Juliana | Análises                                           |
 | RF15 | O sistema deve autenticar usuários e aplicar perfis de acesso (morador, agente, operador).                                                              | Alta       | Todas           | Login / Cadastro                                   |
 | RF16 | O sistema deve permitir que o titular consulte, exporte e exclua seus dados pessoais e revogue consentimentos.                                          | Média      | Ana             | Privacidade e meus dados                           |
 | RF17 | O sistema deve permitir que outros moradores confirmem uma ocorrência já registrada.                                                                    | Baixa      | Ana             | Detalhe do alerta                                  |
-| RF18 | O sistema deve permitir que o operador publique o status de uma interrupção de serviço, com serviço afetado, área, situação e previsão de normalização. | Média      | Juliana         | Publicar status                                    |
+| RF18 | O sistema deve permitir que o operador publique o status de uma interrupção de serviço, com serviço afetado, área, situação, previsão de normalização, número estimado de afetados e se atinge hospital, escola ou abastecimento crítico. | Média      | Juliana         | Publicar status                                    |
 
-O status publicado pelo operador (RF18) entra na plataforma como dado de origem **Base pública
-(concessionária)**, com base de confiança 80 (seção 4.1).
+**Sobre o RF12:** cancelar um alerta leva o evento de Alerta emitido para **Descartado**, e quem
+recebeu o alerta é avisado com uma notificação do tipo "Alerta cancelado" (RF10, RF11). Esses
+cancelamentos são a base da medição de falso alerta do RNF11.
+
+**Sobre o RF18:**
+
+- Situações possíveis: **Interrupção identificada**, **Em atendimento**, **Normalização parcial** e
+  **Normalizado**.
+- O número estimado de afetados e a resposta "atinge hospital, escola ou abastecimento crítico?"
+  são entradas do `classificarRisco()` para Interrupção de serviço (seção 4.2).
+- O status publicado entra na plataforma como dado de origem **Base pública (concessionária)**,
+  com base de confiança 80 (seção 4.1).
+- A situação **Normalizado** leva o risco a **Baixo**; pela RN05, o evento é encerrado após 30 min.
 
 RF01 e RF02 não têm tela própria porque são integrações automáticas. O resultado delas aparece no
 Painel e na tela Origem e confiança, como origem dos dados.
@@ -81,7 +104,7 @@ subcaracterística; por isso, o requisito de escalabilidade (RNF05) é classific
 | RNF08 | Segurança (Confidencialidade)                          | **LGPD:** dados pessoais devem ser criptografados, e a localização de quem registra uma ocorrência não pode ser exibida com precisão no mapa público. | TLS 1.2+ em trânsito; AES-256 em repouso; localização pública arredondada para ~100 m.                           |
 | RNF09 | Segurança (Responsabilização, Autenticidade)           | Todo acesso a dados pessoais deve ser registrado, e todo consentimento deve ser guardado com data e finalidade.                                       | 100% dos acessos em log de auditoria; retenção dos logs por 12 meses.                                            |
 | RNF10 | Portabilidade (Adaptabilidade)                         | A interface deve ser responsiva e funcionar em navegadores de celular e de desktop.                                                                   | Funciona nas 2 últimas versões de Chrome, Safari e Firefox, em telas de 360 px a 1920 px de largura.             |
-| RNF11 | Adequação funcional (Correção funcional)               | **Qualidade dos alertas:** os alertas emitidos devem ser corretos e baseados em dados confiáveis.                                                     | Falsos alertas ≤ 10% dos alertas emitidos; ≥ 90% dos alertas de risco Alto ou Crítico com confiança Alta (≥ 75). |
+| RNF11 | Adequação funcional (Correção funcional)               | **Qualidade dos alertas:** os alertas emitidos devem ser corretos e baseados em dados confiáveis.                                                     | Falsos alertas ≤ 10%, sendo falso alerta = alertas que foram para Descartado ÷ alertas emitidos; ≥ 90% dos alertas de risco Alto ou Crítico com confiança Alta (≥ 75). |
 
 **Cobertura dos temas obrigatórios:** tempo de atualização (RNF01, RNF02), disponibilidade (RNF03,
 RNF04), escalabilidade (RNF05), usabilidade (RNF06, RNF07) e segurança/LGPD (RNF08, RNF09).
@@ -151,6 +174,7 @@ nível d'água a 300 m registra a mesma situação 10 min depois (+15), a confia
 | Interrupção de serviço | Duração ≥ 2 e ≤ 6 h, ou 1 mil a 10 mil pessoas afetadas | Duração > 6 h, ou mais de 10 mil pessoas afetadas       | Atinge hospital, escola ou abastecimento crítico |
 
 - Abaixo do limiar de Moderado, o risco é **Baixo**.
+- Interrupção de serviço com situação **Normalizado** (RF18) tem risco **Baixo**.
 - Quando mais de um critério se aplica (por exemplo, chuva e lâmina d'água), vale o **nível mais alto**.
 - O risco do evento segue a regra RN07.
 

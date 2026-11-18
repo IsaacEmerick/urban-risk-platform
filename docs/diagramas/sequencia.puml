@@ -1,21 +1,25 @@
-@startuml
+@startuml sequencia
 title Fluxo de recebimento e disparo de um alerta
 autonumber
-participant "Fonte de dados\n(Sensor / API publica / App)" as F
+' Participantes com os mesmos nomes do glossario e do diagrama de arquitetura.
+' Acentos omitidos para evitar erros de codificacao no PlantUML.
+participant "Fonte de dados\n(Sensor / Base publica / Comunidade)" as F
 participant "API Gateway" as GW
+participant "Identidade e Consentimento\n(LGPD)" as IAM
 participant "Servico de Ingestao" as ING
 queue "Broker de Eventos" as BR
 participant "Servico de Validacao" as VAL
 participant "Motor de Confianca" as CONF
-participant "Motor de Risco" as RISK
+participant "Motor de Classificacao de Risco" as RISK
 participant "Gerenciador de Eventos" as EV
-database "BD Eventos" as DB
+database "Eventos + geodados\n(PostgreSQL/PostGIS)" as DB
 participant "Servico de Notificacao" as NOT
-actor "Agente Defesa Civil" as AG
-actor "Morador" as M
+actor "Carlos\n(agente da Defesa Civil)" as AG
+actor "Ana\n(moradora)" as M
 
 F -> GW : enviarDado(payload, origem, timestamp)
-GW -> GW : autenticar origem
+GW -> IAM : autenticar(origem)
+IAM --> GW : origem autenticada
 GW -> ING : encaminhar(payload)
 ING -> ING : normalizar e pseudonimizar dados pessoais
 ING -> BR : publicar(DadoRecebido)
@@ -28,27 +32,37 @@ alt dado invalido
   VAL -> DB : registrar(descartado, motivo)
 else dado valido
   VAL -> CONF : calcularConfianca(dado)
-  CONF -> DB : buscarCorroboracoes(area, janela)
-  DB --> CONF : registros proximos
-  CONF --> VAL : confianca = 80 (Alta)
+  CONF -> DB : buscarCorroboracoes(area 500 m, janela 30 min)
+  DB --> CONF : dados proximos
+  CONF --> VAL : confianca (ex.: 80, Alta)
   VAL -> RISK : classificarRisco(dado)
-  RISK --> VAL : risco = Alto
+  RISK --> VAL : nivel de risco (ex.: Alto)
   VAL -> EV : criarOuAtualizarEvento(dado, risco, confianca)
+  note right of EV : RN04 agrupa dados do mesmo tipo\n(300 m, 60 min); RN07 usa o maior\nrisco e a maior confianca do grupo
   EV -> DB : salvar(evento)
-  alt risco >= Alto e confianca >= 75
-    EV -> EV : estado = Alerta emitido
-  else confianca entre 50 e 74
+
+  alt confianca >= 75
+    EV -> EV : estado = Confirmado
+  else confianca entre 50 e 74 (RN02)
     EV -> EV : estado = Em validacao
     EV -> AG : solicitarValidacao(evento)
     AG --> EV : confirmar(evento)
-    EV -> EV : estado = Alerta emitido
+    EV -> EV : estado = Confirmado
+  else confianca < 50 (RN03)
+    EV -> EV : estado = Reportado (aguarda confirmacoes)
   end
-  EV -> BR : publicar(AlertaEmitido)
-  BR -> NOT : consumir(AlertaEmitido)
-  NOT -> DB : buscarUsuarios(areaAfetada, preferencias)
-  DB --> NOT : lista de usuarios
-  NOT -> M : enviarPush("Alagamento - risco Alto")
-  NOT -> DB : registrarNotificacao(usuario, alerta)
-  EV -> EV : estado = Em monitoramento
+
+  opt estado = Confirmado e risco >= Alto (RN01)
+    EV -> EV : estado = Alerta emitido
+    EV -> BR : publicar(AlertaEmitido)
+    BR -> NOT : consumir(AlertaEmitido)
+    NOT -> DB : buscarUsuarios(areaAfetada, preferencias)
+    DB --> NOT : usuarios com area de interesse afetada (RN06)
+    NOT -> M : enviarPush("Alagamento - risco Alto")
+    NOT -> DB : registrarNotificacao(usuario, alerta)
+    NOT -> BR : publicar(NotificacaoEnviada)
+    BR -> EV : consumir(NotificacaoEnviada)
+    EV -> EV : estado = Em monitoramento
+  end
 end
 @enduml
