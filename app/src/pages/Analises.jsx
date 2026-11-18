@@ -1,6 +1,6 @@
 // Análises (RF14, RNF11): eventos do período (7 ou 30 dias) por tipo de risco e por bairro, e as duas metas
-// do RNF11 calculadas ao vivo (falso alerta ≤ 10%; ≥ 90% dos alertas Alto/Crítico com confiança Alta no
-// momento do alerta, confiancaAlertada), com os alertas preliminares à parte.
+// do RNF11 calculadas ao vivo, sempre nos últimos 30 dias (falso alerta ≤ 10%; ≥ 90% dos alertas Alto/Crítico
+// com confiança Alta no momento do alerta, confiancaAlertada), com os alertas preliminares à parte.
 // Gráficos em SVG feitos à mão; cada um tem uma tabela equivalente para leitor de tela.
 import { useState } from 'react'
 import Icone from '../components/Icone.jsx'
@@ -105,23 +105,14 @@ export default function Analises() {
     <div className="analises">
       <header className="cabecalho-tela">
         <h1>Análises</h1>
-        <p className="cabecalho-tela__sub" aria-live="polite">
-          {r.total} {r.total === 1 ? 'evento' : 'eventos'} nos últimos {dias} dias · Parque Viana e Jardim Maria Helena
-        </p>
+        <p className="cabecalho-tela__sub">Parque Viana e Jardim Maria Helena</p>
       </header>
-
-      <div className="filtros" role="group" aria-label="Período">
-        {PERIODOS_DIAS.map((d) => (
-          <button key={d} type="button" className="filtro" aria-pressed={dias === d} onClick={() => setDias(d)}>
-            {d} dias
-          </button>
-        ))}
-      </div>
 
       <section className="bloco" aria-labelledby="titulo-metas">
         <h2 id="titulo-metas" className="titulo-secao">
           Qualidade dos alertas (RNF11)
         </h2>
+        <p className="nota">Medido nos últimos 30 dias</p>
         <div className="metas">
           <MedidorMeta
             id="meta-falso"
@@ -150,7 +141,7 @@ export default function Analises() {
           <h3 className="meta__titulo">Alertas preliminares (“não confirmado”)</h3>
           <dl className="preliminares__numeros">
             <div>
-              <dt>Emitidos no período</dt>
+              <dt>Emitidos em 30 dias</dt>
               <dd>{preliminares.houve}</dd>
             </div>
             <div>
@@ -165,8 +156,19 @@ export default function Analises() {
         </div>
       </section>
 
-      <GraficoBarras id="grafico-tipo" titulo="Eventos por tipo de risco" dados={r.porTipo} rotuloCategoria="Tipo de risco" />
-      <GraficoBarras id="grafico-bairro" titulo="Eventos por bairro" dados={r.porBairro} rotuloCategoria="Bairro" />
+      <div className="filtros" role="group" aria-label="Período dos gráficos">
+        {PERIODOS_DIAS.map((d) => (
+          <button key={d} type="button" className="filtro" aria-pressed={dias === d} onClick={() => setDias(d)}>
+            {d} dias
+          </button>
+        ))}
+      </div>
+      <p className="nota" aria-live="polite">
+        {r.total} {r.total === 1 ? 'evento' : 'eventos'} nos últimos {dias} dias
+      </p>
+
+      <GraficoBarras id="grafico-tipo" titulo={`Eventos por tipo de risco (${dias} dias)`} dados={r.porTipo} rotuloCategoria="Tipo de risco" />
+      <GraficoBarras id="grafico-bairro" titulo={`Eventos por bairro (${dias} dias)`} dados={r.porBairro} rotuloCategoria="Bairro" />
     </div>
   )
 }

@@ -127,6 +127,7 @@ describe('alerta preliminar + confirmações de moradores (RN02)', () => {
     const [antigo, confirmacao] = doEvento()
     expect(antigo).toMatchObject({ tipo: 'Alerta', naoConfirmado: true, confianca: 65 })
     expect(confirmacao).toMatchObject({ tipo: 'Alerta confirmado', risco: 'Crítico', confianca: 75, faixaConfianca: 'Alta', naoConfirmado: false, lida: false })
+    expect(confirmacao.motivo).toBe('Confirmado: a confiança chegou a Alta')
     expect(doEvento()).toHaveLength(2)
     // Análises: conta como "preliminar confirmado depois", igual à confirmação do agente
     expect(foiAlertaPreliminar(depois)).toBe(true)

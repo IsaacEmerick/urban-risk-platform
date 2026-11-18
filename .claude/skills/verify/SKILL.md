@@ -38,7 +38,7 @@ await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login prov
   "Alerta confirmado" na Central (captura `central-notificacoes`).
 - **Carlos (Fila e Análises):** aba Fila = evt-02 (58,8) → evt-10 (45,0) → evt-09 (45,0) → evt-11 (13,8). A Ana
   confirma o evt-02 antes (ele sai da Fila). Carlos: Confirmar no card do evt-10 → "Sim, confirmar" → "Alerta emitido
-  (risco Alto)"; Descartar no evt-11 → "Sim, descartar". Análises: botões 7 dias / 30 dias; as metas mudam na hora.
+  (risco Alto)"; Descartar no evt-11 → "Sim, descartar". Análises: as metas (30 dias) mudam na hora; 7 dias / 30 dias só nos gráficos.
   Cancelar alerta (Detalhe do evt-10) sobe o falso alerta.
 - **Juliana:** aba Publicar status → Bairro Jardim Maria Helena, previsão +3 h, 2500 afetados, "Sim" → prévia "Risco
   Crítico" → Publicar status → "Meus status (2)" (novo + evt-06) → "Nova situação" Normalizado → Atualizar situação
@@ -54,9 +54,8 @@ await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login prov
 ## Pegadinhas
 - Para trocar de perfil sem perder os dados: Perfil → Sair → "Entrar como …" (nunca `goto`).
 - Na Fila, cada card tem os próprios botões: filtre o card (`.card-alerta` com `hasText`) antes de clicar.
-- As Análises de 7 dias perdem o hist-05 (criado há exatamente 7 dias) segundos depois de carregar; os números de
-  7 dias na tela diferem de um cálculo com "agora" fixo. O simulador também muda as metas: o alerta do rio (evt-01,
-  confiança 90) entra como alerta emitido ~2 min depois de abrir (~16 s com `?demo=1`).
+- As metas do RNF11 são sempre de 30 dias (o seletor 7/30 só muda os gráficos). O simulador muda as metas: o alerta
+  do rio (evt-01, confiança 90) entra como alerta emitido ~2 min depois de abrir (~16 s com `?demo=1`).
 - No campo datetime-local, `fill()` usa o formato `AAAA-MM-DDTHH:mm`.
 - **Os dados ficam em memória:** `page.goto()` recarrega e reinicia tudo (ações do agente somem). Depois de uma
   ação, navegue pelos links/abas do app.

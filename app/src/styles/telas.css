@@ -185,6 +185,12 @@
   font-size: var(--texto-sm);
 }
 
+/* "Alerta confirmado": quem confirmou */
+.notificacao__motivo {
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+}
+
 .ponto-nao-lida {
   width: var(--esp-3);
   height: var(--esp-3);

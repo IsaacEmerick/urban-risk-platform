@@ -117,7 +117,12 @@ export function criarRepositorio({
   // "Alerta confirmado" (RN02): quando o alerta preliminar perde a marca "não confirmado" (pelo agente
   // ou pela confiança), quem recebeu o preliminar ganha uma notificação nova, com o risco e a confiança
   // do momento. A notificação antiga não muda: continua um registro do que foi enviado.
-  function notificarConfirmacao(evento, momento) {
+  // A notificação diz quem confirmou: o agente ("Confirmar alerta") ou a confiança que chegou a 75.
+  const MOTIVOS_CONFIRMACAO = {
+    agente: 'Confirmado pela Defesa Civil',
+    confianca: 'Confirmado: a confiança chegou a Alta',
+  }
+  function notificarConfirmacao(evento, momento, porQuem) {
     estado.usuarios.forEach((usuario) => {
       const preliminar = estado.notificacoes.find(
         (n) => n.usuarioId === usuario.id && n.eventoId === evento.id && n.tipo === 'Alerta' && n.naoConfirmado,
@@ -129,6 +134,7 @@ export function criarRepositorio({
         risco: evento.risco,
         confianca: evento.confianca,
         titulo: `O alerta “${preliminar.titulo}” foi confirmado`,
+        motivo: MOTIVOS_CONFIRMACAO[porQuem],
       })
     })
   }
@@ -143,6 +149,7 @@ export function criarRepositorio({
       risco = evento.riscoAlertado ?? evento.risco,
       confianca = evento.confiancaAlertada ?? evento.confianca,
       titulo = `${evento.tipo} – risco ${risco}`,
+      motivo = null,
     } = opcoes
     estado.notificacoes.push({
       id: `ntf-${proximoId++}`,
@@ -150,6 +157,7 @@ export function criarRepositorio({
       eventoId: evento.id,
       tipo,
       titulo,
+      motivo, // só no "Alerta confirmado": quem confirmou
       risco,
       confianca,
       faixaConfianca: faixaConfianca(confianca),
@@ -183,14 +191,15 @@ export function criarRepositorio({
       })
   }
 
-  // Executa os efeitos devolvidos pela máquina de estados
-  function aplicarEfeitos(evento, efeitos, momento) {
+  // Executa os efeitos devolvidos pela máquina de estados.
+  // porQuem: 'agente' (ação do agente) ou 'confianca' (transição automática) — usado no "Alerta confirmado"
+  function aplicarEfeitos(evento, efeitos, momento, porQuem = 'confianca') {
     let atual = evento
     if (efeitos.some((ef) => EFEITOS_DE_ALERTA.includes(ef))) {
       notificar(atual, 'Alerta', momento)
       atual = notificacaoEnviada(atual, momento).evento // Alerta emitido → Em monitoramento
     }
-    if (efeitos.includes(EFEITOS.ATUALIZAR_ALERTA)) notificarConfirmacao(atual, momento)
+    if (efeitos.includes(EFEITOS.ATUALIZAR_ALERTA)) notificarConfirmacao(atual, momento, porQuem)
     if (efeitos.includes(EFEITOS.NOTIFICAR_CANCELAMENTO)) notificar(atual, 'Alerta cancelado', momento)
     return atual
   }
@@ -257,7 +266,7 @@ export function criarRepositorio({
     const evento = estado.eventos.find((e) => e.id === eventoId)
     if (!evento) throw new Error(`Evento não encontrado: ${eventoId}`)
     const resultado = ACOES[acao](evento, momento)
-    substituirEvento(aplicarEfeitos(resultado.evento, resultado.efeitos, momento))
+    substituirEvento(aplicarEfeitos(resultado.evento, resultado.efeitos, momento, 'agente'))
     avisarInscritos()
     return estado.eventos.find((e) => e.id === eventoId)
   }

@@ -56,3 +56,52 @@ describe('resumoAnalises', () => {
     expect(formatarPercentual(0.9)).toBe('90,0%')
   })
 })
+
+describe('metas do RNF11: sempre nos últimos 30 dias (janela móvel)', () => {
+  it('as metas são as mesmas com o período dos gráficos em 7 ou em 30 dias', () => {
+    const eventos = criarRepositorio({ agora: AGORA }).listarEventos()
+    const em7 = resumoAnalises(eventos, { agora: AGORA, dias: 7, bairros })
+    const em30 = resumoAnalises(eventos, { agora: AGORA, dias: 30, bairros })
+    expect(em7.falsoAlerta).toEqual(em30.falsoAlerta)
+    expect(em7.confiancaAlta).toEqual(em30.confiancaAlta)
+    expect(em7.preliminares).toEqual(em30.preliminares)
+    expect(em7.total).toBeLessThan(em30.total)
+  })
+
+  it('números ao carregar (os fonteId próprios do hist-04 e do hist-15 não mudam nada)', () => {
+    const r = resumoAnalises(criarRepositorio({ agora: AGORA }).listarEventos(), { agora: AGORA, dias: 30, bairros })
+    expect(r.falsoAlerta).toMatchObject({ falsos: 2, emitidos: 22, cumpre: true })
+    expect(r.confiancaAlta).toMatchObject({ comConfiancaAlta: 21, alertas: 22, cumpre: true })
+    expect(r.total).toBe(31)
+    expect(r.porTipo.map((c) => c.total)).toEqual([20, 7, 4])
+    expect(r.porBairro.map((c) => c.total)).toEqual([16, 15])
+  })
+
+  it('hist-05 (7 dias + 3 h) fica fora da janela de 7 dias: o gráfico não muda segundos depois de abrir', () => {
+    const eventos = criarRepositorio({ agora: AGORA }).listarEventos()
+    const agoraMesmo = resumoAnalises(eventos, { agora: AGORA, dias: 7, bairros })
+    const umMinutoDepois = resumoAnalises(eventos, { agora: new Date(AGORA.getTime() + 60_000), dias: 7, bairros })
+    expect(umMinutoDepois.porTipo).toEqual(agoraMesmo.porTipo)
+    expect(agoraMesmo.total).toBe(15)
+  })
+
+  it('fluxo do vídeo: Ana confirma evt-02 → Carlos confirma evt-10 → descarta evt-11 → alerta do rio', async () => {
+    const { criarLeitura } = await import('./simulador.js')
+    const repo = criarRepositorio({ agora: AGORA })
+    const metas = () => {
+      const r = resumoAnalises(repo.listarEventos(), { agora: AGORA, dias: 30, bairros })
+      return [r.falsoAlerta.falsos, r.falsoAlerta.emitidos, r.confiancaAlta.comConfiancaAlta, r.confiancaAlta.alertas]
+    }
+    expect(metas()).toEqual([2, 22, 21, 22])
+    repo.confirmarOcorrencia('evt-02', 'usr-ana', AGORA)
+    expect(metas()).toEqual([2, 23, 22, 23])
+    repo.executarAcao('evt-10', 'agenteConfirma', AGORA)
+    expect(metas()).toEqual([2, 24, 22, 24])
+    repo.executarAcao('evt-11', 'agenteRejeita', AGORA) // nunca alertou: não conta como falso alerta
+    expect(metas()).toEqual([2, 24, 22, 24])
+    // rio na cota de alerta (falta 0,50 m): evt-01 vira Alto e alerta com a confiança do sensor (90)
+    repo.receberDado(criarLeitura(repo.obterSensor('sensor-cotia-01'), 3.7, AGORA), AGORA)
+    expect(repo.obterEvento('evt-01')).toMatchObject({ riscoAlertado: 'Alto', confiancaAlertada: 90 })
+    expect(metas()).toEqual([2, 25, 23, 25])
+  })
+})

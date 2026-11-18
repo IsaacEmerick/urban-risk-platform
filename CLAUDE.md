@@ -96,7 +96,8 @@ a inundações do SGB (Barueri, 2017).
   "Normalizado" leva o risco a Baixo, e a RN05 encerra o evento em 30 min.
 - Cancelar alerta (agente, RF12): Alerta emitido ou Em monitoramento → Descartado, com notificação "Alerta cancelado".
   Falso alerta (RNF11) = eventos que passaram por Alerta emitido e foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
-  A tela Análises calcula as duas metas ao vivo, no período escolhido (7 ou 30 dias, pela data de criação do evento).
+  A tela Análises calcula as duas metas ao vivo, sempre nos últimos 30 dias (janela móvel, pela criação do evento);
+  o seletor 7/30 dias vale só para os gráficos por tipo e por bairro.
   Ao emitir alerta (comum, preliminar ou escalada) o evento guarda `riscoAlertado` e `confiancaAlertada`; a 2ª meta
   do RNF11 (≥ 90% dos alertas Alto/Crítico com confiança Alta) usa `confiancaAlertada`.
 - Fila de validação lista só eventos Em validação (Confirmar, Descartar). Confirmar alerta (tira a marca
@@ -119,7 +120,8 @@ a inundações do SGB (Barueri, 2017).
   Em monitoramento, ambas com atualizarAlerta; `confiancaAlertada` não muda). A notificação é do
   tipo Alerta com a marca `naoConfirmado` (etiqueta "não confirmado" no card), não um tipo próprio.
   Quando a marca cai, quem recebeu o preliminar ganha uma notificação nova "Alerta confirmado"
-  ("O alerta X foi confirmado"), com risco e confiança do momento; a notificação antiga não muda.
+  ("O alerta X foi confirmado"), com risco e confiança do momento e quem confirmou ("Confirmado pela Defesa Civil"
+  ou "Confirmado: a confiança chegou a Alta"); a notificação antiga não muda.
 - RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h. Se a confiança subir, valem RN01/RN02.
 - RN04 mesmo tipo a ≤ 300 m e ≤ 60 min → mesmo evento.
 - RN05 encerra com risco Baixo por 30 min ou por ação do agente. RN03 e RN05 também valem sem dado novo:

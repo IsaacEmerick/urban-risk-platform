@@ -94,6 +94,7 @@ export default function CentralNotificacoes() {
                     {n.titulo}
                   </Link>
                 </h2>
+                {n.motivo && <p className="notificacao__motivo">{n.motivo}</p>}
                 {evento && <p className="notificacao__evento">{evento.titulo}</p>}
                 {/* Retrato do momento do envio: risco, origem e confiança do alerta, não os valores de agora */}
                 <div className="linha-selos">

@@ -189,7 +189,7 @@
         "id": "dado-hist-04",
         "origem": "Base pública (concessionária)",
         "fonte": "Concessionária de energia (simulada)",
-        "fonteId": "concessionaria-energia",
+        "fonteId": "concessionaria-energia-hist-04",
         "descricao": "Falta de energia para cerca de 12 mil pessoas",
         "lat": -23.5398,
         "lng": -46.8676,
@@ -215,27 +215,27 @@
     "estado": "Encerrado",
     "riscoAlertado": "Alto",
     "confiancaAlertada": 75,
-    "criadoMinutosAtras": 10080,
+    "criadoMinutosAtras": 10260,
     "historico": [
       {
         "estado": "Reportado",
-        "minutosAtras": 10080
+        "minutosAtras": 10260
       },
       {
         "estado": "Confirmado",
-        "minutosAtras": 10080
+        "minutosAtras": 10260
       },
       {
         "estado": "Alerta emitido",
-        "minutosAtras": 10080
+        "minutosAtras": 10260
       },
       {
         "estado": "Em monitoramento",
-        "minutosAtras": 10079
+        "minutosAtras": 10259
       },
       {
         "estado": "Encerrado",
-        "minutosAtras": 9930
+        "minutosAtras": 10110
       }
     ],
     "vulnerabilidades": [],
@@ -248,7 +248,7 @@
         "descricao": "Rua alagada no Jardim Maria Helena",
         "lat": -23.5285,
         "lng": -46.8655,
-        "minutosAtras": 10080,
+        "minutosAtras": 10260,
         "medicoes": {
           "laminaCm": 25
         },
@@ -752,7 +752,7 @@
         "id": "dado-hist-15",
         "origem": "Base pública (concessionária)",
         "fonte": "Concessionária de energia (simulada)",
-        "fonteId": "concessionaria-energia",
+        "fonteId": "concessionaria-energia-hist-15",
         "descricao": "Falta de energia por 7 h no Jardim Maria Helena",
         "lat": -23.5302,
         "lng": -46.8631,

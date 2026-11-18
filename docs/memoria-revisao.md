@@ -2,7 +2,7 @@
 
 > Arquivo do **revisor** (Claude no claude.ai). Serve para retomar o trabalho numa conversa nova.
 > **Claude Code: não edite este arquivo.** Ele não faz parte da entrega e não entra no PDF.
-> Última atualização: 18/11/2026, 11h40.
+> Última atualização: 18/11/2026, 18h30.
 
 ## Como retomar numa conversa nova
 
@@ -48,7 +48,7 @@
 - Plugin `frontend-design` instalado no Claude Code (direção estética: serviço público, sóbrio, WCAG AA).
 - Prettier: **adiado**. Atenção: o formatador do VS Code já transformou "+ 10" em "- 10" no CLAUDE.md uma vez; conferir sinais em regras.
 
-## Estado atual (18/11, manhã)
+## Estado atual (18/11, noite)
 
 - **Documentação fechada:** `00-problema-personas.md`, `01-requisitos.md` (18 RF, 11 RNF pela ISO 25010:2011, RN01–RN07 e o bloco
   "Interpretações adotadas"), `02-arquitetura.md`. Diagramas: `estados.puml/png`, `sequencia.puml/png`, `arquitetura.drawio/png`
@@ -64,7 +64,13 @@
 - **Sessão 5 (fluxo 2) pronta** (commits `fc5cf4c` e `c8aacdb`, 209 testes): Lista de alertas, Registro comunitário em 3 passos
   (5 toques no mínimo), confirmação de envio, Meus registros, "Também vejo isso". Demonstração: Ana confirma o evt-02 (65 → 75) →
   Confirmado → Alerta emitido. 13 capturas em `docs/prints/`.
-- **Em andamento:** correções da revisão visual da Sessão 5 + Sessão 6a (ver "Próximo passo").
+- **Correções da Sessão 5 feitas** (`18b0892`) e notificação **"Alerta confirmado"** (`18060e5`): quando a marca "não confirmado"
+  cai (agente ou confiança 75), quem recebeu o preliminar ganha um aviso novo; o antigo não muda.
+- **Sessão 6a pronta** (`afb19fe` + `5455928`, 276 testes): Fila de validação (evt-02 58,8 → evt-10 45,0 → evt-09 45,0 → evt-11 13,8),
+  Publicar status (abas Novo status / Meus status; serviço fixo "Energia elétrica" do perfil), Análises (seletor 7/30 dias, metas do
+  RNF11 ao vivo, preliminares à parte, barras SVG com tabela sr-only). `receberDado`: leitura nova da mesma fonte vai para o evento
+  ativo que já tem essa fonte. `reavaliarPorTempo()` a cada tique (RN03 2 h, RN05 30 min).
+- **Em andamento:** ajustes da revisão da 6a (ver "Próximo passo").
 
 ## Decisões que não são óbvias (e o porquê)
 
@@ -97,20 +103,33 @@
 - Proposta da revisão da Sessão 5: risco de evento não confirmado (Reportado, Em validação) exibido como **"relatado"**
   (selo vazado, sem preenchimento), para não alarmar com um único relato.
 
+- **Desempate da prioridade** (seção 4.3): Fila = há mais tempo Em validação (justiça na fila); Lista/Painel = atualizado mais recente.
+- **evt-09** = Ilha de calor de Sensor com falha (90 − 30 = 60). Não pode ser Base pública "desatualizada": com 85 teria alertado na
+  hora (RN01). O simulador manda leituras de 38,5–39,5 °C com `falhaSensor: true` para não cair para 40.
+- **evt-10** (Comunidade, 60, Alto) a ~670 m do sensor do rio (sem +15). **evt-11** (Baixo, 55) existe para o Carlos demonstrar Descartar.
+- **No vídeo:** a Ana confirma o evt-02; o Carlos confirma o **evt-10** e descarta o **evt-11**; **não cancelar alerta** (falso alerta
+  de 30 dias passa de 10%). Descartar da Fila não conta como falso alerta (nunca alertou): bom ponto para a narração.
+  Abrir o app recém-carregado antes de gravar (a RN03 descarta o evt-04 ~1h40 depois de abrir).
+- **hist-09** (falta de água) é boletim de concessionária de água importado pelo RF02, não status da Juliana: fica.
+- Proposta da revisão da 6a: metas do RNF11 sempre nos **últimos 30 dias** (com 7 dias há só 8 alertas e cada um vale 12,5 p.p.);
+  o seletor vale só para os gráficos. A notificação "Alerta confirmado" diz quem confirmou.
+
 ## Perguntas prováveis da banca (preparar o Isaac)
 
 - Como a confiança é calculada? (mostrar a tela Origem e confiança e o teste 40 + 20 + 5 = 65)
 - E se a confiança for exatamente 75? E 74? (testes de fronteira em `confianca.test.js` e `estados.test.js`)
 - Mostrar registros não confirmados no Painel não espalha boato? (selo de confiança + RN01)
 - Por que o RNF05 é Capacidade, e não Escalabilidade? (ISO 25010:2011)
-- O indicador de falso alerta não está maquiado? (`confiancaAlertada` + preliminares separados)
+- O indicador de falso alerta não está maquiado? (`confiancaAlertada` + preliminares separados; confirmação do agente com
+  confiança Média puxa a 2ª meta para baixo)
+- Por que o alagamento do evt-01, na margem do rio, não tem bônus V da carta do SGB? (achado aberto, pendência 5)
 - Onde ficam notificação, processamento de eventos e proteção de dados? (cores no `arquitetura.png`)
 - Como a LGPD aparece no protótipo? (posição aproximada, pseudônimo, Privacidade e meus dados, cofre separado)
 - Os dados são reais? (não: simulados, com geografia real; dito no README)
 
 ## Pendências
 
-1. **Sessão 6a** (Carlos e Juliana): Fila de validação, Publicar status, Análises (as duas metas do RNF11, preliminares separados).
+1. Ajustes da revisão da 6a (metas em 30 dias, hist-05, fonteIds históricos, quem confirmou, capturas).
 2. **Sessão 6b:** Login (com consentimento LGPD), Preferências, Privacidade e meus dados, Perfil.
 3. Deploy na Vercel; README com nome completo, RM e links (o Isaac preenche).
 4. Prettier (adiado) e alinhamento de tabelas Markdown (aviso MD060).
@@ -121,5 +140,5 @@
 
 ## Próximo passo
 
-Aguardar o relatório das correções da revisão visual da Sessão 5 (risco "relatado", seleção com ✓ uniforme, títulos sem data
-relativa, carimbo escondido em encerrados, tabela de telas) e o plano ou o resultado da Sessão 6a. Revisar e escrever a Sessão 6b.
+Aguardar o relatório dos ajustes da revisão da 6a (metas do RNF11 em 30 dias, hist-05 fora da fronteira de 7 dias, fonteIds
+históricos, "confirmado pela Defesa Civil", capturas `analises`, `painel` e `lista-alertas`). Depois, escrever a Sessão 6b.

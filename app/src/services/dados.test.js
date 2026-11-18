@@ -178,6 +178,7 @@ describe('repositório — "Alerta confirmado" quando o preliminar perde a marca
     expect(confirmacao).toMatchObject({
       tipo: 'Alerta confirmado',
       titulo: 'O alerta “Alagamento – risco Crítico” foi confirmado',
+      motivo: 'Confirmado pela Defesa Civil',
       risco: evento.risco,
       confianca: evento.confianca, // valores do momento da confirmação
       naoConfirmado: false,
