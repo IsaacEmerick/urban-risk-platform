@@ -122,7 +122,8 @@ a inundações do SGB (Barueri, 2017).
   ("O alerta X foi confirmado"), com risco e confiança do momento; a notificação antiga não muda.
 - RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h. Se a confiança subir, valem RN01/RN02.
 - RN04 mesmo tipo a ≤ 300 m e ≤ 60 min → mesmo evento.
-- RN05 encerra com risco Baixo por 30 min ou por ação do agente.
+- RN05 encerra com risco Baixo por 30 min ou por ação do agente. RN03 e RN05 também valem sem dado novo:
+  `reavaliarPorTempo()` (função pura) roda para todos os eventos ativos a cada tique do simulador.
 - RN06 notifica só quem tem área de interesse no raio afetado (Alagamento 500 m, Ilha de calor 1 km,
   Interrupção = área informada pelo operador); alcança se distância(centro da área, evento) ≤ raio da área + raio
   afetado; sem renotificar em < 15 min, salvo escalada.

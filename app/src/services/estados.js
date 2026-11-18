@@ -3,7 +3,7 @@
 // { evento, efeitos }. Os efeitos dizem o que o sistema deve fazer depois (notificar, cancelar...).
 import { ESTADOS, FAIXAS_CONFIANCA, HORA, MINUTO, REGRAS } from './parametros.js'
 import { compararRisco } from './risco.js'
-import { passouPorAlerta } from './eventos.js'
+import { eventoAtivo, passouPorAlerta } from './eventos.js'
 
 export const EFEITOS = {
   NOTIFICAR_USUARIOS: 'notificarUsuarios',
@@ -106,6 +106,15 @@ export function avaliar(evento, agora = new Date()) {
     passo = passoAutomatico(atual, agora)
   }
   return { evento: atual, efeitos }
+}
+
+// Reavaliação pelo tempo, a cada tique do simulador: sem dado novo, o tempo sozinho também muda o evento.
+// RN03: Reportado sem confirmação há 2 h → Descartado. RN05: risco Baixo há 30 min → Encerrado.
+// Usa as mesmas guardas de avaliar() (o evento já vem consolidado com o "agora" do tique).
+// Encerrado e Descartado ficam como estão.
+export function reavaliarPorTempo(evento, agora = new Date()) {
+  if (!eventoAtivo(evento)) return { evento, efeitos: [] }
+  return avaliar(evento, agora)
 }
 
 function acaoInvalida(acao, evento) {

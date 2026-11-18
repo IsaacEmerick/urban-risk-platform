@@ -298,6 +298,11 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
   Encerrado ou Descartado não é reaproveitado, e a leitura seguinte cria um evento novo. Mesma
   fonte = mesmo identificador (um sensor, uma estação, um status publicado); registros da
   Comunidade de pessoas diferentes nunca contam como mesma fonte.
+- **Transições pelo tempo (RN03, RN05):** no protótipo, além de cada dado novo, todos os eventos
+  ativos são reavaliados a cada leitura do simulador (15 s; 2 s no modo demonstração). Assim, um
+  registro sem confirmação é descartado ao completar 2 h e um evento com risco Baixo é encerrado
+  após 30 min, mesmo sem dado novo. Para os eventos já carregados, os 30 min de risco Baixo contam
+  a partir da abertura do app.
 - **Escalada (RN01, RN06):** há escalada quando o risco do evento **sobe** em relação ao último
   alerta **e chega a Alto ou Crítico**. Subir de Baixo para Moderado não é escalada. Se o evento
   nunca alertou, a escalada gera o primeiro alerta; se já alertou, o alerta é reenviado.

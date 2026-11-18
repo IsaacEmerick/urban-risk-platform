@@ -17,6 +17,7 @@ import {
   agenteRejeita,
   avaliar,
   notificacaoEnviada,
+  reavaliarPorTempo,
 } from './estados.js'
 import { deveNotificar, resolverAreas } from './notificacao.js'
 import { aplicarConfirmacao } from './confirmacao.js'
@@ -261,6 +262,17 @@ export function criarRepositorio({
     return estado.eventos.find((e) => e.id === eventoId)
   }
 
+  // A cada tique do simulador: recalcula confiança e risco com o "agora" e aplica as transições
+  // pelo tempo (RN03: descarte em 2 h; RN05: encerramento após 30 min com risco Baixo)
+  function reavaliarTodosPorTempo(momento = new Date()) {
+    recalcularTodos(momento)
+    estado.eventos.filter(eventoAtivo).forEach((e) => {
+      const resultado = reavaliarPorTempo(e, momento)
+      substituirEvento(aplicarEfeitos(resultado.evento, resultado.efeitos, momento))
+    })
+    avisarInscritos()
+  }
+
   function registrarLeituraSensor(sensorId, leitura) {
     estado.sensores = estado.sensores.map((s) =>
       s.id === sensorId ? { ...s, leituras: [...s.leituras, leitura].slice(-MAX_LEITURAS_GUARDADAS) } : s,
@@ -300,6 +312,7 @@ export function criarRepositorio({
     confirmarOcorrencia,
     executarAcao,
     registrarLeituraSensor,
+    reavaliarTodosPorTempo,
     recalcular: (momento = new Date()) => {
       recalcularTodos(momento)
       avisarInscritos()

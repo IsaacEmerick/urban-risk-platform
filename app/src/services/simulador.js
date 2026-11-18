@@ -3,6 +3,7 @@
 // o alerta antecipado. Depois de transbordar, oscila um pouco acima da margem.
 // No mesmo tique, o sensor de temperatura do Jardim Maria Helena (evt-09, com falha recente) manda
 // uma leitura nova, para não ficar desatualizado (a leitura substitui a anterior no evento).
+// No fim do tique, todos os eventos ativos são reavaliados pelo tempo (RN03, RN05).
 import { ORIGENS, SIMULADOR, TIPOS } from './parametros.js'
 import { faltaParaTransbordar } from './risco.js'
 import { formatarMetros } from './formatar.js'
@@ -104,6 +105,8 @@ export function iniciarSimulador({
       const sensacao = proximaSensacao(sensorTemperatura, aleatorio)
       repositorio.receberDado(criarLeituraTemperatura(sensorTemperatura, sensacao, agora), agora)
     }
+    // Sem dado novo, o tempo também conta: RN03 (2 h) e RN05 (30 min com risco Baixo)
+    repositorio.reavaliarTodosPorTempo(agora)
   }, intervaloMs)
 
   return () => clearInterval(id)
