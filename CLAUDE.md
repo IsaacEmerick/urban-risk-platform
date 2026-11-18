@@ -95,18 +95,21 @@ a inundações do SGB (Barueri, 2017).
 - Alagamento por nível do rio (falta = cota de transbordamento − nível; parâmetros fictícios, não cotas oficiais):
   Moderado falta ≤ 1,0 m; Alto falta ≤ 0,5 m; Crítico transbordou (falta < 0). Vale o maior entre nível do rio,
   lâmina d'água em via e chuva.
-- Áreas de interesse (RF13): por bairro ou por ponto no mapa com raio (ex.: 1 km).
+- Áreas de interesse (RF13): por bairro ou por ponto no mapa com raio (ex.: 1 km). Cada bairro tem centro e
+  raio aproximados (`app/src/data/bairros.json`, a partir do OpenStreetMap), então bairro e ponto viram círculos.
 - Faixas de risco usam ≥ e < (sem lacunas); se dois critérios se aplicam, vale o nível mais alto.
 - Prioridade P = R × 25 × (C/100) + V, com R = 1..4 (Baixo..Crítico), C = confiança, V = +10 área vulnerável
   (hospital, escola, comunidade vulnerável ou área suscetível a inundação na carta do SGB, Barueri 2017; aplicado uma vez só).
-- RN01 alerta automático só com risco ≥ Alto e confiança ≥ 75.
+- RN01 alerta automático só com risco ≥ Alto e confiança ≥ 75. Depois de confirmado (por confiança ou pelo agente),
+  o evento emite novos alertas por escalada de risco sem nova checagem de confiança.
 - RN02 confiança 50–74 → Em validação (fila do agente); se Crítico, alerta preliminar "não confirmado",
   que perde a marca quando o agente confirma (transição interna em Em monitoramento).
 - RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h. Se a confiança subir, valem RN01/RN02.
 - RN04 mesmo tipo a ≤ 300 m e ≤ 60 min → mesmo evento.
 - RN05 encerra com risco Baixo por 30 min ou por ação do agente.
 - RN06 notifica só quem tem área de interesse no raio afetado (Alagamento 500 m, Ilha de calor 1 km,
-  Interrupção = área informada pelo operador); sem renotificar em < 15 min, salvo escalada.
+  Interrupção = área informada pelo operador); alcança se distância(centro da área, evento) ≤ raio da área + raio
+  afetado; sem renotificar em < 15 min, salvo escalada.
 - RN07 risco e confiança do evento = maior valor entre os dados agrupados.
 
 As funções `calcularConfianca()`, `classificarRisco()` e `calcularPrioridade()` em `app/src/services/`

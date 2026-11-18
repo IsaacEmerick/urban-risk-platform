@@ -1,6 +1,7 @@
 // Repositório em memória: carrega os dados simulados (src/data), calcula confiança e risco com os
 // serviços e segue o caminho do Diagrama de Sequência quando chega um dado novo:
 // confiança → risco → agrupamento (RN04) → consolidação (RN07) → estados → notificação (RN06).
+import bairrosJson from '../data/bairros.json'
 import eventosJson from '../data/eventos.json'
 import sensoresJson from '../data/sensores.json'
 import usuariosJson from '../data/usuarios.json'
@@ -15,7 +16,7 @@ import {
   avaliar,
   notificacaoEnviada,
 } from './estados.js'
-import { deveNotificar } from './notificacao.js'
+import { deveNotificar, resolverAreas } from './notificacao.js'
 
 const MAX_LEITURAS_GUARDADAS = 40
 
@@ -62,10 +63,13 @@ export function criarRepositorio({
   eventos = eventosJson,
   sensores = sensoresJson,
   usuarios = usuariosJson,
+  bairros = bairrosJson,
 } = {}) {
   const estado = {
+    bairros,
     sensores: sensores.map((s) => ({ ...s, leituras: [] })),
-    usuarios: usuarios.map((u) => ({ ...u })),
+    // Áreas por bairro ganham centro e raio do catálogo (RF13, RN06)
+    usuarios: usuarios.map((u) => ({ ...u, areasInteresse: resolverAreas(u.areasInteresse ?? [], bairros) })),
     eventos: [],
     notificacoes: [],
   }
@@ -179,6 +183,7 @@ export function criarRepositorio({
   return {
     listarEventos: () => estado.eventos,
     obterEvento: (id) => estado.eventos.find((e) => e.id === id),
+    listarBairros: () => estado.bairros,
     listarSensores: () => estado.sensores,
     obterSensor: (id) => estado.sensores.find((s) => s.id === id),
     listarUsuarios: () => estado.usuarios,

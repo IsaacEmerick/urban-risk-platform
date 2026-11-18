@@ -119,14 +119,23 @@ describe('Alerta emitido', () => {
 describe('Em monitoramento', () => {
   const comAlerta = { historico: [{ estado: 'Alerta emitido', em: AGORA }, { estado: 'Em monitoramento', em: AGORA }] }
 
-  it('risco escalou para Alto → Alerta emitido (reenviar)', () => {
+  it('escalada de um evento que nunca alertou → Alerta emitido com notificarUsuarios (primeiro alerta)', () => {
     const r = avaliar(evento('Em monitoramento', { risco: 'Alto', confianca: 90 }), AGORA)
     expect(r.evento.estado).toBe('Alerta emitido')
-    expect(r.efeitos).toEqual([EFEITOS.REENVIAR_ALERTA])
+    expect(r.evento.riscoAlertado).toBe('Alto')
+    expect(r.efeitos).toEqual([EFEITOS.NOTIFICAR_USUARIOS])
   })
 
-  it('escalada de Alto para Crítico depois de um alerta Alto também reenvia', () => {
-    const r = avaliar(evento('Em monitoramento', { risco: 'Crítico', confianca: 90, riscoAlertado: 'Alto' }), AGORA)
+  it('RN01: depois de confirmado, a escalada alerta sem nova checagem de confiança (confiança 60)', () => {
+    // ex.: confirmado pelo agente com confiança Média e risco Moderado; depois o risco sobe para Alto
+    const r = avaliar(evento('Em monitoramento', { risco: 'Alto', confianca: 60 }), AGORA)
+    expect(r.evento.estado).toBe('Alerta emitido')
+    expect(r.efeitos).toEqual([EFEITOS.NOTIFICAR_USUARIOS])
+  })
+
+  it('escalada de Alto para Crítico depois de um alerta Alto → reenviarAlerta (mesmo com confiança 55)', () => {
+    const r = avaliar(evento('Em monitoramento', { risco: 'Crítico', confianca: 55, riscoAlertado: 'Alto' }), AGORA)
+    expect(r.evento.estado).toBe('Alerta emitido')
     expect(r.efeitos).toEqual([EFEITOS.REENVIAR_ALERTA])
   })
 

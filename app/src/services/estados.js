@@ -63,11 +63,13 @@ function passoAutomatico(evento, agora) {
       return { evento: irPara(evento, ESTADOS.EM_MONITORAMENTO, agora) }
 
     case ESTADOS.EM_MONITORAMENTO:
-      // riscoEscalou: o risco subiu em relação ao último alerta e chegou a Alto ou mais
+      // riscoEscalou: o risco subiu em relação ao último alerta e chegou a Alto ou mais.
+      // RN01: o evento já foi confirmado, então a escalada alerta sem nova checagem de confiança.
       if (riscoAltoOuMais(risco) && (!evento.riscoAlertado || compararRisco(risco, evento.riscoAlertado) > 0)) {
         return {
           evento: irPara(evento, ESTADOS.ALERTA_EMITIDO, agora, { riscoAlertado: risco }),
-          efeito: EFEITOS.REENVIAR_ALERTA,
+          // Nunca alertou → primeiro alerta (notificarUsuarios); já alertou → reenviarAlerta
+          efeito: evento.riscoAlertado ? EFEITOS.REENVIAR_ALERTA : EFEITOS.NOTIFICAR_USUARIOS,
         }
       }
       // RN05: risco Baixo por 30 min seguidos → Encerrado

@@ -1,0 +1,16 @@
+[
+  {
+    "nome": "Parque Viana",
+    "lat": -23.541,
+    "lng": -46.8669,
+    "raioM": 500,
+    "observacao": "Centro e raio aproximados a partir do limite do bairro no OpenStreetMap (cerca de 0,8 km × 0,95 km). Não é limite oficial."
+  },
+  {
+    "nome": "Jardim Maria Helena",
+    "lat": -23.5293,
+    "lng": -46.8638,
+    "raioM": 500,
+    "observacao": "Centro a partir do ponto do bairro no OpenStreetMap (sem limite desenhado); raio aproximado. Não é limite oficial."
+  }
+]

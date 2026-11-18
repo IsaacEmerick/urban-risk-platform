@@ -9,12 +9,24 @@ export function raioAfetado(evento) {
   return RAIO_AFETADO_METROS[evento.tipo]
 }
 
-// Área de interesse (RF13): por bairro, ou por ponto no mapa com raio.
-// Ponto: os dois círculos (área do usuário e raio afetado) se tocam.
+// Área de interesse (RF13): por bairro ou por ponto no mapa com raio. As duas são círculos
+// (centro lat/lng + raioM; o bairro usa centro e raio aproximados de data/bairros.json).
+// Alcança se distância(centro da área, evento) ≤ raio da área + raio afetado do evento.
 export function areaAlcancada(area, evento) {
-  if (area.tipo === 'bairro') return area.bairro === evento.bairro
-  if (area.tipo === 'ponto') return distanciaMetros(area, evento) <= area.raioM + raioAfetado(evento)
-  return false
+  if (area.lat == null || area.lng == null || area.raioM == null) {
+    throw new Error(`Área de interesse sem centro e raio: ${area.bairro ?? area.tipo}`)
+  }
+  return distanciaMetros(area, evento) <= area.raioM + raioAfetado(evento)
+}
+
+// Completa as áreas por bairro com o centro e o raio do catálogo de bairros
+export function resolverAreas(areas, bairros) {
+  return areas.map((area) => {
+    if (area.tipo !== 'bairro') return area
+    const bairro = bairros.find((b) => b.nome === area.bairro)
+    if (!bairro) throw new Error(`Bairro não cadastrado: ${area.bairro}`)
+    return { ...area, lat: bairro.lat, lng: bairro.lng, raioM: bairro.raioM }
+  })
 }
 
 // ultimaNotificacao = { em, risco } da última vez que este usuário foi avisado deste evento (ou null)
