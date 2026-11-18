@@ -39,7 +39,6 @@ package "Camada de Dados" as DADOS {
   database "Séries temporais\n(TimescaleDB)" as TS
   database "Cofre de dados pessoais\n(criptografado)" as PII
   database "Logs de auditoria" as LOG
-  database "Cache (Redis)" as CACHE
 }
 
 ' Ligações invisíveis só para posicionar as camadas
@@ -56,37 +55,37 @@ GW -[hidden]right- ANA
 ING -[hidden]right- IAM
 CONF -[hidden]right- RISK
 DB -[hidden]right- TS
-TS -[hidden]right- CACHE
 PII -[hidden]right- LOG
 
-' Fontes e apresentação -> aplicação
+' Setas que cruzam camadas (com rótulo)
 COM -right-> APP : registra ocorrência
 S -down-> GW : envia leituras
 ING -up-> API : coleta agendada
+NOT -up-> APP : push
+NOT -up-> CNUI : entrega notificação
 APP -down-> GW
 PAINEL -down-> GW
 CNUI -down-> GW
 
-' Dentro da aplicação
-GW -down-> IAM : autentica
+' Dentro da aplicação (sem rótulo; o caminho está em docs/02-arquitetura.md)
+GW -down-> IAM
 GW -down-> ING
-GW -down-> EV : ações do agente
-ING -down-> BR : publica DadoRecebido
+GW -down-> EV
+ING -down-> BR
 BR -down-> VAL
 VAL -down-> CONF
 VAL -down-> RISK
 VAL -right-> EV
-EV -up-> BR : publica AlertaEmitido
+EV -up-> BR
 BR -down-> NOT
-NOT -up-> BR : publica NotificacaoEnviada
+NOT -up-> BR
 BR -down-> EV
-NOT -up-> APP : push
-NOT -up-> CNUI : entrega notificação
 
 ' Aplicação -> dados
-CONF -down-> DB : corroborações
+VAL -down-> DB
+CONF -down-> DB
 EV -down-> DB
-NOT -down-> DB : usuários e notificações
+NOT -down-> DB
 ING -down-> TS
 ANA -down-> DB
 ANA -down-> TS

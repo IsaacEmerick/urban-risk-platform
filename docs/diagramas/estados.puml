@@ -26,7 +26,7 @@ Confirmado --> EmMonitoramento : [risco < Alto]
 AlertaEmitido --> EmMonitoramento : notificacaoEnviada
 AlertaEmitido --> Descartado : agenteRejeita / notificarCancelamento
 EmMonitoramento --> AlertaEmitido : riscoEscalou / reenviarAlerta
-EmMonitoramento --> Descartado : agenteRejeita / notificarCancelamento
+EmMonitoramento --> Descartado : agenteRejeita / notificarCancelamento (se houve alerta)
 EmMonitoramento --> Encerrado : [risco Baixo por 30 min] ou agenteEncerra
 Encerrado --> [*]
 Descartado --> [*]
