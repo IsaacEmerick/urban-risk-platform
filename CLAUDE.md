@@ -85,7 +85,8 @@ a inundações do SGB (Barueri, 2017).
   Duração = previsão − início; se a previsão já passou, vale o tempo decorrido desde o início.
   "Normalizado" leva o risco a Baixo, e a RN05 encerra o evento em 30 min.
 - Cancelar alerta (agente, RF12): Alerta emitido ou Em monitoramento → Descartado, com notificação "Alerta cancelado".
-  Falso alerta (RNF11) = alertas que foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
+  Falso alerta (RNF11) = eventos que passaram por Alerta emitido e foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
+- Fila de validação lista só eventos Em validação (Confirmar, Descartar). Encerrar e Cancelar alerta ficam no Detalhe do alerta.
 - Áreas de interesse (RF13): por bairro ou por ponto no mapa com raio (ex.: 1 km).
 - Faixas de risco usam ≥ e < (sem lacunas); se dois critérios se aplicam, vale o nível mais alto.
 - Prioridade P = R × 25 × (C/100) + V, com R = 1..4 (Baixo..Crítico), C = confiança, V = +10 área vulnerável
@@ -111,7 +112,8 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
   - Morador: Painel, Alertas, Registrar, Notificações, Perfil.
   - Agente: Painel, Fila de validação, Alertas, Análises, Perfil.
   - Operador: Painel, Publicar status, Alertas, Análises, Perfil.
-- Perfil (RF15): atalhos para dados do usuário, Preferências, Meus registros, Privacidade e meus dados e sair.
+- Perfil (RF15), para todos: dados do usuário, Preferências, Privacidade e meus dados (todos são titulares na LGPD)
+  e sair. O morador também tem Meus registros.
 - Dados realistas (bairros, horários, mm/h, °C). Nada de lorem ipsum.
 
 ## Antes de dizer que uma tarefa terminou

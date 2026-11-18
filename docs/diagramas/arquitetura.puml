@@ -1,21 +1,28 @@
 @startuml arquitetura
 title Arquitetura em camadas - Urban Risk Intelligence Platform
+top to bottom direction
 skinparam componentStyle rectangle
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 60
 
-package "Fontes externas" {
+' ===== Topo: fontes externas e apresentação =====
+package "Fontes externas" as FONTES {
   [Sensor\n(nível d'água, chuva, temperatura)] as S
   [Base pública\n(CEMADEN, INMET, Defesa Civil, concessionárias)] as API
   [Comunidade\n(registros pelo app)] as COM
 }
 
-package "Camada de Apresentação" {
+package "Camada de Apresentação" as APRES {
   [App do Morador (web/mobile)] as APP
   [Painel do Agente / Operador] as PAINEL
   [Central de Notificações] as CNUI
 }
 
-package "Camada de Aplicação / Negócio" {
+' ===== Meio: aplicação / negócio =====
+package "Camada de Aplicação / Negócio" as APLIC {
   [API Gateway\n(autenticação, rate limit)] as GW
+  [Identidade e Consentimento\n(LGPD)] as IAM
   [Serviço de Ingestão] as ING
   queue "Broker de Eventos\n(processamento de eventos)" as BR
   [Serviço de Validação] as VAL
@@ -24,10 +31,10 @@ package "Camada de Aplicação / Negócio" {
   [Gerenciador de Eventos\n(máquina de estados)] as EV
   [Serviço de Notificação\n(push, SMS, e-mail)] as NOT
   [Serviço de Análises] as ANA
-  [Identidade e Consentimento\n(LGPD)] as IAM
 }
 
-package "Camada de Dados" {
+' ===== Base: dados =====
+package "Camada de Dados" as DADOS {
   database "Eventos + geodados\n(PostgreSQL/PostGIS)" as DB
   database "Séries temporais\n(TimescaleDB)" as TS
   database "Cofre de dados pessoais\n(criptografado)" as PII
@@ -35,34 +42,58 @@ package "Camada de Dados" {
   database "Cache (Redis)" as CACHE
 }
 
-COM --> APP : registra ocorrência
-S --> GW : envia leituras
-ING --> API : coleta agendada
-APP --> GW
-PAINEL --> GW
-CNUI --> GW
-GW --> IAM : autentica
-GW --> ING
-GW --> CACHE
-ING --> BR : publica DadoRecebido
-ING --> TS
-BR --> VAL
-VAL --> CONF
-VAL --> RISK
-VAL --> EV
-CONF --> DB : busca corroborações
-EV --> DB
-EV --> BR : publica AlertaEmitido
-BR --> NOT
-NOT --> DB : busca usuários e registra notificação
-NOT --> APP : push
-NOT --> CNUI : entrega notificação
-ANA --> DB
-ANA --> TS
-IAM --> PII
-IAM --> LOG
+' Ligações invisíveis só para posicionar as camadas
+S -[hidden]right- API
+API -[hidden]right- COM
+COM -[hidden]right- APP
+APP -[hidden]right- PAINEL
+PAINEL -[hidden]right- CNUI
+FONTES -[hidden]down- APLIC
+APRES -[hidden]down- APLIC
+APLIC -[hidden]down- DADOS
+' Ordem dos componentes dentro de cada camada
+GW -[hidden]right- ANA
+ING -[hidden]right- IAM
+CONF -[hidden]right- RISK
+DB -[hidden]right- TS
+TS -[hidden]right- CACHE
+PII -[hidden]right- LOG
 
-note right of PII
+' Fontes e apresentação -> aplicação
+COM -right-> APP : registra ocorrência
+S -down-> GW : envia leituras
+ING -up-> API : coleta agendada
+APP -down-> GW
+PAINEL -down-> GW
+CNUI -down-> GW
+
+' Dentro da aplicação
+GW -down-> IAM : autentica
+GW -down-> ING
+GW -down-> EV : ações do agente
+ING -down-> BR : publica DadoRecebido
+BR -down-> VAL
+VAL -down-> CONF
+VAL -down-> RISK
+VAL -right-> EV
+EV -up-> BR : publica AlertaEmitido
+BR -down-> NOT
+NOT -up-> BR : publica NotificacaoEnviada
+BR -down-> EV
+NOT -up-> APP : push
+NOT -up-> CNUI : entrega notificação
+
+' Aplicação -> dados
+CONF -down-> DB : corroborações
+EV -down-> DB
+NOT -down-> DB : usuários e notificações
+ING -down-> TS
+ANA -down-> DB
+ANA -down-> TS
+IAM -down-> PII
+IAM -down-> LOG
+
+note bottom of PII
   Dados pessoais separados dos eventos.
   Eventos guardam apenas ID pseudonimizado.
 end note

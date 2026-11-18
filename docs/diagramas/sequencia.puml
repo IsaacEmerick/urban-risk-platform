@@ -14,6 +14,7 @@ participant "Gerenciador de Eventos" as EV
 database "Eventos + geodados\n(PostgreSQL/PostGIS)" as DB
 participant "Serviço de Notificação" as NOT
 participant "App do Morador" as APP
+participant "Painel do Agente / Operador" as PAINEL
 actor "Carlos\n(agente da Defesa Civil)" as AG
 actor "Ana\n(moradora)" as M
 
@@ -46,8 +47,14 @@ else dado válido
     EV -> EV : estado = Confirmado
   else 50 <= confiança < 75 (RN02)
     EV -> EV : estado = Em validação
-    EV -> AG : solicitarValidacao(evento)
-    AG --> EV : agenteConfirma(evento)
+    AG -> PAINEL : abrir Fila de validação
+    PAINEL -> GW : listarEventos(estado = Em validação)
+    GW -> EV : listarEventos(estado = Em validação)
+    EV --> GW : eventos por prioridade
+    GW --> PAINEL : eventos por prioridade
+    AG -> PAINEL : Confirmar(evento)
+    PAINEL -> GW : agenteConfirma(evento)
+    GW -> EV : agenteConfirma(evento)
     EV -> EV : estado = Confirmado
   else confiança < 50 (RN03)
     EV -> EV : permanece Reportado (aguarda confirmações por até 2 h)

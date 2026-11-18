@@ -68,7 +68,7 @@ alertas e avisa só quem está na área afetada, sempre mostrando a **origem** d
 | **Perfil**                     | 45 anos, agente da Defesa Civil de Barueri, coordena uma equipe de campo.                                                                       |
 | **Objetivo**                   | Saber rapidamente onde está o risco mais grave e mais confiável, para deslocar a equipe certa.                                                  |
 | **Dores**                      | Recebe muitos relatos duplicados ou falsos. Os dados de sensores e os relatos de moradores ficam em lugares diferentes, e cruzá-los leva tempo. |
-| **O que a plataforma entrega** | Fila de validação ordenada por prioridade (risco × confiança), com a origem de cada dado. Confirma, descarta ou encerra eventos com um toque e cancela um alerta emitido por engano. |
+| **O que a plataforma entrega** | Fila de validação ordenada por prioridade (risco × confiança), com a origem de cada dado. Confirma ou descarta eventos na fila com um toque; no detalhe do alerta, encerra o evento ou cancela um alerta emitido por engano. |
 | **Fluxos no protótipo**        | Fluxo 3 (valida evento).                                                                                                                        |
 
 ### Juliana — operadora de serviço público
