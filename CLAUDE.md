@@ -64,6 +64,10 @@ a inundações do SGB (Barueri, 2017).
 - Níveis de risco: Baixo, Moderado, Alto, Crítico.
 - Faixas de confiança: Alta (≥ 75), Média (50–74), Baixa (< 50).
 - Estados do evento: Reportado, Em validação, Confirmado, Alerta emitido, Em monitoramento, Encerrado, Descartado.
+  "Em validação" = aguardando o agente.
+- Situações da interrupção (RF18): Interrupção identificada, Em atendimento, Normalização parcial, Normalizado.
+- Tipo de notificação especial: Alerta cancelado.
+- Diagramas PlantUML em UTF-8, com acentos (renderizados localmente com `-charset UTF-8`).
 - Componentes da arquitetura: API Gateway, Serviço de Ingestão, Broker de Eventos, Serviço de Validação,
   Motor de Confiança, Motor de Classificação de Risco, Gerenciador de Eventos, Serviço de Notificação,
   Serviço de Análises, Identidade e Consentimento (LGPD).
@@ -76,21 +80,24 @@ a inundações do SGB (Barueri, 2017).
 - Desatualizado = sem atualização por mais de 2× o intervalo esperado: Sensor 5 min, Base pública 15 min,
   Base pública (concessionária) 15 min. Comunidade: não se aplica.
 - Status publicado pelo operador (RF18, tela "Publicar status") entra como Base pública (concessionária), base 80.
-  Situações: Interrupção identificada, Em atendimento, Normalização parcial, Normalizado. O formulário também pede
-  nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?" (entradas do `classificarRisco()`).
+  O formulário pede situação, início, previsão de normalização, nº estimado de afetados e
+  "atinge hospital, escola ou abastecimento crítico?" (entradas do `classificarRisco()`).
+  Duração = previsão − início; se a previsão já passou, vale o tempo decorrido desde o início.
   "Normalizado" leva o risco a Baixo, e a RN05 encerra o evento em 30 min.
-- Cancelar alerta (agente, RF12): Alerta emitido → Descartado, com notificação do tipo "Alerta cancelado".
+- Cancelar alerta (agente, RF12): Alerta emitido ou Em monitoramento → Descartado, com notificação "Alerta cancelado".
   Falso alerta (RNF11) = alertas que foram para Descartado ÷ alertas emitidos; meta ≤ 10%.
 - Áreas de interesse (RF13): por bairro ou por ponto no mapa com raio (ex.: 1 km).
 - Faixas de risco usam ≥ e < (sem lacunas); se dois critérios se aplicam, vale o nível mais alto.
 - Prioridade P = R × 25 × (C/100) + V, com R = 1..4 (Baixo..Crítico), C = confiança, V = +10 área vulnerável
   (hospital, escola, comunidade vulnerável ou área suscetível a inundação na carta do SGB, Barueri 2017; aplicado uma vez só).
 - RN01 alerta automático só com risco ≥ Alto e confiança ≥ 75.
-- RN02 confiança 50–74 → fila de validação do agente; se Crítico, alerta preliminar "não confirmado".
-- RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h.
+- RN02 confiança 50–74 → Em validação (fila do agente); se Crítico, alerta preliminar "não confirmado",
+  que perde a marca quando o agente confirma (transição interna em Em monitoramento).
+- RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h. Se a confiança subir, valem RN01/RN02.
 - RN04 mesmo tipo a ≤ 300 m e ≤ 60 min → mesmo evento.
 - RN05 encerra com risco Baixo por 30 min ou por ação do agente.
-- RN06 notifica só quem tem área de interesse afetada; sem renotificar em < 15 min, salvo escalada.
+- RN06 notifica só quem tem área de interesse no raio afetado (Alagamento 500 m, Ilha de calor 1 km,
+  Interrupção = área informada pelo operador); sem renotificar em < 15 min, salvo escalada.
 - RN07 risco e confiança do evento = maior valor entre os dados agrupados.
 
 As funções `calcularConfianca()`, `classificarRisco()` e `calcularPrioridade()` em `app/src/services/`
@@ -104,6 +111,7 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
   - Morador: Painel, Alertas, Registrar, Notificações, Perfil.
   - Agente: Painel, Fila de validação, Alertas, Análises, Perfil.
   - Operador: Painel, Publicar status, Alertas, Análises, Perfil.
+- Perfil (RF15): atalhos para dados do usuário, Preferências, Meus registros, Privacidade e meus dados e sair.
 - Dados realistas (bairros, horários, mm/h, °C). Nada de lorem ipsum.
 
 ## Antes de dizer que uma tarefa terminou

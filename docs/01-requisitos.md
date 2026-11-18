@@ -17,6 +17,10 @@ exatamente os números abaixo.
 | Níveis de risco     | Baixo, Moderado, Alto, Crítico                                                               |
 | Faixas de confiança | Alta (≥ 75), Média (50–74), Baixa (< 50)                                                     |
 | Estados do evento   | Reportado, Em validação, Confirmado, Alerta emitido, Em monitoramento, Encerrado, Descartado |
+| Situações da interrupção (RF18) | Interrupção identificada, Em atendimento, Normalização parcial, Normalizado |
+| Tipo de notificação especial | Alerta cancelado (RF10, RF11) |
+
+**Em validação** significa que o evento está aguardando a decisão do agente (RN02).
 
 **Dado** é uma leitura ou registro individual (uma leitura de sensor, um boletim de base pública, um
 registro de morador). **Evento** é o agrupamento de dados sobre a mesma situação (regra RN04); é o
@@ -38,7 +42,8 @@ evento que tem estado, risco, confiança e prioridade.
 | Fila de validação | Eventos por prioridade com os botões Confirmar, Descartar, Encerrar e Cancelar alerta | RF04, RF12 | Agente |
 | Análises | Gráficos por tipo de risco, região e período | RF14 | Agente, operador |
 | Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta | RF16 | Morador |
-| Publicar status | Serviço, área, situação, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?" | RF18 | Operador |
+| Publicar status | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?" | RF18 | Operador |
+| Perfil | Atalhos: dados do usuário, Preferências, Meus registros, Privacidade e meus dados, sair | RF15 | Todos |
 
 ## 2. Requisitos funcionais
 
@@ -64,12 +69,13 @@ evento que tem estado, risco, confiança e prioridade.
 | RF12 | O sistema deve permitir que o agente confirme, descarte ou encerre um evento e cancele um alerta já emitido.                                            | Alta       | Carlos          | Fila de validação, Detalhe do alerta               |
 | RF13 | O sistema deve permitir que o usuário defina áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), além de tipos de risco e canais de alerta. | Média      | Ana             | Preferências                                       |
 | RF14 | O sistema deve gerar análises históricas de eventos por tipo de risco, região e período.                                                                | Média      | Carlos, Juliana | Análises                                           |
-| RF15 | O sistema deve autenticar usuários e aplicar perfis de acesso (morador, agente, operador).                                                              | Alta       | Todas           | Login / Cadastro                                   |
-| RF16 | O sistema deve permitir que o titular consulte, exporte e exclua seus dados pessoais e revogue consentimentos.                                          | Média      | Ana             | Privacidade e meus dados                           |
-| RF17 | O sistema deve permitir que outros moradores confirmem uma ocorrência já registrada.                                                                    | Baixa      | Ana             | Detalhe do alerta                                  |
-| RF18 | O sistema deve permitir que o operador publique o status de uma interrupção de serviço, com serviço afetado, área, situação, previsão de normalização, número estimado de afetados e se atinge hospital, escola ou abastecimento crítico. | Média      | Juliana         | Publicar status                                    |
+| RF15 | O sistema deve autenticar usuários e aplicar perfis de acesso (morador, agente, operador).                                                              | Alta       | Todas           | Login / Cadastro, Perfil                           |
+| RF16 | O sistema deve permitir que o titular consulte, exporte e exclua seus dados pessoais e revogue consentimentos.                                          | Média      | Ana             | Login / Cadastro, Privacidade e meus dados         |
+| RF17 | O sistema deve permitir que outros moradores confirmem uma ocorrência já registrada.                                                                    | Baixa      | Ana             | Detalhe do alerta, Meus registros                  |
+| RF18 | O sistema deve permitir que o operador publique o status de uma interrupção de serviço, com serviço afetado, área, situação, início, previsão de normalização, número estimado de afetados e se atinge hospital, escola ou abastecimento crítico. | Média      | Juliana         | Publicar status                                    |
 
-**Sobre o RF12:** cancelar um alerta leva o evento de Alerta emitido para **Descartado**, e quem
+**Sobre o RF12:** cancelar um alerta leva o evento de **Alerta emitido** ou de **Em monitoramento**
+para **Descartado**, e quem
 recebeu o alerta é avisado com uma notificação do tipo "Alerta cancelado" (RF10, RF11). Esses
 cancelamentos são a base da medição de falso alerta do RNF11.
 
@@ -77,8 +83,10 @@ cancelamentos são a base da medição de falso alerta do RNF11.
 
 - Situações possíveis: **Interrupção identificada**, **Em atendimento**, **Normalização parcial** e
   **Normalizado**.
-- O número estimado de afetados e a resposta "atinge hospital, escola ou abastecimento crítico?"
-  são entradas do `classificarRisco()` para Interrupção de serviço (seção 4.2).
+- A duração, o número estimado de afetados e a resposta "atinge hospital, escola ou abastecimento
+  crítico?" são entradas do `classificarRisco()` para Interrupção de serviço (seção 4.2).
+- **Duração** = previsão de normalização − início. Se a previsão já passou e a interrupção continua,
+  vale o tempo decorrido desde o início.
 - O status publicado entra na plataforma como dado de origem **Base pública (concessionária)**,
   com base de confiança 80 (seção 4.1).
 - A situação **Normalizado** leva o risco a **Baixo**; pela RN05, o evento é encerrado após 30 min.
@@ -175,6 +183,7 @@ nível d'água a 300 m registra a mesma situação 10 min depois (+15), a confia
 
 - Abaixo do limiar de Moderado, o risco é **Baixo**.
 - Interrupção de serviço com situação **Normalizado** (RF18) tem risco **Baixo**.
+- A duração da interrupção é calculada a partir do início e da previsão de normalização (ver RF18).
 - Quando mais de um critério se aplica (por exemplo, chuva e lâmina d'água), vale o **nível mais alto**.
 - O risco do evento segue a regra RN07.
 
@@ -197,10 +206,10 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
 
 | ID   | Regra                                                                                                                                                                     | Onde aparece                                        |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| RN01 | O alerta público é emitido automaticamente apenas quando **risco ≥ Alto e confiança ≥ 75**.                                                                               | Estados: Confirmado → Alerta emitido                |
-| RN02 | Com **confiança entre 50 e 74**, o evento vai para a Fila de validação do agente. Se o risco for **Crítico**, sai um alerta preliminar marcado como **"não confirmado"**. | Estados: Em validação; Fila de validação            |
-| RN03 | Com **confiança < 50**, o evento fica **Reportado** aguardando confirmações e é **Descartado** se não houver nenhuma em **2 h**.                                          | Estados: Reportado → Descartado                     |
+| RN01 | O alerta público é emitido automaticamente apenas quando **risco ≥ Alto e confiança ≥ 75**.                                                                               | Estados: Reportado → Confirmado → Alerta emitido    |
+| RN02 | Com **confiança entre 50 e 74**, o evento fica **Em validação**, aguardando o agente na Fila de validação. Se o risco for **Crítico**, sai um alerta preliminar marcado como **"não confirmado"**; quando o agente confirma, a marca é removida. | Estados: Reportado → Em validação; Em monitoramento (agenteConfirma / atualizarAlerta) |
+| RN03 | Com **confiança < 50**, o evento fica **Reportado** aguardando confirmações e é **Descartado** se não houver nenhuma em **2 h**. Se as confirmações elevarem a confiança, valem a RN01 ou a RN02. | Estados: Reportado → Descartado                     |
 | RN04 | Dados do **mesmo tipo** a até **300 m** e **60 min** um do outro são agrupados no mesmo evento.                                                                           | Serviço de Validação                                |
 | RN05 | O evento é **Encerrado** quando o risco fica abaixo do limiar de Moderado (Baixo) por **30 min** seguidos ou quando o agente o encerra.                                   | Estados: Em monitoramento → Encerrado               |
-| RN06 | Só recebe notificação quem tem **área de interesse** no raio afetado. O mesmo evento não é renotificado em menos de **15 min**, salvo se o risco subir (escalada).        | Serviço de Notificação; Central de notificações     |
+| RN06 | Só recebe notificação quem tem **área de interesse** no raio afetado: **500 m** para Alagamento, **1 km** para Ilha de calor e a **área informada pelo operador** para Interrupção de serviço. O mesmo evento não é renotificado em menos de **15 min**, salvo se o risco subir (escalada). | Serviço de Notificação; Central de notificações     |
 | RN07 | O **risco** e a **confiança** do evento são o **maior valor** entre os dados agrupados.                                                                                   | Motor de Confiança; Motor de Classificação de Risco |

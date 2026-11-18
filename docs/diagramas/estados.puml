@@ -1,25 +1,32 @@
-@startuml
+@startuml estados
 title Ciclo de vida de um evento de risco
 hide empty description
 state Reportado
-state "Em validacao" as EmValidacao
+state "Em validação" as EmValidacao
 state Confirmado
 state "Alerta emitido" as AlertaEmitido
 state "Em monitoramento" as EmMonitoramento
 state Encerrado
 state Descartado
 
+' Em validação = aguardando a decisão do agente (RN02)
+EmValidacao : aguardando o agente
+' Transição interna: confirma o alerta preliminar e remove a marca "não confirmado"
+EmMonitoramento : agenteConfirma / atualizarAlerta
+
 [*] --> Reportado : dadoRecebido
-Reportado --> EmValidacao : novoDado [confianca >= 50]
-Reportado --> Descartado : timeout [sem confirmacao em 2 h]
-EmValidacao --> Confirmado : [confianca >= 75] ou agenteConfirma
-EmValidacao --> AlertaEmitido : [risco = Critico] / emitirAlertaPreliminar
-EmValidacao --> Descartado : agenteRejeita ou [dado invalido]
+Reportado --> Confirmado : [confiança >= 75]
+Reportado --> EmValidacao : [50 <= confiança < 75]
+Reportado --> Descartado : timeout [sem confirmação em 2 h]
+EmValidacao --> Confirmado : agenteConfirma
+EmValidacao --> AlertaEmitido : [risco = Crítico] / emitirAlertaPreliminar
+EmValidacao --> Descartado : agenteRejeita
 Confirmado --> AlertaEmitido : [risco >= Alto] / notificarUsuarios
 Confirmado --> EmMonitoramento : [risco < Alto]
 AlertaEmitido --> EmMonitoramento : notificacaoEnviada
 AlertaEmitido --> Descartado : agenteRejeita / notificarCancelamento
 EmMonitoramento --> AlertaEmitido : riscoEscalou / reenviarAlerta
+EmMonitoramento --> Descartado : agenteRejeita / notificarCancelamento
 EmMonitoramento --> Encerrado : [risco Baixo por 30 min] ou agenteEncerra
 Encerrado --> [*]
 Descartado --> [*]

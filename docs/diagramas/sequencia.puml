@@ -1,65 +1,67 @@
 @startuml sequencia
 title Fluxo de recebimento e disparo de um alerta
 autonumber
-' Participantes com os mesmos nomes do glossario e do diagrama de arquitetura.
-' Acentos omitidos para evitar erros de codificacao no PlantUML.
-participant "Fonte de dados\n(Sensor / Base publica / Comunidade)" as F
+' Participantes com os mesmos nomes do glossário e do diagrama de arquitetura.
+participant "Sensor" as S
 participant "API Gateway" as GW
 participant "Identidade e Consentimento\n(LGPD)" as IAM
-participant "Servico de Ingestao" as ING
+participant "Serviço de Ingestão" as ING
 queue "Broker de Eventos" as BR
-participant "Servico de Validacao" as VAL
-participant "Motor de Confianca" as CONF
-participant "Motor de Classificacao de Risco" as RISK
+participant "Serviço de Validação" as VAL
+participant "Motor de Confiança" as CONF
+participant "Motor de Classificação de Risco" as RISK
 participant "Gerenciador de Eventos" as EV
 database "Eventos + geodados\n(PostgreSQL/PostGIS)" as DB
-participant "Servico de Notificacao" as NOT
+participant "Serviço de Notificação" as NOT
+participant "App do Morador" as APP
 actor "Carlos\n(agente da Defesa Civil)" as AG
 actor "Ana\n(moradora)" as M
 
-F -> GW : enviarDado(payload, origem, timestamp)
+S -> GW : enviarDado(leitura, origem, timestamp)
 GW -> IAM : autenticar(origem)
 IAM --> GW : origem autenticada
-GW -> ING : encaminhar(payload)
+GW -> ING : encaminhar(leitura)
 ING -> ING : normalizar e pseudonimizar dados pessoais
+note over ING : Base pública: coletada pelo Serviço de Ingestão\n(coleta agendada); daqui em diante o fluxo é o mesmo
 ING -> BR : publicar(DadoRecebido)
 ING --> GW : 202 Accepted
-GW --> F : 202 Accepted
+GW --> S : 202 Accepted
 
 BR -> VAL : consumir(DadoRecebido)
 VAL -> VAL : checar formato, faixa e duplicidade
-alt dado invalido
+alt dado inválido
   VAL -> DB : registrar(descartado, motivo)
-else dado valido
+else dado válido
   VAL -> CONF : calcularConfianca(dado)
-  CONF -> DB : buscarCorroboracoes(area 500 m, janela 30 min)
-  DB --> CONF : dados proximos
-  CONF --> VAL : confianca (ex.: 80, Alta)
+  CONF -> DB : buscarCorroboracoes(raio 500 m, janela 30 min)
+  DB --> CONF : dados próximos
+  CONF --> VAL : confiança (ex.: 80, Alta)
   VAL -> RISK : classificarRisco(dado)
-  RISK --> VAL : nivel de risco (ex.: Alto)
-  VAL -> EV : criarOuAtualizarEvento(dado, risco, confianca)
-  note right of EV : RN04 agrupa dados do mesmo tipo\n(300 m, 60 min); RN07 usa o maior\nrisco e a maior confianca do grupo
-  EV -> DB : salvar(evento)
+  RISK --> VAL : nível de risco (ex.: Alto)
+  VAL -> EV : criarOuAtualizarEvento(dado, risco, confiança)
+  note right of EV : RN04 agrupa dados do mesmo tipo\n(300 m, 60 min); RN07 usa o maior\nrisco e a maior confiança do grupo
+  EV -> DB : salvar(evento, estado = Reportado)
 
-  alt confianca >= 75
+  alt confiança >= 75 (RN01)
     EV -> EV : estado = Confirmado
-  else confianca entre 50 e 74 (RN02)
-    EV -> EV : estado = Em validacao
+  else 50 <= confiança < 75 (RN02)
+    EV -> EV : estado = Em validação
     EV -> AG : solicitarValidacao(evento)
-    AG --> EV : confirmar(evento)
+    AG --> EV : agenteConfirma(evento)
     EV -> EV : estado = Confirmado
-  else confianca < 50 (RN03)
-    EV -> EV : estado = Reportado (aguarda confirmacoes)
+  else confiança < 50 (RN03)
+    EV -> EV : permanece Reportado (aguarda confirmações por até 2 h)
   end
 
-  opt estado = Confirmado e risco >= Alto (RN01)
+  opt estado = Confirmado e risco >= Alto
     EV -> EV : estado = Alerta emitido
     EV -> BR : publicar(AlertaEmitido)
     BR -> NOT : consumir(AlertaEmitido)
-    NOT -> DB : buscarUsuarios(areaAfetada, preferencias)
-    DB --> NOT : usuarios com area de interesse afetada (RN06)
-    NOT -> M : enviarPush("Alagamento - risco Alto")
-    NOT -> DB : registrarNotificacao(usuario, alerta)
+    NOT -> DB : buscarUsuarios(raio afetado, áreas de interesse)
+    DB --> NOT : usuários com área de interesse afetada (RN06)
+    NOT -> APP : enviarPush("Alagamento - risco Alto")
+    APP -> M : exibir notificação
+    NOT -> DB : registrarNotificacao(usuário, alerta)
     NOT -> BR : publicar(NotificacaoEnviada)
     BR -> EV : consumir(NotificacaoEnviada)
     EV -> EV : estado = Em monitoramento

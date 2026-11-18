@@ -3,39 +3,39 @@ title Arquitetura em camadas - Urban Risk Intelligence Platform
 skinparam componentStyle rectangle
 
 package "Fontes externas" {
-  [Sensores IoT\n(nivel d'agua, chuva, temperatura)] as S
-  [APIs publicas\n(CEMADEN, INMET, concessionarias)] as API
+  [Sensor\n(nível d'água, chuva, temperatura)] as S
+  [Base pública\n(CEMADEN, INMET, Defesa Civil, concessionárias)] as API
   [Comunidade\n(registros pelo app)] as COM
 }
 
-package "Camada de Apresentacao" {
+package "Camada de Apresentação" {
   [App do Morador (web/mobile)] as APP
   [Painel do Agente / Operador] as PAINEL
-  [Central de Notificacoes] as CNUI
+  [Central de Notificações] as CNUI
 }
 
-package "Camada de Aplicacao / Negocio" {
-  [API Gateway\n(autenticacao, rate limit)] as GW
-  [Servico de Ingestao] as ING
+package "Camada de Aplicação / Negócio" {
+  [API Gateway\n(autenticação, rate limit)] as GW
+  [Serviço de Ingestão] as ING
   queue "Broker de Eventos\n(processamento de eventos)" as BR
-  [Servico de Validacao] as VAL
-  [Motor de Confianca] as CONF
-  [Motor de Classificacao de Risco] as RISK
-  [Gerenciador de Eventos\n(maquina de estados)] as EV
-  [Servico de Notificacao\n(push, SMS, e-mail)] as NOT
-  [Servico de Analises] as ANA
+  [Serviço de Validação] as VAL
+  [Motor de Confiança] as CONF
+  [Motor de Classificação de Risco] as RISK
+  [Gerenciador de Eventos\n(máquina de estados)] as EV
+  [Serviço de Notificação\n(push, SMS, e-mail)] as NOT
+  [Serviço de Análises] as ANA
   [Identidade e Consentimento\n(LGPD)] as IAM
 }
 
 package "Camada de Dados" {
   database "Eventos + geodados\n(PostgreSQL/PostGIS)" as DB
-  database "Series temporais\n(TimescaleDB)" as TS
+  database "Séries temporais\n(TimescaleDB)" as TS
   database "Cofre de dados pessoais\n(criptografado)" as PII
   database "Logs de auditoria" as LOG
   database "Cache (Redis)" as CACHE
 }
 
-COM --> APP : registra ocorrencia
+COM --> APP : registra ocorrência
 S --> GW : envia leituras
 ING --> API : coleta agendada
 APP --> GW
@@ -50,10 +50,13 @@ BR --> VAL
 VAL --> CONF
 VAL --> RISK
 VAL --> EV
+CONF --> DB : busca corroborações
 EV --> DB
 EV --> BR : publica AlertaEmitido
 BR --> NOT
-NOT --> CNUI : entrega notificacao
+NOT --> DB : busca usuários e registra notificação
+NOT --> APP : push
+NOT --> CNUI : entrega notificação
 ANA --> DB
 ANA --> TS
 IAM --> PII
