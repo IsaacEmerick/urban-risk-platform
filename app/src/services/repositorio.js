@@ -113,18 +113,42 @@ export function criarRepositorio({
     })
   }
 
+  // "Alerta confirmado" (RN02): quando o alerta preliminar perde a marca "não confirmado" (pelo agente
+  // ou pela confiança), quem recebeu o preliminar ganha uma notificação nova, com o risco e a confiança
+  // do momento. A notificação antiga não muda: continua um registro do que foi enviado.
+  function notificarConfirmacao(evento, momento) {
+    estado.usuarios.forEach((usuario) => {
+      const preliminar = estado.notificacoes.find(
+        (n) => n.usuarioId === usuario.id && n.eventoId === evento.id && n.tipo === 'Alerta' && n.naoConfirmado,
+      )
+      if (!preliminar) return
+      adicionarNotificacao(usuario, evento, 'Alerta confirmado', {
+        em: momento,
+        lida: false,
+        risco: evento.risco,
+        confianca: evento.confianca,
+        titulo: `O alerta “${preliminar.titulo}” foi confirmado`,
+      })
+    })
+  }
+
   // A notificação é um registro do passado: guarda o risco, a confiança e a origem do momento do
   // envio (riscoAlertado / confiancaAlertada do último alerta), e não os valores recalculados depois.
   // O "Alerta cancelado" repete os valores do alerta que foi cancelado.
-  function adicionarNotificacao(usuario, evento, tipo, { em, lida }) {
-    const risco = evento.riscoAlertado ?? evento.risco
-    const confianca = evento.confiancaAlertada ?? evento.confianca
+  function adicionarNotificacao(usuario, evento, tipo, opcoes) {
+    const {
+      em,
+      lida,
+      risco = evento.riscoAlertado ?? evento.risco,
+      confianca = evento.confiancaAlertada ?? evento.confianca,
+      titulo = `${evento.tipo} – risco ${risco}`,
+    } = opcoes
     estado.notificacoes.push({
       id: `ntf-${proximoId++}`,
       usuarioId: usuario.id,
       eventoId: evento.id,
       tipo,
-      titulo: `${evento.tipo} – risco ${risco}`,
+      titulo,
       risco,
       confianca,
       faixaConfianca: faixaConfianca(confianca),
@@ -165,6 +189,7 @@ export function criarRepositorio({
       notificar(atual, 'Alerta', momento)
       atual = notificacaoEnviada(atual, momento).evento // Alerta emitido → Em monitoramento
     }
+    if (efeitos.includes(EFEITOS.ATUALIZAR_ALERTA)) notificarConfirmacao(atual, momento)
     if (efeitos.includes(EFEITOS.NOTIFICAR_CANCELAMENTO)) notificar(atual, 'Alerta cancelado', momento)
     return atual
   }

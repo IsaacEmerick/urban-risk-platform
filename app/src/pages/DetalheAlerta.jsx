@@ -22,7 +22,7 @@ import { ESTADOS, ORIGENS } from '../services/parametros.js'
 
 // Mensagem mostrada depois de cada ação (mesmo verbo do botão)
 const RESULTADOS = {
-  confirmarAlerta: 'Alerta confirmado. A marca "não confirmado" foi removida.',
+  confirmarAlerta: 'Alerta confirmado. A marca "não confirmado" foi removida e quem recebeu foi avisado com "Alerta confirmado".',
   encerrar: 'Evento encerrado.',
   cancelarAlerta: 'Alerta cancelado. Quem recebeu foi avisado com "Alerta cancelado".',
   descartarEvento: 'Evento descartado.',

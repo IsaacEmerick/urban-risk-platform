@@ -1,5 +1,5 @@
 // Central de notificações (RF10, RF11): histórico, lidas e não lidas, filtro por tipo
-// (Alerta e Alerta cancelado) e etiqueta "não confirmado" no alerta preliminar (RN02).
+// (Alerta, Alerta confirmado e Alerta cancelado) e etiqueta "não confirmado" no alerta preliminar (RN02).
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CarimboAtualizacao from '../components/CarimboAtualizacao.jsx'
@@ -18,6 +18,7 @@ const FILTROS = [
   { id: 'todas', rotulo: 'Todas', aceita: () => true },
   { id: 'naoLidas', rotulo: 'Não lidas', aceita: (n) => !n.lida },
   { id: 'alerta', rotulo: 'Alerta', aceita: (n) => n.tipo === 'Alerta' },
+  { id: 'confirmado', rotulo: 'Alerta confirmado', aceita: (n) => n.tipo === 'Alerta confirmado' },
   { id: 'cancelado', rotulo: 'Alerta cancelado', aceita: (n) => n.tipo === 'Alerta cancelado' },
 ]
 

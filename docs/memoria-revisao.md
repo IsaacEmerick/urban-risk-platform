@@ -2,7 +2,7 @@
 
 > Arquivo do **revisor** (Claude no claude.ai). Serve para retomar o trabalho numa conversa nova.
 > **Claude Code: não edite este arquivo.** Ele não faz parte da entrega e não entra no PDF.
-> Última atualização: 18/11/2026, 10h45.
+> Última atualização: 18/11/2026, 11h40.
 
 ## Como retomar numa conversa nova
 
@@ -58,7 +58,13 @@
   14 rotas, 3 perfis (Ana moradora, Carlos agente, Juliana operadora). Dados em memória: recarregar reinicia.
 - **Sessão 4 (fluxo 1) pronta:** `tokens.css` (fonte Atkinson Hyperlegible Next; selo de confiança em barrinhas), Painel, Central de
   notificações, Detalhe do alerta, Origem e confiança. Capturas em `docs/prints/`.
-- **Enviado ao Claude Code e em andamento:** correções da revisão visual da Sessão 4 e o `/plan` da Sessão 5 (ver "Próximo passo").
+- **Correções da revisão visual da Sessão 4 feitas** (commit `dee5554`, 188 testes): notificações com risco/confiança/origem do
+  envio, "Risco Alto (cancelado)" em cinza, círculo de 100 m com o ícone de risco no centro (RNF07), plural, aba "Fila".
+  As capturas antigas de `docs/prints/` ficaram desatualizadas: refazer junto com as da Sessão 5.
+- **Sessão 5 (fluxo 2) pronta** (commits `fc5cf4c` e `c8aacdb`, 209 testes): Lista de alertas, Registro comunitário em 3 passos
+  (5 toques no mínimo), confirmação de envio, Meus registros, "Também vejo isso". Demonstração: Ana confirma o evt-02 (65 → 75) →
+  Confirmado → Alerta emitido. 13 capturas em `docs/prints/`.
+- **Em andamento:** correções da revisão visual da Sessão 5 + Sessão 6a (ver "Próximo passo").
 
 ## Decisões que não são óbvias (e o porquê)
 
@@ -76,11 +82,20 @@
 - **Escalada:** depois de confirmado, o evento alerta de novo sem rechecar a confiança. Duas transições com guarda no diagrama:
   `[nunca alertou] / notificarUsuarios` e `[já alertou] / reenviarAlerta`.
 - **Área de interesse por bairro:** centro + raio de 500 m; alcança se a distância ≤ raio da área + raio afetado.
-- **RNF08:** a posição pública dos registros da Comunidade é aproximada (~100 m). Mudando de pino arredondado para **círculo de ~100 m**.
+- **RNF08:** a posição pública dos eventos só com registros da Comunidade é um **círculo de 100 m** (opacidade 60%), com o ícone de
+  risco no centro, sem disco, para não parecer pino e para cumprir o RNF07.
 - **Bônus V** (+10) aplicado uma vez; inclui área suscetível a inundação na carta do SGB.
 - **Perfil:** Privacidade e meus dados vale para todos (todos são titulares na LGPD); Meus registros só para o morador.
 - **Painel do morador mostra eventos Reportado e Em validação** com o selo de confiança: transparência; alerta público só pela RN01.
-- **Notificações** são registro do passado: devem mostrar risco e confiança do momento do envio (correção em andamento).
+- **Notificações** são registro do passado: mostram risco, confiança e origem do momento do envio.
+- **evt-02 é de uma vizinha** (`p-2b9e`) e o **evt-04 é da Ana** (`p-7f3a`): a Ana não pode confirmar o próprio registro (RF17:
+  uma confirmação por pessoa; quem tem registro no evento não confirma).
+- **Altura da água** (só Alagamento): abaixo do meio-fio ≈ 5 cm (Baixo), meio-fio ≈ 15 cm (Alto), canela ≈ 35 cm (Crítico),
+  acima do joelho ≈ 50 cm (Crítico). Descrição opcional com sugestões; título gerado (tipo + altura + bairro).
+- **Posição atual simulada** da Ana: rua Jatobá, Parque Viana, a mais de 300 m do evt-02. **No vídeo: registrar ANTES de
+  confirmar o evt-02**, para o registro não ser agrupado a ele.
+- Proposta da revisão da Sessão 5: risco de evento não confirmado (Reportado, Em validação) exibido como **"relatado"**
+  (selo vazado, sem preenchimento), para não alarmar com um único relato.
 
 ## Perguntas prováveis da banca (preparar o Isaac)
 
@@ -95,10 +110,8 @@
 
 ## Pendências
 
-1. **Sessão 5:** Lista de alertas, Registro comunitário (≤ 3 passos, ≤ 60 s), confirmação de envio, Meus registros e
-   "Também vejo isso" (RF17: uma confirmação por usuário por evento; quem registrou não confirma o próprio). Demonstração:
-   Ana confirma o evt-02 (65 → 75) → Confirmado → Alerta emitido.
-2. **Sessão 6:** Fila de validação, Publicar status (Juliana), Login, Preferências, Análises (as duas metas do RNF11), Privacidade, Perfil.
+1. **Sessão 6a** (Carlos e Juliana): Fila de validação, Publicar status, Análises (as duas metas do RNF11, preliminares separados).
+2. **Sessão 6b:** Login (com consentimento LGPD), Preferências, Privacidade e meus dados, Perfil.
 3. Deploy na Vercel; README com nome completo, RM e links (o Isaac preenche).
 4. Prettier (adiado) e alinhamento de tabelas Markdown (aviso MD060).
 5. Revisão final de coerência (juntar os achados pequenos das auditorias e resolver de uma vez).
@@ -108,7 +121,5 @@
 
 ## Próximo passo
 
-Aguardar o relatório do Claude Code com: (a) as correções da revisão visual da Sessão 4 (notificações com risco e confiança do envio,
-círculo de ~100 m, plural correto, aba "Fila", posição do carimbo no card) e (b) o plano ou o resultado da Sessão 5, com as capturas
-novas em `docs/prints/` (lista-alertas, registro-passo-1 a 3, registro-enviado, meus-registros, detalhe-tambem-vejo).
-Revisar o relatório e as capturas novas e, depois, escrever o prompt da Sessão 6.
+Aguardar o relatório das correções da revisão visual da Sessão 5 (risco "relatado", seleção com ✓ uniforme, títulos sem data
+relativa, carimbo escondido em encerrados, tabela de telas) e o plano ou o resultado da Sessão 6a. Revisar e escrever a Sessão 6b.

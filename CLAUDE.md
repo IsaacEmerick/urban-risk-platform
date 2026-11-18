@@ -68,7 +68,7 @@ a inundações do SGB (Barueri, 2017).
 - Estados do evento: Reportado, Em validação, Confirmado, Alerta emitido, Em monitoramento, Encerrado, Descartado.
   "Em validação" = aguardando o agente.
 - Situações da interrupção (RF18): Interrupção identificada, Em atendimento, Normalização parcial, Normalizado.
-- Tipo de notificação especial: Alerta cancelado.
+- Tipos de notificação especiais: Alerta confirmado, Alerta cancelado.
 - Diagramas PlantUML em UTF-8, com acentos (renderizados localmente com `-charset UTF-8`).
   A arquitetura fica em `docs/diagramas/arquitetura.drawio`; o PNG é exportado pelo draw.io desktop.
   Cores da arquitetura: azul = processamento de eventos, laranja = notificação, roxo = proteção de dados pessoais.
@@ -110,6 +110,8 @@ a inundações do SGB (Barueri, 2017).
   que perde a marca quando o agente confirma ou quando a confiança chega a 75 (transições internas em
   Em monitoramento, ambas com atualizarAlerta; `confiancaAlertada` não muda). A notificação é do
   tipo Alerta com a marca `naoConfirmado` (etiqueta "não confirmado" no card), não um tipo próprio.
+  Quando a marca cai, quem recebeu o preliminar ganha uma notificação nova "Alerta confirmado"
+  ("O alerta X foi confirmado"), com risco e confiança do momento; a notificação antiga não muda.
 - RN03 confiança < 50 → fica Reportado; descartado sem confirmação em 2 h. Se a confiança subir, valem RN01/RN02.
 - RN04 mesmo tipo a ≤ 300 m e ≤ 60 min → mesmo evento.
 - RN05 encerra com risco Baixo por 30 min ou por ação do agente.

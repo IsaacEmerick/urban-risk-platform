@@ -97,7 +97,7 @@ describe('alerta preliminar + confirmações de moradores (RN02)', () => {
     expect(depois).toMatchObject({ confianca: 70, naoConfirmado: true, estado: 'Em monitoramento' }) // 3 confirmações no máximo
   })
 
-  it('preliminar com foto (65) + 1 confirmação = 75: perde a marca, sem alerta novo, confiancaAlertada fica 65', () => {
+  it('preliminar com foto (65) + 1 confirmação = 75: perde a marca, "Alerta confirmado", confiancaAlertada fica 65', () => {
     const r = criarRepositorio({ agora: AGORA })
     // registro de morador novo no Jardim Maria Helena, longe dos eventos: 40 + 20 + 5 (foto) = 65, Crítico
     const preliminar = r.receberDado(
@@ -118,11 +118,16 @@ describe('alerta preliminar + confirmações de moradores (RN02)', () => {
       AGORA,
     )
     expect(preliminar).toMatchObject({ confianca: 65, naoConfirmado: true, estado: 'Em monitoramento' })
-    const alertasAntes = r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === preliminar.id).length
+    const doEvento = () => r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === preliminar.id)
+    expect(doEvento().map((n) => n.tipo)).toEqual(['Alerta'])
 
     const depois = r.confirmarOcorrencia(preliminar.id, 'usr-ana', AGORA)
     expect(depois).toMatchObject({ confianca: 75, naoConfirmado: false, estado: 'Em monitoramento', confiancaAlertada: 65 })
-    expect(r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === preliminar.id)).toHaveLength(alertasAntes)
+    // Nenhum alerta novo: só o aviso "Alerta confirmado", com a confiança do momento (75); o preliminar continua igual
+    const [antigo, confirmacao] = doEvento()
+    expect(antigo).toMatchObject({ tipo: 'Alerta', naoConfirmado: true, confianca: 65 })
+    expect(confirmacao).toMatchObject({ tipo: 'Alerta confirmado', risco: 'Crítico', confianca: 75, faixaConfianca: 'Alta', naoConfirmado: false, lida: false })
+    expect(doEvento()).toHaveLength(2)
     // Análises: conta como "preliminar confirmado depois", igual à confirmação do agente
     expect(foiAlertaPreliminar(depois)).toBe(true)
     expect(resumoAlertasPreliminares([depois])).toEqual({ houve: 1, confirmadosDepois: 1 })

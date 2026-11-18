@@ -12,7 +12,8 @@ state Descartado
 ' Em validação = aguardando a decisão do agente (RN02)
 EmValidacao : aguardando o agente
 ' Transições internas: o alerta preliminar perde a marca "não confirmado" quando o agente
-' confirma ou quando a confiança chega a Alta (ex.: confirmações de moradores) — RN02
+' confirma ou quando a confiança chega a Alta (ex.: confirmações de moradores) — RN02.
+' atualizarAlerta = notificação "Alerta confirmado" para quem recebeu o alerta preliminar.
 EmMonitoramento : agenteConfirma / atualizarAlerta
 EmMonitoramento : [confiança >= 75] / atualizarAlerta
 note right of Reportado

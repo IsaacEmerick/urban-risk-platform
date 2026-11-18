@@ -166,6 +166,31 @@ describe('repositório — ações do agente com notificações', () => {
   })
 })
 
+describe('repositório — "Alerta confirmado" quando o preliminar perde a marca (RN02)', () => {
+  it('Confirmar alerta no evt-03: quem recebeu o preliminar ganha "Alerta confirmado"; a notificação antiga não muda', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    const doEvt03 = (usuarioId) => r.listarNotificacoes(usuarioId).filter((n) => n.eventoId === 'evt-03')
+    const preliminarAntes = { ...doEvt03('usr-ana')[0] }
+
+    const evento = r.executarAcao('evt-03', 'agenteConfirma', AGORA)
+    const [preliminar, confirmacao] = doEvt03('usr-ana')
+    expect(preliminar).toEqual(preliminarAntes)
+    expect(confirmacao).toMatchObject({
+      tipo: 'Alerta confirmado',
+      titulo: 'O alerta “Alagamento – risco Crítico” foi confirmado',
+      risco: evento.risco,
+      confianca: evento.confianca, // valores do momento da confirmação
+      naoConfirmado: false,
+      lida: false,
+      em: AGORA,
+    })
+    // Quem não recebeu o preliminar não recebe a confirmação
+    r.listarUsuarios()
+      .filter((u) => !doEvt03(u.id).some((n) => n.tipo === 'Alerta'))
+      .forEach((u) => expect(doEvt03(u.id)).toEqual([]))
+  })
+})
+
 describe('repositório — notificações iniciais e status lida (RF10, RF11)', () => {
   it('a central da Ana já abre com os alertas que os eventos simulados emitiram', () => {
     const r = criarRepositorio({ agora: AGORA })
