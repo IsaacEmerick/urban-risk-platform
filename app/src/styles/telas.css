@@ -1,0 +1,491 @@
+/* Layout das telas do fluxo 1. Só tokens. */
+
+.cabecalho-tela {
+  display: grid;
+  gap: var(--esp-1);
+  margin-bottom: var(--esp-4);
+}
+
+.cabecalho-tela__sub {
+  color: var(--cor-tinta-suave);
+}
+
+.cabecalho-tela--com-acao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+.titulo-secao {
+  margin-bottom: var(--esp-3);
+  font-size: var(--texto-lg);
+}
+
+.lista-cards {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+.bloco {
+  display: grid;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.bloco .titulo-secao {
+  margin-bottom: 0;
+}
+
+/* Painel */
+.painel {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.painel .cabecalho-tela {
+  margin-bottom: 0;
+}
+
+.campo-bairro {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+.indicadores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+}
+
+.indicador {
+  display: grid;
+  align-content: start;
+  gap: var(--esp-1);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.indicador__valor {
+  font-size: var(--texto-2xl);
+  font-weight: var(--peso-titulo);
+  line-height: var(--entrelinha-titulo);
+}
+
+.indicador__rotulo {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.indicador .carimbo {
+  color: var(--cor-tinta);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-forte);
+}
+
+.bloco-mapa {
+  display: grid;
+  gap: var(--esp-2);
+}
+
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2) var(--esp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+.legenda li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+/* Central de notificações */
+.central {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.central .cabecalho-tela {
+  margin-bottom: 0;
+}
+
+.lista-notificacoes {
+  display: grid;
+  gap: var(--esp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notificacao {
+  position: relative;
+  display: grid;
+  gap: var(--esp-2);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--borda);
+  border-left-width: var(--largura-faixa-risco);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.notificacao--nao-lida {
+  box-shadow: var(--sombra);
+}
+
+.notificacao--lida {
+  background: var(--cor-fundo);
+}
+
+.notificacao--lida .notificacao__titulo {
+  font-weight: var(--peso-medio);
+}
+
+.notificacao__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+}
+
+.notificacao__tipo {
+  font-weight: var(--peso-forte);
+}
+
+.notificacao--cancelado .notificacao__tipo {
+  color: var(--cor-perigo);
+}
+
+.notificacao__hora {
+  margin-left: auto;
+  color: var(--cor-tinta-suave);
+}
+
+.notificacao__titulo {
+  font-size: var(--texto-lg);
+}
+
+.notificacao__evento {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.ponto-nao-lida {
+  width: var(--esp-3);
+  height: var(--esp-3);
+  border-radius: 50%;
+  background: var(--cor-destaque-nao-lida);
+}
+
+/* O único movimento automático: a notificação que acabou de chegar pulsa uma vez */
+.notificacao--nova {
+  animation: chegou calc(var(--duracao) * 8) ease-out 1;
+}
+
+@keyframes chegou {
+  0% {
+    box-shadow: 0 0 0 var(--esp-2) var(--cor-institucional-claro), var(--sombra);
+  }
+  100% {
+    box-shadow: var(--sombra);
+  }
+}
+
+/* Detalhe do alerta */
+.detalhe {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.detalhe__cabecalho {
+  display: grid;
+  gap: var(--esp-2);
+}
+
+.detalhe__cabecalho h1 {
+  font-size: var(--texto-2xl);
+}
+
+.detalhe__local {
+  color: var(--cor-tinta-suave);
+}
+
+.detalhe__descricao {
+  font-size: var(--texto-lg);
+}
+
+.link-forte {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  min-height: var(--alvo-toque);
+  font-weight: var(--peso-forte);
+}
+
+.linha-tempo {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linha-tempo__item {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--esp-2);
+  padding: 0 0 var(--esp-3) var(--esp-5);
+  color: var(--cor-tinta-suave);
+}
+
+/* bolinha + traço ligando os estados */
+.linha-tempo__item::before {
+  content: '';
+  position: absolute;
+  left: var(--esp-1);
+  top: var(--esp-2);
+  width: var(--esp-3);
+  height: var(--esp-3);
+  border: var(--borda-grossa) solid var(--cor-linha-forte);
+  border-radius: 50%;
+  background: var(--cor-superficie);
+}
+
+.linha-tempo__item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--esp-1) + var(--esp-3) / 2 - var(--borda-grossa) / 2);
+  top: calc(var(--esp-2) + var(--esp-3));
+  bottom: 0;
+  width: var(--borda-grossa);
+  background: var(--cor-linha);
+}
+
+.linha-tempo__item--atual {
+  color: var(--cor-tinta);
+  font-weight: var(--peso-forte);
+}
+
+.linha-tempo__item--atual::before {
+  border-color: var(--cor-tinta);
+  background: var(--cor-tinta);
+}
+
+.acoes-agente__botoes,
+.confirmacao__botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}
+
+.confirmacao {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+.confirmacao p {
+  font-weight: var(--peso-forte);
+}
+
+.resultado-acao:empty {
+  display: none;
+}
+
+.resultado-acao {
+  padding: var(--esp-3) var(--esp-4);
+  border-radius: var(--raio-selo);
+  background: var(--cor-institucional-claro);
+  font-weight: var(--peso-forte);
+}
+
+/* Régua do rio */
+.regua {
+  display: grid;
+  gap: var(--esp-3);
+  margin: 0;
+}
+
+.regua__legenda {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--esp-2) var(--esp-3);
+}
+
+.regua__valor {
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-titulo);
+}
+
+.regua__trilho {
+  position: relative;
+  height: var(--esp-4);
+  margin-bottom: var(--esp-5);
+  border: var(--borda);
+  border-color: var(--cor-linha-forte);
+  border-radius: var(--raio-selo);
+  background: var(--cor-fundo);
+}
+
+.regua__agua {
+  height: 100%;
+  border-radius: var(--raio-selo);
+  background: var(--cor-institucional);
+  transition: width var(--duracao);
+}
+
+.regua__marca {
+  position: absolute;
+  top: calc(-1 * var(--esp-1));
+  bottom: calc(-1 * var(--esp-1));
+  width: var(--borda-grossa);
+  background: var(--cor-tinta);
+}
+
+.regua__marca-texto {
+  position: absolute;
+  top: calc(100% + var(--esp-1));
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-xs);
+  white-space: nowrap;
+}
+
+/* Origem e confiança */
+.origem {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.origem .cabecalho-tela,
+.origem .titulo-secao {
+  margin-bottom: 0;
+}
+
+.resumo-confianca {
+  display: grid;
+  justify-items: start;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.faixas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-dados {
+  display: grid;
+  gap: var(--esp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dado {
+  display: grid;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.dado--principal {
+  border-color: var(--cor-institucional);
+}
+
+.dado__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.dado__fatos {
+  display: grid;
+  gap: var(--esp-2);
+  margin: 0;
+}
+
+.dado__fatos div {
+  display: grid;
+  gap: 0;
+}
+
+.dado__fatos dt {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.dado__fatos dd {
+  margin: 0;
+}
+
+/* Tabela do cálculo: base + ajustes = total (seção 4.1) */
+.calculo {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--texto-md);
+}
+
+.calculo th {
+  padding: var(--esp-2) 0;
+  font-weight: var(--peso-normal);
+  text-align: left;
+}
+
+.calculo td {
+  padding: var(--esp-2) 0 var(--esp-2) var(--esp-3);
+  text-align: right;
+  font-weight: var(--peso-forte);
+  white-space: nowrap;
+}
+
+.calculo tbody tr + tr {
+  border-top: var(--borda);
+}
+
+.calculo__negativo td {
+  color: var(--cor-perigo);
+}
+
+.calculo tfoot tr {
+  border-top: var(--borda-grossa) solid var(--cor-tinta);
+}
+
+.calculo tfoot th,
+.calculo tfoot td {
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-titulo);
+}
+
+@media (min-width: 640px) {
+  .dado__fatos {
+    grid-template-columns: 1fr 1fr;
+  }
+}

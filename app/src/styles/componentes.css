@@ -1,0 +1,410 @@
+/* Componentes reutilizáveis: selos, card, botões, mapa. Só tokens. */
+
+.icone {
+  width: var(--tamanho-icone);
+  height: var(--tamanho-icone);
+  flex: none;
+}
+
+/* Cores por risco (fundo + texto com contraste AA) */
+.risco--baixo {
+  background: var(--risco-baixo);
+  color: var(--risco-baixo-texto);
+}
+.risco--moderado {
+  background: var(--risco-moderado);
+  color: var(--risco-moderado-texto);
+}
+.risco--alto {
+  background: var(--risco-alto);
+  color: var(--risco-alto-texto);
+}
+.risco--critico {
+  background: var(--risco-critico);
+  color: var(--risco-critico-texto);
+}
+
+/* Faixa lateral do card com a cor do risco (o selo ao lado repete ícone + texto) */
+.risco-faixa--baixo {
+  border-left-color: var(--risco-baixo);
+}
+.risco-faixa--moderado {
+  border-left-color: var(--risco-moderado);
+}
+.risco-faixa--alto {
+  border-left-color: var(--risco-alto);
+}
+.risco-faixa--critico {
+  border-left-color: var(--risco-critico);
+}
+
+/* SeloRisco */
+.selo-risco {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--raio-selo);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+  line-height: var(--entrelinha-titulo);
+  white-space: nowrap;
+}
+
+.tarja-risco {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  border-radius: var(--raio-card);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-titulo);
+  letter-spacing: var(--tracking-titulo);
+}
+
+.tarja-risco .icone {
+  width: var(--tamanho-icone-tarja);
+  height: var(--tamanho-icone-tarja);
+}
+
+/* SeloOrigem: contorno neutro, ícone próprio por origem */
+.selo-origem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  padding: var(--esp-1) var(--esp-2);
+  border: var(--borda);
+  border-color: var(--cor-linha-forte);
+  border-radius: var(--raio-selo);
+  background: var(--cor-superficie);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  line-height: var(--entrelinha-titulo);
+}
+
+/* SeloConfianca: medidor de 3 segmentos + "Alta • 82" */
+.selo-confianca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--raio-selo);
+  background: var(--cor-institucional-claro);
+  color: var(--cor-tinta);
+  font-size: var(--texto-sm);
+  line-height: var(--entrelinha-titulo);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.selo-confianca__texto {
+  font-weight: var(--peso-forte);
+}
+
+.selo-confianca--link {
+  position: relative;
+  z-index: 1; /* clicável por cima do link esticado do card */
+  min-height: var(--alvo-toque);
+  text-decoration: underline;
+  text-decoration-color: var(--cor-linha-forte);
+  text-underline-offset: var(--sublinhado-distancia);
+}
+
+.selo-confianca--link:hover {
+  background: var(--cor-linha);
+}
+
+.medidor {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: var(--medidor-espaco);
+  height: var(--tamanho-icone-pequeno);
+}
+
+.medidor__segmento {
+  width: var(--medidor-largura);
+  border: 1px solid var(--cor-institucional);
+  border-radius: var(--medidor-espaco);
+  background: transparent;
+}
+
+.medidor__segmento:nth-child(1) {
+  height: 45%;
+}
+.medidor__segmento:nth-child(2) {
+  height: 72%;
+}
+.medidor__segmento:nth-child(3) {
+  height: 100%;
+}
+
+.medidor__segmento--ativo {
+  background: var(--cor-institucional);
+}
+
+.selo-confianca--grande {
+  padding: var(--esp-2) var(--esp-3);
+  font-size: var(--texto-xl);
+  gap: var(--esp-3);
+}
+
+.selo-confianca--grande .medidor {
+  gap: var(--medidor-espaco-grande);
+}
+
+/* Carimbo "atualizado há X s" */
+.carimbo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+  white-space: nowrap;
+}
+
+.carimbo .icone {
+  width: var(--tamanho-icone-pequeno);
+  height: var(--tamanho-icone-pequeno);
+}
+
+/* Etiqueta "não confirmado" (RN02): tracejada, para parecer provisória */
+.etiqueta-nao-confirmado {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--esp-1) var(--esp-2);
+  border: var(--borda-grossa) dashed var(--cor-tinta);
+  border-radius: var(--raio-selo);
+  background: var(--cor-superficie);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+  line-height: var(--entrelinha-titulo);
+}
+
+/* Estado do evento */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--raio-selo);
+  background: var(--cor-fundo);
+  color: var(--cor-tinta);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  line-height: var(--entrelinha-titulo);
+}
+
+.linha-selos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+/* CardAlerta */
+.card-alerta {
+  position: relative;
+  display: grid;
+  gap: var(--esp-2);
+  padding: var(--esp-4);
+  border: var(--borda);
+  border-left-width: var(--largura-faixa-risco);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra);
+}
+
+.card-alerta__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.card-alerta__titulo {
+  font-size: var(--texto-lg);
+}
+
+.card-alerta__local {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+/* Link esticado: o card inteiro é clicável, sem aninhar links */
+.link-esticado {
+  color: var(--cor-tinta);
+  text-decoration: none;
+}
+
+.link-esticado::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--raio-card);
+}
+
+.link-esticado:hover {
+  text-decoration: underline;
+}
+
+.link-esticado:focus-visible {
+  box-shadow: none;
+}
+
+.link-esticado:focus-visible::after {
+  box-shadow: var(--foco);
+}
+
+/* Botões */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  min-height: var(--alvo-toque);
+  padding: var(--esp-2) var(--esp-4);
+  border: var(--borda-grossa) solid transparent;
+  border-radius: var(--raio-selo);
+  font-weight: var(--peso-forte);
+  line-height: var(--entrelinha-titulo);
+  transition: background var(--duracao);
+}
+
+.botao--primario {
+  background: var(--cor-institucional);
+  color: var(--cor-sobre-escuro);
+}
+
+.botao--secundario {
+  border-color: var(--cor-institucional);
+  background: var(--cor-superficie);
+  color: var(--cor-institucional);
+}
+
+.botao--secundario:hover:not(:disabled) {
+  background: var(--cor-institucional-claro);
+}
+
+.botao--perigo {
+  background: var(--cor-perigo);
+  color: var(--cor-sobre-escuro);
+}
+
+.botao--perigo-contorno {
+  border-color: var(--cor-perigo);
+  background: var(--cor-superficie);
+  color: var(--cor-perigo);
+}
+
+.botao--perigo-contorno:hover {
+  background: var(--cor-perigo-claro);
+}
+
+.botao-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  min-height: var(--alvo-toque);
+  padding: 0 var(--esp-2) 0 0;
+  border: 0;
+  background: none;
+  color: var(--cor-institucional);
+  font-weight: var(--peso-forte);
+  text-decoration: none;
+}
+
+/* Filtros (botões de alternância) */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}
+
+.filtro {
+  min-height: var(--alvo-toque);
+  padding: var(--esp-2) var(--esp-3);
+  border: var(--borda);
+  border-color: var(--cor-linha-forte);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+.filtro[aria-pressed='true'] {
+  border-color: var(--cor-tinta);
+  background: var(--cor-tinta);
+  color: var(--cor-sobre-escuro);
+}
+
+/* Mapa */
+.mapa {
+  height: var(--altura-mapa);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  z-index: 0;
+}
+
+.mapa--mini {
+  height: var(--altura-mini-mapa);
+}
+
+.marcador-leaflet {
+  background: none;
+  border: 0;
+}
+
+.marcador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tamanho-marcador);
+  height: var(--tamanho-marcador);
+  border: var(--borda-grossa) solid var(--cor-tinta); /* borda escura: contraste do amarelo no mapa claro */
+  border-radius: 50%;
+  box-shadow: var(--sombra);
+}
+
+.marcador svg {
+  width: 70%;
+  height: 70%;
+}
+
+.marcador--legenda {
+  width: var(--tamanho-marcador-legenda);
+  height: var(--tamanho-marcador-legenda);
+  box-shadow: none;
+}
+
+.popup-evento {
+  display: grid;
+  gap: var(--esp-2);
+  font-family: var(--fonte);
+  font-size: var(--texto-sm);
+}
+
+.popup-evento__titulo {
+  font-weight: var(--peso-forte);
+}
+
+/* Avisos e notas */
+.aviso {
+  padding: var(--esp-3) var(--esp-4);
+  border-left: var(--largura-faixa-risco) solid var(--cor-institucional);
+  border-radius: var(--raio-selo);
+  background: var(--cor-institucional-claro);
+}
+
+.nota {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.vazio {
+  display: grid;
+  justify-items: start;
+  gap: var(--esp-3);
+  padding: var(--esp-5) var(--esp-4);
+  border: 1px dashed var(--cor-linha-forte);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}

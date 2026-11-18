@@ -68,3 +68,14 @@ export function taxaAlertasConfiancaAlta(eventos) {
     taxa: alertas.length ? comConfiancaAlta.length / alertas.length : 0,
   }
 }
+
+// Dado que dá a confiança do evento (RN07: a maior entre os dados). É a origem mostrada no card.
+// Em empate, vale o primeiro dado recebido.
+export function dadoPrincipal(evento) {
+  return evento.dados.reduce((melhor, dado) => (dado.confianca.valor > melhor.confianca.valor ? dado : melhor))
+}
+
+// Alertas ativos (indicador do Painel): eventos ainda ativos que já passaram por Alerta emitido
+export function alertasAtivos(eventos) {
+  return eventos.filter((e) => eventoAtivo(e) && passouPorAlerta(e))
+}

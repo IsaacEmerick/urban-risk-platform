@@ -5,7 +5,8 @@ import Layout from './components/Layout.jsx'
 import { usePerfil } from './contexto/PerfilContext.jsx'
 import { TELAS, podeAcessar } from './navegacao.js'
 import { repositorio } from './services/repositorio.js'
-import { iniciarSimulador } from './services/simulador.js'
+import { iniciarSimulador, intervaloDoSimulador } from './services/simulador.js'
+import { MODO_DEMONSTRACAO } from './modoDemonstracao.js'
 
 import Analises from './pages/Analises.jsx'
 import CentralNotificacoes from './pages/CentralNotificacoes.jsx'
@@ -53,8 +54,8 @@ function ExigeLogin({ children }) {
 }
 
 export default function App() {
-  // Liga o simulador do sensor do rio Cotia enquanto o app está aberto
-  useEffect(() => iniciarSimulador({ repositorio }), [])
+  // Liga o simulador do sensor do rio Cotia enquanto o app está aberto (2 s no modo demonstração)
+  useEffect(() => iniciarSimulador({ repositorio, intervaloMs: intervaloDoSimulador(MODO_DEMONSTRACAO) }), [])
 
   return (
     <Routes>

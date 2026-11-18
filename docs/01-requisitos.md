@@ -34,7 +34,7 @@ evento que tem estado, risco, confiança e prioridade.
 | Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta                                                  | RF13                   | Todos            |
 | Painel                   | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região                                                                      | RF01, RF02, RF07       | Todos            |
 | Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança                                                                                       | RF08                   | Todos            |
-| Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Confirmar alerta" (alerta preliminar), "Encerrar" e "Cancelar alerta" (agente) | RF06, RF08, RF12, RF17 | Todos            |
+| Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Confirmar alerta" (alerta preliminar), "Encerrar", "Cancelar alerta" e "Descartar evento" (agente) | RF06, RF08, RF12, RF17 | Todos            |
 | Origem e confiança       | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado                                                                      | RF01, RF02, RF05, RF09 | Todos            |
 | Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (incluindo "Alerta cancelado") e link para o alerta                                                          | RF10, RF11             | Morador          |
 | Registro comunitário     | Tipo, localização automática, descrição e foto opcional, em até 3 passos                                                                                    | RF03                   | Morador          |
@@ -79,7 +79,10 @@ para **Descartado**, e quem
 recebeu o alerta é avisado com uma notificação do tipo "Alerta cancelado" (RF10, RF11). Esses
 cancelamentos são a base da medição de falso alerta do RNF11. Confirmar e Descartar ficam na Fila
 de validação, que lista só eventos Em validação; Encerrar e Cancelar alerta ficam no Detalhe do
-alerta. Também no Detalhe do alerta fica o botão **Confirmar alerta**, com que o agente confirma um
+alerta. Um evento Em monitoramento que **nunca alertou** (ex.: confirmado com risco Moderado) mostra
+**Descartar evento** no lugar de Cancelar alerta: é a mesma transição para Descartado, mas sem
+notificação, porque ninguém recebeu alerta. Assim, toda transição do agente no Diagrama de Estados
+tem um botão correspondente. Também no Detalhe do alerta fica o botão **Confirmar alerta**, com que o agente confirma um
 alerta preliminar marcado como "não confirmado" (RN02): o evento já está Em monitoramento, fora da
 Fila de validação, e a confirmação só remove a marca (transição interna do Diagrama de Estados).
 

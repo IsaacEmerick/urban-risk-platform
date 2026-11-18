@@ -97,6 +97,7 @@ export const RAIO_AFETADO_METROS = {
 // Simulador do sensor do rio Cotia (demonstração)
 export const SIMULADOR = {
   intervaloMs: 15000,
+  intervaloDemoMs: 2000, // modo demonstração (?demo=1): Alto em ~16 s e Crítico em ~38 s, para o vídeo
   subidaPorLeituraM: 0.05, // o nível sobe ~5 cm por leitura
   oscilacaoM: 0.01, // variação aleatória de ±1 cm
   limiteAcimaDaMargemM: 0.15, // depois de transbordar, oscila até 15 cm acima da margem

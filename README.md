@@ -42,6 +42,14 @@ npm test         # testes das regras de negócio
 npm run build    # versão de produção (deploy)
 ```
 
+### Modo demonstração
+
+Normalmente o sensor simulado do rio Cotia envia uma leitura a cada 15 s, e o alerta Alto chega em
+cerca de 2 min. Para gravar o vídeo, abra o app com **`?demo=1`** no endereço
+(ex.: `http://localhost:5173/?demo=1`): o sensor passa a enviar uma leitura a cada 2 s, o alerta
+**Alto chega em ~16 s** e o **Crítico em ~38 s**. Um aviso "Modo demonstração" aparece no topo
+enquanto o modo estiver ativo. Ele vale até fechar a aba; `?demo=0` desliga.
+
 ## Estrutura
 
 | Pasta              | Conteúdo                                                                         |

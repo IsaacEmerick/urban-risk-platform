@@ -1,0 +1,92 @@
+/* Tokens do protótipo: a única fonte de cores, tipografia, espaços, raios e sombras.
+   Telas e componentes usam só var(--…) daqui. Contrastes conferidos para WCAG 2.1 AA. */
+:root {
+  /* Cores de base */
+  --cor-tinta: #16232e; /* texto principal (contraste 15:1 sobre branco) */
+  --cor-tinta-suave: #4a5866; /* texto secundário (7:1 sobre branco) */
+  --cor-fundo: #eef2f4; /* concreto frio */
+  --cor-superficie: #ffffff;
+  --cor-linha: #c9d3da;
+  --cor-linha-forte: #8a99a6;
+  --cor-institucional: #0e5a6e; /* "rio Cotia": links e botões (7,8:1 sobre branco) */
+  --cor-institucional-claro: #dcebef;
+  --cor-sobre-escuro: #ffffff;
+  --cor-perigo: #b1221b; /* ação destrutiva (Cancelar alerta) */
+  --cor-perigo-claro: #fbe1df;
+  --cor-destaque-nao-lida: #0e5a6e;
+  --cor-aviso-demo: #fdf3cf;
+
+  /* Risco — fixas pelo CLAUDE.md; sempre com ícone + texto (RNF07) */
+  --risco-baixo: #1f7a3f; /* texto branco 5,4:1 */
+  --risco-baixo-texto: #ffffff;
+  --risco-baixo-claro: #e3f2e7;
+  --risco-moderado: #f0b90b; /* texto tinta 8,8:1 */
+  --risco-moderado-texto: #16232e;
+  --risco-moderado-claro: #fdf3cf;
+  --risco-alto: #c04d00; /* texto branco 4,9:1 */
+  --risco-alto-texto: #ffffff;
+  --risco-alto-claro: #fce6d6;
+  --risco-critico: #b1221b; /* texto branco 6,7:1 */
+  --risco-critico-texto: #ffffff;
+  --risco-critico-claro: #fbe1df;
+
+  /* Tipografia: uma família só, feita para baixa visão (Braille Institute) */
+  --fonte: 'Atkinson Hyperlegible Next Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --texto-xs: 0.8125rem; /* 13 px */
+  --texto-sm: 0.9375rem; /* 15 px */
+  --texto-md: 1.0625rem; /* 17 px — corpo */
+  --texto-lg: 1.3125rem; /* 21 px */
+  --texto-xl: 1.625rem; /* 26 px */
+  --texto-2xl: 2.0625rem; /* 33 px */
+  --peso-normal: 400;
+  --peso-medio: 560;
+  --peso-forte: 700;
+  --peso-titulo: 800;
+  --entrelinha: 1.5;
+  --entrelinha-titulo: 1.15;
+  --tracking-titulo: -0.015em;
+
+  /* Espaços (escala de 4 px) */
+  --esp-1: 0.25rem;
+  --esp-2: 0.5rem;
+  --esp-3: 0.75rem;
+  --esp-4: 1rem;
+  --esp-5: 1.5rem;
+  --esp-6: 2rem;
+  --esp-7: 3rem;
+
+  /* Raios: pequenos e com hierarquia (selo < card < painel) */
+  --raio-selo: 4px;
+  --raio-card: 8px;
+  --raio-pilula: 999px;
+
+  /* Bordas e sombra (uma só) */
+  --borda: 1px solid var(--cor-linha);
+  --borda-grossa: 2px;
+  --sombra: 0 1px 2px rgb(22 35 46 / 0.12), 0 2px 8px rgb(22 35 46 / 0.06);
+  --foco: 0 0 0 3px var(--cor-superficie), 0 0 0 5px var(--cor-institucional);
+
+  /* Medidas de layout */
+  --largura-conteudo: 720px;
+  --altura-barra: 64px;
+  --altura-mapa: 55vh;
+  --altura-mini-mapa: 180px;
+  --tamanho-marcador: 32px;
+  --tamanho-icone: 1.25em;
+  --alvo-toque: 44px; /* área mínima de toque */
+  --largura-faixa-risco: 6px;
+
+  /* Medidas finas de componentes */
+  --medidor-espaco: 2px;
+  --medidor-espaco-grande: 4px;
+  --medidor-largura: 0.375em;
+  --tamanho-marcador-legenda: 1.75rem;
+  --tamanho-icone-tarja: 2em;
+  --tamanho-icone-pequeno: 1em;
+  --indicador-aba: 3px;
+  --opacidade-desabilitado: 0.55;
+
+  --sublinhado-distancia: 0.18em;
+
+  --duracao: 160ms;
+}

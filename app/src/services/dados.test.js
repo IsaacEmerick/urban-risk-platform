@@ -126,7 +126,7 @@ describe('repositório — alerta preliminar (RN02) usa o tipo "Alerta" com a ma
   it('registro Crítico com confiança Média notifica como Alerta com naoConfirmado', () => {
     const r = criarRepositorio({ agora: AGORA })
     // registro de morador novo no Jardim Maria Helena, longe dos eventos existentes: 40 + 2 confirmações = 60
-    r.receberDado(
+    const novo = r.receberDado(
       {
         id: 'novo-1',
         tipo: 'Alagamento',
@@ -141,10 +141,10 @@ describe('repositório — alerta preliminar (RN02) usa o tipo "Alerta" com a ma
       },
       AGORA,
     )
-    const notificacoes = r.listarNotificacoes('usr-ana')
+    const notificacoes = r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === novo.id)
     expect(notificacoes).toHaveLength(1)
     expect(notificacoes[0]).toMatchObject({ tipo: 'Alerta', naoConfirmado: true, risco: 'Crítico' })
-    const tipos = new Set(r.listarUsuarios().flatMap((u) => r.listarNotificacoes(u.id).map((n) => n.tipo)))
+    const tipos = new Set(r.listarUsuarios().flatMap((u) => r.listarNotificacoes(u.id).filter((n) => n.eventoId === novo.id).map((n) => n.tipo)))
     expect([...tipos]).toEqual(['Alerta'])
   })
 })
@@ -156,11 +156,46 @@ describe('repositório — ações do agente com notificações', () => {
     expect(confirmado.estado).toBe('Em monitoramento')
     // confirmado pelo agente com confiança Média: o alerta guarda 65 (conta contra a 2ª meta do RNF11)
     expect(confirmado).toMatchObject({ riscoAlertado: 'Alto', confiancaAlertada: 65 })
-    expect(r.listarNotificacoes('usr-ana').map((n) => n.tipo)).toEqual(['Alerta'])
-    expect(r.listarNotificacoes('usr-ana')[0].naoConfirmado).toBe(false) // alerta comum, sem etiqueta
+    expect(r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === 'evt-02').map((n) => n.tipo)).toEqual(['Alerta'])
+    expect(r.listarNotificacoes('usr-ana').find((n) => n.eventoId === 'evt-02').naoConfirmado).toBe(false) // alerta comum, sem etiqueta
 
     r.executarAcao('evt-02', 'agenteRejeita', AGORA)
     expect(r.obterEvento('evt-02').estado).toBe('Descartado')
-    expect(r.listarNotificacoes('usr-ana').map((n) => n.tipo)).toEqual(['Alerta', 'Alerta cancelado'])
+    expect(r.listarNotificacoes('usr-ana').filter((n) => n.eventoId === 'evt-02').map((n) => n.tipo)).toEqual(['Alerta', 'Alerta cancelado'])
+  })
+})
+
+describe('repositório — notificações iniciais e status lida (RF10, RF11)', () => {
+  it('a central da Ana já abre com os alertas que os eventos simulados emitiram', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    const resumo = r.listarNotificacoes('usr-ana').map((n) => [n.eventoId, n.tipo, n.risco, n.naoConfirmado, n.lida])
+    expect(resumo).toEqual([
+      ['evt-03', 'Alerta', 'Crítico', true, false], // alerta preliminar, com etiqueta "não confirmado"
+      ['evt-05', 'Alerta', 'Alto', false, false],
+      ['evt-07', 'Alerta', 'Alto', false, true], // evento já encerrado: chega como lida
+      ['evt-08', 'Alerta', 'Alto', false, true],
+      ['evt-08', 'Alerta cancelado', 'Alto', false, true],
+    ])
+    // horário = o do "Alerta emitido" no histórico do evento (evt-05: 40 min atrás)
+    const evt05 = r.listarNotificacoes('usr-ana').find((n) => n.eventoId === 'evt-05')
+    expect(AGORA - evt05.em).toBe(40 * 60 * 1000)
+  })
+
+  it('o histórico de 30 dias não gera notificações', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    const ids = r.listarUsuarios().flatMap((u) => r.listarNotificacoes(u.id).map((n) => n.eventoId))
+    expect(ids.some((id) => id.startsWith('hist-'))).toBe(false)
+  })
+
+  it('marcarComoLida e marcarTodasComoLidas avisam as telas inscritas', () => {
+    const r = criarRepositorio({ agora: AGORA })
+    let avisos = 0
+    r.inscrever(() => avisos++)
+    const [primeira] = r.listarNotificacoes('usr-ana')
+    r.marcarComoLida(primeira.id)
+    expect(r.listarNotificacoes('usr-ana')[0].lida).toBe(true)
+    r.marcarTodasComoLidas('usr-ana')
+    expect(r.listarNotificacoes('usr-ana').every((n) => n.lida)).toBe(true)
+    expect(avisos).toBe(2)
   })
 })

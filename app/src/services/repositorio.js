@@ -6,8 +6,8 @@ import eventosJson from '../data/eventos.json'
 import eventosHistoricosJson from '../data/eventos-historicos.json'
 import sensoresJson from '../data/sensores.json'
 import usuariosJson from '../data/usuarios.json'
-import { MINUTO } from './parametros.js'
-import { agruparDado, consolidarEvento } from './eventos.js'
+import { ESTADOS, MINUTO } from './parametros.js'
+import { agruparDado, consolidarEvento, eventoAtivo } from './eventos.js'
 import {
   EFEITOS,
   EFEITOS_DE_ALERTA,
@@ -67,6 +67,8 @@ export function criarRepositorio({
   sensores = sensoresJson,
   usuarios = usuariosJson,
   bairros = bairrosJson,
+  // Eventos atuais cujos alertas já emitidos aparecem na central ao abrir o app (o histórico de 30 dias não entra)
+  idsComNotificacaoInicial = eventosJson.map((e) => e.id),
 } = {}) {
   const estado = {
     bairros,
@@ -104,19 +106,49 @@ export function criarRepositorio({
         const ultimaNotificacao = ultima ? { em: ultima.em, risco: ultima.risco } : null
         if (!deveNotificar(usuario, evento, { agora: momento, ultimaNotificacao })) return
       }
-      estado.notificacoes.push({
-        id: `ntf-${proximoId++}`,
-        usuarioId: usuario.id,
-        eventoId: evento.id,
-        tipo,
-        titulo: `${evento.tipo} – risco ${evento.risco}`,
-        risco: evento.risco,
-        // Alerta preliminar (RN02): mesmo tipo "Alerta", com a etiqueta "não confirmado" no card
-        naoConfirmado: tipo === 'Alerta' && Boolean(evento.naoConfirmado),
-        em: momento,
-        lida: false,
-      })
+      adicionarNotificacao(usuario, evento, tipo, { risco: evento.risco, em: momento, lida: false })
     })
+  }
+
+  function adicionarNotificacao(usuario, evento, tipo, { risco, em, lida }) {
+    estado.notificacoes.push({
+      id: `ntf-${proximoId++}`,
+      usuarioId: usuario.id,
+      eventoId: evento.id,
+      tipo,
+      titulo: `${evento.tipo} – risco ${risco}`,
+      risco,
+      // Alerta preliminar (RN02): mesmo tipo "Alerta", com a etiqueta "não confirmado" no card
+      naoConfirmado: tipo === 'Alerta' && Boolean(evento.naoConfirmado),
+      em,
+      lida,
+    })
+  }
+
+  // Notificações que os eventos simulados já tinham gerado antes de o app abrir: um "Alerta" no
+  // horário do Alerta emitido do histórico e, se o alerta foi cancelado, um "Alerta cancelado".
+  // Quem recebe segue a RN06 (deveNotificar). As de eventos já terminados (Encerrado ou Descartado)
+  // aparecem como lidas; as de eventos ativos, como não lidas.
+  function gerarNotificacoesIniciais(idsEventos) {
+    const horarioDe = (evento, estadoBuscado) => evento.historico.find((h) => h.estado === estadoBuscado)?.em
+    estado.eventos
+      .filter((evento) => idsEventos.includes(evento.id) && evento.riscoAlertado)
+      .forEach((evento) => {
+        const alertaEm = horarioDe(evento, ESTADOS.ALERTA_EMITIDO)
+        if (!alertaEm) return
+        const canceladoEm = evento.estado === ESTADOS.DESCARTADO ? horarioDe(evento, ESTADOS.DESCARTADO) : null
+        estado.usuarios.forEach((usuario) => {
+          if (!deveNotificar(usuario, evento, { agora: alertaEm })) return
+          adicionarNotificacao(usuario, evento, 'Alerta', { risco: evento.riscoAlertado, em: alertaEm, lida: !eventoAtivo(evento) })
+          if (canceladoEm) {
+            adicionarNotificacao(usuario, evento, 'Alerta cancelado', {
+              risco: evento.riscoAlertado,
+              em: canceladoEm,
+              lida: !eventoAtivo(evento),
+            })
+          }
+        })
+      })
   }
 
   // Executa os efeitos devolvidos pela máquina de estados
@@ -183,7 +215,19 @@ export function criarRepositorio({
     )
   }
 
+  // Central de notificações (RF11): status lida / não lida
+  function marcarComoLida(notificacaoId) {
+    estado.notificacoes = estado.notificacoes.map((n) => (n.id === notificacaoId ? { ...n, lida: true } : n))
+    avisarInscritos()
+  }
+
+  function marcarTodasComoLidas(usuarioId) {
+    estado.notificacoes = estado.notificacoes.map((n) => (n.usuarioId === usuarioId ? { ...n, lida: true } : n))
+    avisarInscritos()
+  }
+
   recalcularTodos(agora)
+  gerarNotificacoesIniciais(idsComNotificacaoInicial)
 
   return {
     listarEventos: () => estado.eventos,
@@ -194,6 +238,8 @@ export function criarRepositorio({
     listarUsuarios: () => estado.usuarios,
     obterUsuario: (id) => estado.usuarios.find((u) => u.id === id),
     listarNotificacoes: (usuarioId) => estado.notificacoes.filter((n) => n.usuarioId === usuarioId),
+    marcarComoLida,
+    marcarTodasComoLidas,
     receberDado,
     executarAcao,
     registrarLeituraSensor,

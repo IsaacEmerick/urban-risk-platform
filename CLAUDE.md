@@ -93,7 +93,9 @@ a inundações do SGB (Barueri, 2017).
   Ao emitir alerta (comum, preliminar ou escalada) o evento guarda `riscoAlertado` e `confiancaAlertada`; a 2ª meta
   do RNF11 (≥ 90% dos alertas Alto/Crítico com confiança Alta) usa `confiancaAlertada`.
 - Fila de validação lista só eventos Em validação (Confirmar, Descartar). Confirmar alerta (tira a marca
-  "não confirmado" do alerta preliminar), Encerrar e Cancelar alerta ficam no Detalhe do alerta.
+  "não confirmado" do alerta preliminar), Encerrar, Cancelar alerta e Descartar evento ficam no Detalhe do alerta.
+  Em monitoramento: se o evento já passou por Alerta emitido o botão é "Cancelar alerta" (com notificação
+  "Alerta cancelado"); se nunca alertou, é "Descartar evento" (mesmo `agenteRejeita`, sem notificação).
 - Alagamento por nível do rio (falta = cota de transbordamento − nível; parâmetros fictícios, não cotas oficiais):
   Moderado falta ≤ 1,0 m; Alto falta ≤ 0,5 m; Crítico transbordou (falta < 0). Vale o maior entre nível do rio,
   lâmina d'água em via e chuva.
@@ -123,6 +125,8 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
 
 ## Padrões do protótipo
 
+- Telas e componentes usam **apenas os tokens** de `app/src/styles/tokens.css` (cores, tipografia, espaçamentos,
+  raios, sombras): nenhuma cor, tamanho ou sombra solta fora desse arquivo.
 - Risco sempre com cor + ícone + texto (acessibilidade, WCAG AA). Baixo verde, Moderado amarelo, Alto laranja, Crítico vermelho.
 - Todo card e detalhe mostra: selo de origem, selo de confiança ("Alta • 82") e "atualizado há X s".
 - Navegação inferior por perfil:

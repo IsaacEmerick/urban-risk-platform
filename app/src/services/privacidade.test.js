@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { localizacaoPublica } from './privacidade.js'
+import { localizacaoPublica, posicaoPublicaDado, posicaoPublicaEvento } from './privacidade.js'
 import { distanciaMetros } from './geo.js'
 
 describe('localizacaoPublica — RNF08 (~100 m)', () => {
@@ -26,5 +26,25 @@ describe('localizacaoPublica — RNF08 (~100 m)', () => {
     const real = { lat: -23.541537, lng: -46.868042 }
     localizacaoPublica(real)
     expect(real).toEqual({ lat: -23.541537, lng: -46.868042 })
+  })
+})
+
+describe('posicaoPublicaEvento — posição no mapa público (Painel e Detalhe)', () => {
+  const morador = { origem: 'Comunidade', lat: -23.541537, lng: -46.868042 }
+  const sensor = { origem: 'Sensor', lat: -23.529, lng: -46.8622 }
+
+  it('evento só da Comunidade → posição arredondada (~100 m)', () => {
+    const evento = { lat: -23.541537, lng: -46.868042, dados: [morador] }
+    expect(posicaoPublicaEvento(evento)).toEqual({ lat: -23.542, lng: -46.868 })
+  })
+
+  it('evento com dado de Sensor → posição do sensor, nunca a do morador', () => {
+    const evento = { lat: morador.lat, lng: morador.lng, dados: [morador, sensor] }
+    expect(posicaoPublicaEvento(evento)).toEqual({ lat: -23.529, lng: -46.8622 })
+  })
+
+  it('posicaoPublicaDado arredonda só registros da Comunidade', () => {
+    expect(posicaoPublicaDado(morador)).toEqual({ lat: -23.542, lng: -46.868 })
+    expect(posicaoPublicaDado(sensor)).toEqual({ lat: -23.529, lng: -46.8622 })
   })
 })

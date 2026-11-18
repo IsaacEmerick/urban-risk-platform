@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { criarRepositorio } from './repositorio.js'
-import { iniciarSimulador, proximoNivel } from './simulador.js'
+import { emModoDemonstracao, iniciarSimulador, intervaloDoSimulador, proximoNivel } from './simulador.js'
 
 describe('proximoNivel', () => {
   it('sobe 5 cm por leitura (sem oscilação)', () => {
@@ -76,5 +76,30 @@ describe('simulador do sensor do rio Cotia (a cada 15 s)', () => {
     vi.advanceTimersByTime(15000)
     expect(evt01().confianca).toBe(90)
     expect(evt01().faixaConfianca).toBe('Alta')
+  })
+})
+
+describe('modo demonstração (?demo=1)', () => {
+  it('lê o parâmetro da URL', () => {
+    expect(emModoDemonstracao('?demo=1')).toBe(true)
+    expect(emModoDemonstracao('?demo=0')).toBe(false)
+    expect(emModoDemonstracao('')).toBe(false)
+  })
+  it('intervalo de 2 s na demonstração e 15 s no normal', () => {
+    expect(intervaloDoSimulador(true)).toBe(2000)
+    expect(intervaloDoSimulador(false)).toBe(15000)
+  })
+  it('na demonstração, o alerta Alto chega em ~16 s e o Crítico em ~38 s', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-11-17T18:00:00-03:00'))
+    const repo = criarRepositorio({ agora: new Date() })
+    const parar = iniciarSimulador({ repositorio: repo, intervaloMs: intervaloDoSimulador(true), aleatorio: () => 0.5 })
+    const riscos = () => repo.listarNotificacoes('usr-ana').filter((n) => n.eventoId === 'evt-01').map((n) => n.risco)
+    vi.advanceTimersByTime(16_000) // 8 leituras: 3,30 → 3,70 m (falta 0,50 m)
+    expect(riscos()).toEqual(['Alto'])
+    vi.advanceTimersByTime(22_000) // 19 leituras: 4,25 m (transbordou)
+    expect(riscos()).toEqual(['Alto', 'Crítico'])
+    parar()
+    vi.useRealTimers()
   })
 })

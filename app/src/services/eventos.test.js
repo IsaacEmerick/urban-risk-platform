@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { agruparDado, consolidarEvento, taxaAlertasConfiancaAlta, taxaFalsoAlerta } from './eventos.js'
+import { agruparDado, alertasAtivos, consolidarEvento, dadoPrincipal, taxaAlertasConfiancaAlta, taxaFalsoAlerta } from './eventos.js'
 import { deslocarParaNorte } from './geo.js'
 import { MINUTO } from './parametros.js'
 
@@ -105,5 +105,22 @@ describe('RNF11 (2ª meta) — alertas Alto/Crítico com confiança Alta no mome
 
   it('sem alertas, taxa 0', () => {
     expect(taxaAlertasConfiancaAlta([]).taxa).toBe(0)
+  })
+})
+
+describe('dadoPrincipal e alertasAtivos (telas)', () => {
+  const dado = (id, valor) => ({ id, confianca: { valor } })
+  it('dadoPrincipal = o dado de maior confiança (RN07); empate fica com o primeiro', () => {
+    expect(dadoPrincipal({ dados: [dado('a', 65), dado('b', 90), dado('c', 80)] }).id).toBe('b')
+    expect(dadoPrincipal({ dados: [dado('a', 80), dado('b', 80)] }).id).toBe('a')
+  })
+  it('alertasAtivos: ativo e já passou por Alerta emitido', () => {
+    const ev = (id, estado, estados) => ({ id, estado, historico: estados.map((e) => ({ estado: e })) })
+    const eventos = [
+      ev('alertou', 'Em monitoramento', ['Confirmado', 'Alerta emitido', 'Em monitoramento']),
+      ev('sem-alerta', 'Em monitoramento', ['Confirmado', 'Em monitoramento']),
+      ev('encerrado', 'Encerrado', ['Alerta emitido', 'Encerrado']),
+    ]
+    expect(alertasAtivos(eventos).map((e) => e.id)).toEqual(['alertou'])
   })
 })

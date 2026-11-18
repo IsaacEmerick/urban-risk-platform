@@ -1,8 +1,9 @@
-// Simulador do sensor de nível do rio Cotia: gera uma leitura nova a cada 15 s.
+// Simulador do sensor de nível do rio Cotia: gera uma leitura nova a cada 15 s (2 s no modo demonstração).
 // O nível sobe aos poucos (cota de atenção → cota de alerta → transbordamento) para demonstrar
 // o alerta antecipado. Depois de transbordar, oscila um pouco acima da margem.
 import { ORIGENS, SIMULADOR, TIPOS } from './parametros.js'
 import { faltaParaTransbordar } from './risco.js'
+import { formatarMetros } from './formatar.js'
 
 const arredondar = (valor) => Math.round(valor * 100) / 100 // centímetros
 
@@ -14,8 +15,13 @@ export function proximoNivel(nivelAtual, cotaTransbordamentoM, aleatorio = Math.
   return arredondar(Math.min(proximo, teto))
 }
 
-function formatarMetros(valor) {
-  return valor.toFixed(2).replace('.', ',')
+// Modo demonstração: ?demo=1 na URL acelera o simulador (uma leitura a cada 2 s, para o vídeo)
+export function emModoDemonstracao(search = '') {
+  return new URLSearchParams(search).get('demo') === '1'
+}
+
+export function intervaloDoSimulador(modoDemonstracao) {
+  return modoDemonstracao ? SIMULADOR.intervaloDemoMs : SIMULADOR.intervaloMs
 }
 
 // Monta o dado no mesmo formato dos outros (origem Sensor), pronto para o repositório
