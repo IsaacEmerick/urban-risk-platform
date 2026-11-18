@@ -39,6 +39,8 @@ await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login prov
 ## Capturas (docs/prints, 390 px, escala 2×)
 - `deviceScaleFactor: 2`; antes de capturar, aumente a janela até `document.documentElement.scrollHeight` e use
   `screenshot()` sem `fullPage` — com `fullPage` a barra inferior fixa cobre o conteúdo.
+- Antes de ampliar a janela, fixe em px a altura dos `.mapa` (usam `vh`); senão o mapa estica e corta o fim da página.
+- Antes de capturar, `p.mouse.move(0, 0)`: o mouse parado sobre um card deixa o título sublinhado (hover).
 - Cada página de login precisa de um **contexto novo** (`b.newContext()`): o login fica no `localStorage`.
 
 ## Pegadinhas
