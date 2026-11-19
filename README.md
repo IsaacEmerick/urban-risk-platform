@@ -38,9 +38,29 @@ e as regras de negócio rodam no navegador.
 cd app
 npm install
 npm run dev      # desenvolvimento
-npm test         # testes das regras de negócio
+npm test         # testes das regras de negócio (304 testes em 20 arquivos)
 npm run build    # versão de produção (deploy)
 ```
+
+No Windows, rode `npm test` pelo PowerShell ou pelo Prompt de Comando. No Git Bash, a letra do drive
+pode vir em maiúscula (`D:` em vez de `d:`), e o Vitest não encontra os testes.
+
+## Perfis e telas
+
+O protótipo tem **14 telas** e **3 perfis**. A tela de entrada (`/login`) mostra as **contas de
+demonstração**: toque em uma para entrar, sem senha. "Criar conta" cadastra um morador novo; as contas
+de agente e operador são criadas pelo órgão.
+
+| Conta de demonstração           | Perfil                      | Navegação inferior                                 |
+| ------------------------------- | --------------------------- | -------------------------------------------------- |
+| Ana (`ana@exemplo.com`)         | Morador                     | Painel, Alertas, Registrar, Notificações, Perfil   |
+| Carlos (`carlos@exemplo.com`)   | Agente da Defesa Civil      | Painel, Fila, Alertas, Análises, Perfil            |
+| Juliana (`juliana@exemplo.com`) | Operador de serviço público | Painel, Publicar status, Alertas, Análises, Perfil |
+
+Telas: Login / Cadastro, Painel, Lista de alertas, Detalhe do alerta, Origem e confiança, Central de
+notificações, Registro comunitário, Meus registros, Fila de validação, Análises, Publicar status,
+Perfil, Preferências e Privacidade e meus dados. Sair não reinicia os dados simulados (eles ficam em
+memória); para voltar ao estado inicial, recarregue a página.
 
 ### Modo demonstração
 

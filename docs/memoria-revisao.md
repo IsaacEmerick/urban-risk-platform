@@ -2,7 +2,7 @@
 
 > Arquivo do **revisor** (Claude no claude.ai). Serve para retomar o trabalho numa conversa nova.
 > **Claude Code: não edite este arquivo.** Ele não faz parte da entrega e não entra no PDF.
-> Última atualização: 19/11/2026, 00h50.
+> Última atualização: 19/11/2026, 01h40.
 
 ## Como retomar numa conversa nova
 
@@ -48,7 +48,7 @@
 - Plugin `frontend-design` instalado no Claude Code (direção estética: serviço público, sóbrio, WCAG AA).
 - Prettier: **adiado**. Atenção: o formatador do VS Code já transformou "+ 10" em "- 10" no CLAUDE.md uma vez; conferir sinais em regras.
 
-## Estado atual (18/11, noite)
+## Estado atual (19/11, madrugada)
 
 - **Documentação fechada:** `00-problema-personas.md`, `01-requisitos.md` (18 RF, 11 RNF pela ISO 25010:2011, RN01–RN07 e o bloco
   "Interpretações adotadas"), `02-arquitetura.md`. Diagramas: `estados.puml/png`, `sequencia.puml/png`, `arquitetura.drawio/png`
@@ -74,7 +74,14 @@
   hist-05 em 7 d + 3 h, fonteId por status no hist-04/hist-15, "Confirmado pela Defesa Civil" / "Confirmado: a confiança chegou a
   Alta" na notificação. Capturas analises, painel, lista-alertas e central-notificacoes refeitas e revisadas.
   Metas no fluxo do vídeo: 9,1/95,5 → 8,7/95,7 → 8,3/91,7 → (descarta evt-11) igual → (rio) 8,0/92,0. Teste em `analises.test.js`.
-- **Em andamento:** Sessão 6b (ver "Próximo passo").
+- **Sessão 6b pronta** (`62cdd5f`, 304 testes): Login (contas de demonstração + cadastro só de morador, consentimentos desmarcados),
+  Preferências (bairro ou ponto + raio 500 m/1 km/2 km; vale na RN06 na hora), Privacidade e meus dados (consultar, exportar JSON,
+  revogar/autorizar, excluir conta ou "Solicitar exclusão ao órgão", histórico de acesso), Perfil. `sessao.js`: sair não reinicia dados.
+  Base legal de agente/operador vem do perfil (constante), sem consentimento no usuarios.json. Histórico de acesso fica após a
+  exclusão (só id, data e ação). Capturas login, cadastro, preferencias, privacidade, perfil revisadas: sem problemas.
+- **Todas as 14 telas estão prontas.**
+- **ATENÇÃO:** `git status` mostra `main...origin/main [gone]`: nada foi enviado ao GitHub (ou o repositório remoto sumiu).
+  O trabalho só existe no computador do Isaac. Push é o primeiro item da próxima sessão.
 
 ## Decisões que não são óbvias (e o porquê)
 
@@ -130,6 +137,8 @@
 - E se a confiança for exatamente 75? E 74? (testes de fronteira em `confianca.test.js` e `estados.test.js`)
 - Mostrar registros não confirmados no Painel não espalha boato? (selo de confiança + RN01)
 - Por que o RNF05 é Capacidade, e não Escalabilidade? (ISO 25010:2011)
+- Consentimento "obrigatório" é consentimento livre? (LGPD art. 9º, §3º: se o tratamento é condição do serviço, o titular é
+  informado com destaque, que é o "(obrigatório)" com explicação no cadastro; o opcional é separado e revogável)
 - O indicador de falso alerta não está maquiado? (`confiancaAlertada` + preliminares separados; confirmação do agente com
   confiança Média puxa a 2ª meta para baixo)
 - Por que o alagamento do evt-01, na margem do rio, não tem bônus V da carta do SGB? (achado aberto, pendência 5)
@@ -139,18 +148,17 @@
 
 ## Pendências
 
-1. **Sessão 6b:** Login (com consentimento LGPD), Preferências, Privacidade e meus dados, Perfil.
-3. Deploy na Vercel; README com nome completo, RM e links (o Isaac preenche).
-4. Prettier (adiado) e alinhamento de tabelas Markdown (aviso MD060).
-5. Revisão final de coerência (juntar os achados pequenos das auditorias e resolver de uma vez).
-6. PDF com Pandoc: capa (nome, RM, links), sequência numa página em paisagem, capturas de `docs/prints/`, linha de declaração de uso de IA.
-7. Roteiro do vídeo (~2:45, gravado com `?demo=1`, sem recarregar no meio do fluxo do Carlos) → YouTube não listado → entrega no Teams.
-8. Baixa prioridade: o guia do Claude Docs tem erros antigos (concessionária com base própria, RN05 "abaixo do limiar").
+1. **Publicação:** push para o GitHub (repositório público), `vercel.json` com rewrite da SPA, deploy na Vercel (raiz `app/`),
+   testar os links em janela anônima (checklist do enunciado). README com nome completo, RM e links (o Isaac preenche).
+2. **Lote final de coerência:** evt-01 sem `suscetivel_sgb` (ver o que a carta citada sustenta); foco no resumo de erros dos
+   formulários; LGPD com art. 16, I para a retenção do log; `painel-topo.png` para o PDF; aviso no topo do guia-desenvolvimento.md
+   ("desatualizado, vale o 01-requisitos"); README atualizado; varredura do /checar-coerencia em tudo.
+   **Prettier: não fazer** (risco de trocar sinais, como já aconteceu; MD060 não afeta a nota).
+3. Roteiro do vídeo (~2:45, `?demo=1`, app recém-aberto; Ana confirma evt-02, Carlos confirma evt-10 e descarta evt-11, sem cancelar
+   alerta) → gravar → YouTube não listado.
+4. PDF com Pandoc: capa (nome, RM, links do protótipo, repositório e vídeo), sequência em paisagem, capturas, declaração de uso de IA.
+5. Entrega no Teams; checklist final do enunciado.
 
 ## Próximo passo
 
-Prompt da Sessão 6b entregue (Login com contas de demonstração e cadastro do morador com consentimento granular, Preferências,
-Privacidade e meus dados com exportação/revogação/exclusão e histórico de acesso do RNF09, Perfil). Aguardar o plano
-(`plano-sessao-6b.md` na raiz, se o Isaac quiser revisão) e depois o relatório. Atenção na revisão: consentimento desmarcado por
-padrão, revogar "notificações" para de notificar (RN06), sair e entrar não reinicia os dados, Ana padrão intacta para o vídeo.
-Também é preciso cortar a captura `painel.png` (6.846 px) para o PDF, ou fazer uma versão só com o topo.
+Prompt "Publicação + lote final de coerência" entregue (19/11, 01h40). Aguardar o relatório. Depois: roteiro do vídeo e PDF.

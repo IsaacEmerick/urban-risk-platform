@@ -1,0 +1,8 @@
+# Notas locais de planejamento das sessões
+plano-sessao-*.md
+
+# Configuração local do Claude Code
+.claude/settings.local.json
+
+# Enunciado da FIAP: material da disciplina, fica só no disco (o repositório é público)
+docs/enunciado.pdf
