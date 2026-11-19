@@ -1,6 +1,6 @@
 # Problema, público-alvo e personas
 
-**Urban Risk Intelligence Platform** · Recorte: bairro **Parque Viana, Barueri (SP)**
+**Urban Risk Intelligence Platform** · Recorte: bairros **Parque Viana e Jardim Maria Helena, Barueri (SP)**
 
 ## 1. Problema
 

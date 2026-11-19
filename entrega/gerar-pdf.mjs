@@ -1,5 +1,6 @@
 // Gera o PDF da entrega: docs/*.md → HTML com CSS de impressão → PDF pelo Microsoft Edge.
 // Uso: node gerar-pdf.mjs   (ou ./gerar-pdf.ps1, que instala as dependências se faltarem)
+// Os diagramas entram como SVG (texto em vetor), gerados em entrega/imagens/ por gerar-svg.ps1.
 // 1) prepara as capturas do protótipo (recorte + JPEG) em entrega/imagens/, sem mexer em docs/prints;
 // 2) monta entrega/documento.html; 3) imprime o PDF em A4 com numeração no rodapé.
 import fs from 'node:fs'
@@ -38,7 +39,7 @@ const TELAS = [
     { id: 'lista', arquivo: 'lista-alertas', partes: [[0, 1072]], legenda: 'Lista de alertas (recorte) · Todos · RF08' },
   ] },
   { grupo: 'Detalhe do alerta', figuras: [
-    { id: 'detalhe-ana', arquivo: 'detalhe-alerta-ana', legenda: 'Detalhe do alerta (moradora) · Todos · RF06, RF08, RF17' },
+    { id: 'detalhe-ana', arquivo: 'detalhe-alerta-ana', legenda: 'Detalhe do alerta (moradora) · Todos · RF06, RF08' },
     { id: 'detalhe-carlos', arquivo: 'detalhe-alerta-carlos', partes: [[0, 545], [1355, 1530]], legenda: 'Detalhe do alerta (agente, recorte) · Agente · RF06, RF12' },
   ] },
   { grupo: 'Origem e confiança e Central de notificações', figuras: [
@@ -130,11 +131,14 @@ const slug = (texto) =>
 function documento(arquivo, prefixo) {
   let md = fs.readFileSync(path.join(DOCS, arquivo), 'utf8')
   md = md
+    .replaceAll('[00-problema-personas.md](00-problema-personas.md)', '[Problema, público-alvo e personas](#doc-00)')
+    .replaceAll('[01-requisitos.md](01-requisitos.md)', '[Documento de requisitos](#doc-01)')
+    .replaceAll('`estados.puml`', '[Diagrama de Estados](#diagrama-estados)')
     .replaceAll('](00-problema-personas.md)', '](#doc-00)')
     .replaceAll('](01-requisitos.md)', '](#doc-01)')
     .replaceAll('](02-arquitetura.md)', '](#doc-02)')
     .replaceAll('](diagramas/arquitetura.drawio)', `](${REPOSITORIO}/blob/main/docs/diagramas/arquitetura.drawio)`)
-    .replaceAll('](diagramas/arquitetura.png)', '](../docs/diagramas/arquitetura.png)')
+    .replaceAll('](diagramas/arquitetura.png)', '](imagens/arquitetura.svg)')
   const titulos = []
   const renderer = new marked.Renderer()
   renderer.heading = (texto, nivel) => {
@@ -227,14 +231,14 @@ function montarHtml() {
     <h1>Diagramas</h1>
     <h2>Diagrama de Sequência</h2>
     <figure class="diagrama diagrama--sequencia">
-      <img src="../docs/diagramas/sequencia.png" alt="Diagrama de Sequência">
+      <img src="imagens/sequencia.svg" alt="Diagrama de Sequência">
       <figcaption>Figura: fluxo de recebimento e disparo de um alerta (dado → validação → confiança e risco → evento → notificação), com os mesmos componentes da arquitetura. Fonte: <a href="${REPOSITORIO}/blob/main/docs/diagramas/sequencia.puml">docs/diagramas/sequencia.puml</a>.</figcaption>
     </figure>
   </section>
   <section id="diagrama-estados" class="estados">
     <h2>Diagrama de Estados</h2>
     <figure class="diagrama">
-      <img src="../docs/diagramas/estados.png" alt="Diagrama de Estados">
+      <img src="imagens/estados.svg" alt="Diagrama de Estados">
       <figcaption>Figura: ciclo de vida de um evento de risco. Entre colchetes, as guardas (RN01–RN05); depois da barra, a ação. As duas transições internas em Em monitoramento tiram a marca "não confirmado" do alerta preliminar (RN02). Fonte: <a href="${REPOSITORIO}/blob/main/docs/diagramas/estados.puml">docs/diagramas/estados.puml</a>.</figcaption>
     </figure>
   </section>

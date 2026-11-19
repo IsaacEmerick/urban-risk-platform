@@ -198,18 +198,34 @@ figcaption {
 .paisagem {
   page: paisagem;
 }
-.paisagem h2 {
-  margin-top: 0;
+.paisagem h1 {
+  font-size: 15pt;
+  margin-bottom: 1mm;
 }
+.paisagem h2 {
+  font-size: 12pt;
+  margin: 0 0 1mm;
+}
+.paisagem figure {
+  margin: 0;
+}
+/* Sequência: o maior tamanho que cabe na página em paisagem */
 .diagrama--sequencia img {
-  max-height: 136mm;
+  width: 100%;
+  max-height: 152mm;
+  object-fit: contain;
 }
 .estados {
   page: auto;
   break-before: page;
 }
+/* Estados: ocupa a largura útil da página */
 .estados img {
-  max-height: 150mm;
+  width: 100%;
+}
+/* Arquitetura (no 02): largura útil da página */
+.doc .diagrama img {
+  width: 100%;
 }
 
 /* Telas do protótipo: até duas capturas por linha, sem quebrar uma captura entre páginas */
