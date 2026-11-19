@@ -3,7 +3,7 @@
 Trabalho acadêmico feito por um único aluno. O enunciado completo está em `docs/enunciado.pdf` (só local, fora do git).
 Uso de IA é permitido **como apoio**: o aluno precisa entender e conseguir explicar tudo o que for entregue.
 
-Guia de referência (exemplos de personas, RF, RNF, regras, telas, diagramas e roteiro de sessões): `docs/guia-desenvolvimento.md`.
+Guia de referência (exemplos de personas, RF, RNF, regras, telas, diagramas e roteiro de sessões): `docs/guia-desenvolvimento.md` (só local, fora do git).
 Consulte-o quando precisar de detalhes, mas não copie trechos inteiros sem adaptar ao projeto.
 Depois que `docs/01-requisitos.md` existir, ele passa a ser a fonte da verdade; em caso de conflito, ele vence o guia.
 
