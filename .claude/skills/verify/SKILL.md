@@ -20,7 +20,7 @@ import { chromium } from 'playwright-core'
 const b = await chromium.launch({ executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe' })
 const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage()
 await p.goto('http://localhost:5173/?demo=1')
-await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login provisório: Ana, Carlos, Juliana
+await p.getByRole('button', { name: /^Ana/ }).click()   // Contas de demonstração: /^Ana/, /^Carlos/, /^Juliana/
 ```
 
 ## Fluxos que valem a pena
@@ -44,6 +44,14 @@ await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login prov
   Crítico" → Publicar status → "Meus status (2)" (novo + evt-06) → "Nova situação" Normalizado → Atualizar situação
   (risco Baixo) → dá para voltar a "Em atendimento" enquanto ativo. A Ana recebe "Interrupção de serviço – risco Crítico".
 
+- **Sessão 6b (Ana):** Perfil → Preferências (2 bairros, 3 tipos, Push e SMS) → Perfil → Privacidade e meus dados →
+  "Baixar meus dados (JSON)" (`waitForEvent('download')`; só dados da Ana) → Revogar → "Sim, revogar" → Notificações:
+  esperar ~20 s com `?demo=1` → continuam 5 (sem o alerta do rio). Excluir minha conta → Login com "Conta excluída".
+- **Sessão 6b (novo morador):** Criar conta → enviar vazio (3 erros ligados aos campos) → nome, e-mail, "Cadastro e
+  autenticação" → Preferências com "Conta criada" → Salvar sem área (erro) → Bairro + Ponto no mapa (círculo) → salvar.
+- **Carlos/Juliana em Privacidade:** base legal "Execução de políticas públicas (art. 7º, III)", sem Revogar;
+  "Solicitar exclusão ao órgão" só grava no histórico.
+
 ## Capturas (docs/prints, 390 px, escala 2×)
 - `deviceScaleFactor: 2`; antes de capturar, aumente a janela até `document.documentElement.scrollHeight` e use
   `screenshot()` sem `fullPage` — com `fullPage` a barra inferior fixa cobre o conteúdo.
@@ -52,7 +60,7 @@ await p.getByRole('button', { name: /Entrar como Ana/ }).click()   // Login prov
 - Cada página de login precisa de um **contexto novo** (`b.newContext()`): o login fica no `localStorage`.
 
 ## Pegadinhas
-- Para trocar de perfil sem perder os dados: Perfil → Sair → "Entrar como …" (nunca `goto`).
+- Para trocar de perfil sem perder os dados: Perfil → Sair → toque na conta (nunca `goto`).
 - Na Fila, cada card tem os próprios botões: filtre o card (`.card-alerta` com `hasText`) antes de clicar.
 - As metas do RNF11 são sempre de 30 dias (o seletor 7/30 só muda os gráficos). O simulador muda as metas: o alerta
   do rio (evt-01, confiança 90) entra como alerta emitido ~2 min depois de abrir (~16 s com `?demo=1`).

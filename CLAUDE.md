@@ -134,6 +134,13 @@ a inundações do SGB (Barueri, 2017).
   mesma fonte substitui a anterior no evento ativo que já tem essa fonte (mesmo fora dos 60 min da RN04; Encerrado ou
   Descartado não é reaproveitado; registros da Comunidade nunca são mesma fonte); escalada = risco sobe e chega a ≥ Alto. Prioridade com 1 casa decimal.
 - RNF08: no mapa público, a localização de registros da Comunidade passa por `localizacaoPublica()` (~100 m).
+- LGPD (`services/conta.js`): só o morador se cadastra (consentimentos "Cadastro e autenticação", obrigatório, e
+  "Áreas de interesse e notificações de risco", opcional; desmarcados por padrão, com data e finalidade). Agente e
+  operador: base legal "execução de políticas públicas (art. 7º, III)", conta criada pelo órgão, sem revogação; no lugar
+  de excluir, "Solicitar exclusão ao órgão" (só registra no histórico). Sem o consentimento opcional ativo, o morador não
+  recebe nenhuma notificação (Alerta, Alerta confirmado, Alerta cancelado). Excluir a conta apaga usuário e notificações;
+  os eventos guardam só o pseudônimo. Histórico de acesso (RNF09) guardado por 12 meses. Preferências: ≥ 1 área,
+  ≥ 1 tipo, ≥ 1 canal (morador novo: sem área, 3 tipos, Push). Sair não reinicia os dados em memória.
 
 As funções `calcularConfianca()`, `classificarRisco()` e `calcularPrioridade()` em `app/src/services/`
 devem implementar exatamente essas regras. Se uma regra mudar, mude o documento e o código juntos.

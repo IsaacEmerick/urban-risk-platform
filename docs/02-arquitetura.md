@@ -26,11 +26,13 @@ pseudonimização dentro desse componente.
   controla a máquina de estados (ver `estados.puml`). A comunicação entre eles é assíncrona, pelo
   Broker.
 - **Notificação (laranja):** o **Serviço de Notificação** consome o `AlertaEmitido` do Broker, busca
-  quem tem área de interesse no raio afetado (RN06), envia o push ao App do Morador e registra a
+  quem tem área de interesse no raio afetado e, no caso do morador, o consentimento "Áreas de
+  interesse e notificações de risco" ativo (RN06), envia o push ao App do Morador e registra a
   notificação na **Central de notificações**.
 - **Proteção de dados pessoais (roxo):** o **Serviço de Ingestão** pseudonimiza os dados pessoais
   logo na entrada; o **Identidade e Consentimento (LGPD)** autentica usuários e origens e guarda os
-  consentimentos; o **Cofre de dados pessoais** fica separado do banco de eventos e é criptografado;
+  consentimentos com data e finalidade, inclusive as revogações, que o Serviço de Notificação
+  respeita; o **Cofre de dados pessoais** fica separado do banco de eventos e é criptografado;
   os **Logs de auditoria** registram todo acesso a dado pessoal.
 
 ## Caminho de um alerta
@@ -47,8 +49,9 @@ pseudonimização dentro desse componente.
    Agente / Operador**) ou **Reportado** (< 50).
 5. Com o evento **Confirmado** e risco **≥ Alto**, o **Gerenciador de Eventos** passa o evento para
    **Alerta emitido** e publica `AlertaEmitido` no **Broker de Eventos**.
-6. O **Serviço de Notificação** busca no banco quem tem área de interesse no raio afetado (RN06),
-   envia o push ao **App do Morador** e registra a notificação na **Central de notificações**.
+6. O **Serviço de Notificação** busca no banco quem tem área de interesse no raio afetado e, se for
+   morador, o consentimento de notificações ativo (RN06), envia o push ao **App do Morador** e
+   registra a notificação na **Central de notificações**.
 7. O **Serviço de Notificação** publica `NotificacaoEnviada`, e o **Gerenciador de Eventos** passa
    o evento para **Em monitoramento**.
 

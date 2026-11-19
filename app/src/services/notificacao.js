@@ -2,6 +2,7 @@
 import { MINUTO, RAIO_AFETADO_METROS, REGRAS, TIPOS } from './parametros.js'
 import { distanciaMetros } from './geo.js'
 import { compararRisco } from './risco.js'
+import { podeReceberNotificacoes } from './conta.js'
 
 // Raio afetado: 500 m (Alagamento), 1 km (Ilha de calor), área informada pelo operador (Interrupção)
 export function raioAfetado(evento) {
@@ -31,6 +32,8 @@ export function resolverAreas(areas, bairros) {
 
 // ultimaNotificacao = { em, risco } da última vez que este usuário foi avisado deste evento (ou null)
 export function deveNotificar(usuario, evento, { agora = new Date(), ultimaNotificacao = null } = {}) {
+  // LGPD: morador sem o consentimento "Áreas de interesse e notificações de risco" ativo não é notificado
+  if (!podeReceberNotificacoes(usuario)) return false
   if (usuario.tiposRisco && !usuario.tiposRisco.includes(evento.tipo)) return false
   const alcancado = (usuario.areasInteresse ?? []).some((area) => areaAlcancada(area, evento))
   if (!alcancado) return false

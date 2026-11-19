@@ -29,10 +29,7 @@
       { "tipo": "bairro", "bairro": "Jardim Maria Helena" }
     ],
     "tiposRisco": ["Alagamento", "Ilha de calor", "Interrupção de serviço"],
-    "canais": ["Push", "E-mail"],
-    "consentimentos": [
-      { "finalidade": "Cadastro e autenticação", "concedidoEm": "2026-09-15T08:30:00-03:00" }
-    ]
+    "canais": ["Push", "E-mail"]
   },
   {
     "id": "usr-juliana",
@@ -47,9 +44,6 @@
       { "tipo": "bairro", "bairro": "Jardim Maria Helena" }
     ],
     "tiposRisco": ["Alagamento", "Interrupção de serviço"],
-    "canais": ["Push", "E-mail"],
-    "consentimentos": [
-      { "finalidade": "Cadastro e autenticação", "concedidoEm": "2026-09-20T10:05:00-03:00" }
-    ]
+    "canais": ["Push", "E-mail"]
   }
 ]

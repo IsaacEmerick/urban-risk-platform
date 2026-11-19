@@ -2,7 +2,7 @@
 
 > Arquivo do **revisor** (Claude no claude.ai). Serve para retomar o trabalho numa conversa nova.
 > **Claude Code: não edite este arquivo.** Ele não faz parte da entrega e não entra no PDF.
-> Última atualização: 18/11/2026, 18h30.
+> Última atualização: 19/11/2026, 00h50.
 
 ## Como retomar numa conversa nova
 
@@ -70,7 +70,11 @@
   Publicar status (abas Novo status / Meus status; serviço fixo "Energia elétrica" do perfil), Análises (seletor 7/30 dias, metas do
   RNF11 ao vivo, preliminares à parte, barras SVG com tabela sr-only). `receberDado`: leitura nova da mesma fonte vai para o evento
   ativo que já tem essa fonte. `reavaliarPorTempo()` a cada tique (RN03 2 h, RN05 30 min).
-- **Em andamento:** ajustes da revisão da 6a (ver "Próximo passo").
+- **Ajustes da revisão da 6a feitos** (`9c58ed0`, 280 testes): metas do RNF11 sempre nos últimos 30 dias (seletor só nos gráficos),
+  hist-05 em 7 d + 3 h, fonteId por status no hist-04/hist-15, "Confirmado pela Defesa Civil" / "Confirmado: a confiança chegou a
+  Alta" na notificação. Capturas analises, painel, lista-alertas e central-notificacoes refeitas e revisadas.
+  Metas no fluxo do vídeo: 9,1/95,5 → 8,7/95,7 → 8,3/91,7 → (descarta evt-11) igual → (rio) 8,0/92,0. Teste em `analises.test.js`.
+- **Em andamento:** Sessão 6b (ver "Próximo passo").
 
 ## Decisões que não são óbvias (e o porquê)
 
@@ -111,8 +115,14 @@
   de 30 dias passa de 10%). Descartar da Fila não conta como falso alerta (nunca alertou): bom ponto para a narração.
   Abrir o app recém-carregado antes de gravar (a RN03 descarta o evt-04 ~1h40 depois de abrir).
 - **hist-09** (falta de água) é boletim de concessionária de água importado pelo RF02, não status da Juliana: fica.
-- Proposta da revisão da 6a: metas do RNF11 sempre nos **últimos 30 dias** (com 7 dias há só 8 alertas e cada um vale 12,5 p.p.);
-  o seletor vale só para os gráficos. A notificação "Alerta confirmado" diz quem confirmou.
+- **Metas do RNF11 sempre nos últimos 30 dias** (com 7 dias há só 8 alertas e cada um vale 12,5 p.p.); o seletor vale só para
+  os gráficos. A notificação "Alerta confirmado" diz quem confirmou.
+
+- **6b (plano aprovado em 19/11):** cadastro só de morador (contas de agente/operador criadas pelo órgão); Carlos e Juliana com
+  base legal "execução de políticas públicas" (art. 7º, III; Juliana via convênio da concessionária), sem consentimento de cadastro;
+  sem "Excluir conta" para eles, e sim "Solicitar exclusão ao órgão" (registrado no histórico); "Autorizar" para conceder de novo o
+  consentimento opcional; sem esse consentimento ativo, nenhuma notificação, nem "Alerta cancelado"/"Alerta confirmado";
+  sequência com `buscarUsuarios(..., consentimento ativo)`.
 
 ## Perguntas prováveis da banca (preparar o Isaac)
 
@@ -129,8 +139,7 @@
 
 ## Pendências
 
-1. Ajustes da revisão da 6a (metas em 30 dias, hist-05, fonteIds históricos, quem confirmou, capturas).
-2. **Sessão 6b:** Login (com consentimento LGPD), Preferências, Privacidade e meus dados, Perfil.
+1. **Sessão 6b:** Login (com consentimento LGPD), Preferências, Privacidade e meus dados, Perfil.
 3. Deploy na Vercel; README com nome completo, RM e links (o Isaac preenche).
 4. Prettier (adiado) e alinhamento de tabelas Markdown (aviso MD060).
 5. Revisão final de coerência (juntar os achados pequenos das auditorias e resolver de uma vez).
@@ -140,5 +149,8 @@
 
 ## Próximo passo
 
-Aguardar o relatório dos ajustes da revisão da 6a (metas do RNF11 em 30 dias, hist-05 fora da fronteira de 7 dias, fonteIds
-históricos, "confirmado pela Defesa Civil", capturas `analises`, `painel` e `lista-alertas`). Depois, escrever a Sessão 6b.
+Prompt da Sessão 6b entregue (Login com contas de demonstração e cadastro do morador com consentimento granular, Preferências,
+Privacidade e meus dados com exportação/revogação/exclusão e histórico de acesso do RNF09, Perfil). Aguardar o plano
+(`plano-sessao-6b.md` na raiz, se o Isaac quiser revisão) e depois o relatório. Atenção na revisão: consentimento desmarcado por
+padrão, revogar "notificações" para de notificar (RN06), sair e entrar não reinicia os dados, Ana padrão intacta para o vídeo.
+Também é preciso cortar a captura `painel.png` (6.846 px) para o PDF, ou fazer uma versão só com o topo.

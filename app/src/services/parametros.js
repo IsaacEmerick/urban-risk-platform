@@ -88,6 +88,12 @@ export const REGRAS = {
   renotificacaoMinutos: 15, // RN06
 }
 
+// Canais de alerta (RF13). No protótipo, todos os avisos aparecem na Central de notificações.
+export const CANAIS = { PUSH: 'Push', SMS: 'SMS', EMAIL: 'E-mail' }
+
+// Raios do ponto no mapa (área de interesse e área do status publicado)
+export const RAIOS_PONTO_M = [500, 1000, 2000]
+
 // RN06: raio afetado por tipo (Interrupção usa a área informada pelo operador)
 export const RAIO_AFETADO_METROS = {
   [TIPOS.ALAGAMENTO]: 500,

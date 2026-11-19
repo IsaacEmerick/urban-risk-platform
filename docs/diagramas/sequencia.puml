@@ -64,8 +64,8 @@ else dado válido
     EV -> EV : estado = Alerta emitido
     EV -> BR : publicar(AlertaEmitido)
     BR -> NOT : consumir(AlertaEmitido)
-    NOT -> DB : buscarUsuarios(raio afetado, áreas de interesse)
-    DB --> NOT : usuários com área de interesse afetada (RN06)
+    NOT -> DB : buscarUsuarios(raio afetado, áreas de interesse, consentimento ativo)
+    DB --> NOT : usuários com área afetada e consentimento ativo (RN06)
     NOT -> APP : enviarPush("Alagamento - risco Alto")
     APP -> M : exibir notificação
     NOT -> DB : registrarNotificacao(usuário, alerta)

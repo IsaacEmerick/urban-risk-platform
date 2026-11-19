@@ -897,3 +897,395 @@
   font-size: var(--texto-xl);
   font-weight: var(--peso-titulo);
 }
+
+/* ---- Sessão 6b: Login / Cadastro, Preferências, Privacidade e meus dados, Perfil ---- */
+
+/* Login / Cadastro (fora da moldura) */
+.acesso {
+  display: grid;
+  gap: var(--esp-4);
+  max-width: var(--largura-acesso);
+  margin: 0 auto;
+  padding: var(--esp-5) var(--esp-4) var(--esp-6);
+}
+
+.acesso__marca {
+  display: grid;
+  gap: var(--esp-2);
+}
+
+.acesso__produto {
+  color: var(--cor-institucional);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+  letter-spacing: var(--tracking-titulo);
+}
+
+.acesso__secao {
+  display: grid;
+  gap: var(--esp-3);
+}
+
+.acesso__secao .titulo-secao {
+  margin-bottom: 0;
+}
+
+.acesso__form {
+  gap: var(--esp-4);
+}
+
+.acesso__subtitulo {
+  margin-top: var(--esp-2);
+  font-size: var(--texto-md);
+}
+
+.contas-demo {
+  display: grid;
+  gap: var(--esp-2);
+}
+
+.conta-demo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0 var(--esp-3);
+  min-height: calc(var(--alvo-toque) * 1.5);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--borda-grossa) solid var(--cor-linha);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+  color: var(--cor-tinta);
+  text-align: left;
+  box-shadow: var(--sombra);
+  transition: border-color var(--duracao);
+}
+
+.conta-demo:hover {
+  border-color: var(--cor-institucional);
+}
+
+.conta-demo__nome {
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-forte);
+}
+
+.conta-demo__perfil {
+  grid-column: 1;
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.conta-demo__seta {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  color: var(--cor-institucional);
+}
+
+/* Consentimentos: caixa de seleção nativa, grande, com rótulo e finalidade */
+.consentimento {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-3);
+  padding: var(--esp-3);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.consentimento input[type='checkbox'] {
+  flex: none;
+  width: var(--tamanho-caixa);
+  height: var(--tamanho-caixa);
+  margin-top: var(--esp-1);
+  accent-color: var(--cor-institucional);
+}
+
+.consentimento--erro {
+  border-color: var(--cor-perigo);
+  border-width: var(--borda-grossa);
+}
+
+.consentimento__texto {
+  display: grid;
+  gap: var(--esp-1);
+}
+
+.consentimento__rotulo {
+  font-weight: var(--peso-forte);
+}
+
+.termos {
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+  font-size: var(--texto-sm);
+}
+
+.termos summary {
+  min-height: var(--alvo-toque);
+  display: flex;
+  align-items: center;
+  color: var(--cor-institucional);
+  font-weight: var(--peso-forte);
+  cursor: pointer;
+}
+
+.termos ul {
+  display: grid;
+  gap: var(--esp-2);
+  margin: var(--esp-2) 0 0;
+  padding-left: var(--esp-5);
+}
+
+.aviso--atencao {
+  border-left-color: var(--risco-moderado-contorno);
+  background: var(--risco-moderado-claro);
+}
+
+/* Preferências */
+.preferencias__form {
+  display: grid;
+  gap: var(--esp-4);
+  margin-top: var(--esp-4);
+}
+
+.preferencias .aviso + .aviso,
+.preferencias .cabecalho-tela + .aviso {
+  margin-bottom: var(--esp-2);
+}
+
+/* Legenda dentro do bloco (e não sobre a borda do fieldset) */
+.grupo__legenda--bloco {
+  float: left;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* fieldset que também é bloco: .grupo zera padding e borda, aqui eles voltam */
+.bloco.grupo {
+  padding: var(--esp-4);
+  border: var(--borda);
+}
+
+.bloco.campo--erro {
+  border-color: var(--cor-perigo);
+  border-width: var(--borda-grossa);
+}
+
+.lista-areas {
+  display: grid;
+  gap: var(--esp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-areas__item {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-1) var(--esp-3);
+  border: var(--borda);
+  border-radius: var(--raio-selo);
+  background: var(--cor-fundo);
+}
+
+.lista-areas__item .icone {
+  flex: none;
+  color: var(--cor-institucional);
+}
+
+.lista-areas__nome {
+  flex: 1;
+  font-weight: var(--peso-medio);
+}
+
+.adicionar-area {
+  display: grid;
+  gap: var(--esp-3);
+  padding-top: var(--esp-3);
+  border-top: var(--borda);
+}
+
+.adicionar-area__titulo {
+  font-size: var(--texto-md);
+}
+
+.adicionar-area__linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--esp-3);
+}
+
+.adicionar-area__linha .campo {
+  flex: 1;
+}
+
+/* Círculo da área de interesse no mapa do ponto (Leaflet aplica a classe no caminho SVG) */
+.circulo-area {
+  stroke: var(--cor-institucional);
+  fill: var(--cor-institucional);
+  fill-opacity: var(--opacidade-area-relatado);
+}
+
+/* Privacidade e meus dados */
+.privacidade__secoes {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.dados-pessoais {
+  display: grid;
+  gap: var(--esp-2);
+  margin: 0;
+}
+
+.dados-pessoais > div {
+  display: grid;
+  gap: 0;
+}
+
+.dados-pessoais dt {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}
+
+.dados-pessoais dd {
+  margin: 0;
+  font-weight: var(--peso-medio);
+  overflow-wrap: anywhere;
+}
+
+.lista-consentimentos,
+.lista-simples,
+.historico-acesso,
+.atalhos {
+  display: grid;
+  gap: var(--esp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.consentimento-item {
+  display: grid;
+  gap: var(--esp-2);
+  padding-bottom: var(--esp-3);
+  border-bottom: var(--borda);
+}
+
+.consentimento-item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.consentimento-item__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}
+
+.consentimento-item__nome {
+  font-size: var(--texto-md);
+}
+
+.consentimento-item__datas {
+  margin: 0;
+  padding-left: var(--esp-5);
+  font-size: var(--texto-sm);
+}
+
+.situacao-consentimento {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  padding: 0 var(--esp-2);
+  border: var(--borda);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+}
+
+.situacao-consentimento--ativo {
+  border-color: var(--risco-baixo);
+  background: var(--risco-baixo-claro);
+  color: var(--cor-tinta);
+}
+
+.situacao-consentimento--ativo .icone {
+  color: var(--risco-baixo);
+}
+
+.historico-acesso {
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+}
+
+.historico-acesso li {
+  display: grid;
+  grid-template-columns: var(--largura-coluna-hora) 1fr;
+  gap: var(--esp-2);
+}
+
+.historico-acesso time {
+  color: var(--cor-tinta-suave);
+}
+
+.bloco--perigo {
+  border-left: var(--largura-faixa-risco) solid var(--cor-perigo);
+}
+
+/* Perfil */
+.perfil {
+  display: grid;
+  gap: var(--esp-4);
+}
+
+.perfil .cabecalho-tela {
+  margin-bottom: 0;
+}
+
+.atalhos {
+  gap: var(--esp-2);
+}
+
+.atalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  min-height: calc(var(--alvo-toque) * 1.5);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--borda);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+  color: var(--cor-tinta);
+  text-decoration: none;
+}
+
+.atalho:hover {
+  border-color: var(--cor-institucional);
+}
+
+.atalho .icone {
+  flex: none;
+  color: var(--cor-institucional);
+}
+
+.atalho__texto {
+  display: grid;
+}
+
+.atalho__nome {
+  font-weight: var(--peso-forte);
+}
+
+.atalho__detalhe {
+  color: var(--cor-tinta-suave);
+  font-size: var(--texto-sm);
+}

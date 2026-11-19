@@ -3,6 +3,7 @@
 // (confiança → risco → estados → notificação, RN06). Em "Meus status", ela troca a situação enquanto
 // o evento está ativo; "Normalizado" leva o risco a Baixo e a RN05 encerra o evento em 30 min.
 import { useState } from 'react'
+import Campo from '../components/Campo.jsx'
 import CardAlerta from '../components/CardAlerta.jsx'
 import MapaSeletor from '../components/MapaSeletor.jsx'
 import SeloRisco from '../components/SeloRisco.jsx'
@@ -12,6 +13,7 @@ import { useRepositorio } from '../hooks/useRepositorio.js'
 import { eventoAtivo, passouPorAlerta } from '../services/eventos.js'
 import { formatarDataHora } from '../services/formatar.js'
 import { SITUACOES_INTERRUPCAO, TIPOS } from '../services/parametros.js'
+import { rotuloRaio } from '../services/conta.js'
 import { classificarRisco } from '../services/risco.js'
 import { RAIOS_PONTO_M, atualizarSituacao, criarDadoStatus, statusPublicados, validarStatus } from '../services/status.js'
 
@@ -20,7 +22,6 @@ const doisDigitos = (n) => String(n).padStart(2, '0')
 const paraCampo = (d) =>
   d ? `${d.getFullYear()}-${doisDigitos(d.getMonth() + 1)}-${doisDigitos(d.getDate())}T${doisDigitos(d.getHours())}:${doisDigitos(d.getMinutes())}` : ''
 const deCampo = (valor) => (valor ? new Date(valor) : null)
-const rotuloRaio = (m) => (m >= 1000 ? `${m / 1000} km` : `${m} m`)
 
 function formularioInicial(agora, bairros) {
   const inicio = new Date(agora)
@@ -36,23 +37,6 @@ function formularioInicial(agora, bairros) {
     pessoasAfetadas: '',
     atingeServicoCritico: null,
   }
-}
-
-// Campo com rótulo e mensagem de erro ligada por aria-describedby
-function Campo({ id, rotulo, erro, children }) {
-  return (
-    <div className={erro ? 'campo campo--erro' : 'campo'}>
-      <label htmlFor={id} className="campo__rotulo">
-        {rotulo}
-      </label>
-      {children}
-      {erro && (
-        <p id={`${id}-erro`} className="campo__erro">
-          {erro}
-        </p>
-      )}
-    </div>
-  )
 }
 
 export default function PublicarStatus() {

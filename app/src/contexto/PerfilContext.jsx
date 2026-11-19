@@ -1,41 +1,31 @@
-// Usuário logado no protótipo (Ana, Carlos ou Juliana). Guardado no navegador só por conveniência.
+// Usuário logado no protótipo. O id fica no navegador só por conveniência (services/sessao.js).
+// Inscrito no repositório: quando as preferências ou os consentimentos mudam, as telas veem na hora.
 import { createContext, useContext, useState } from 'react'
-import { repositorio } from '../services/repositorio.js'
+import { useRepositorio } from '../hooks/useRepositorio.js'
+import { entrarNaSessao, lerSessao, sairDaSessao } from '../services/sessao.js'
 
-const CHAVE = 'urp:usuarioId'
 const PerfilContext = createContext(null)
 
-function lerUsuarioSalvo() {
-  try {
-    return localStorage.getItem(CHAVE)
-  } catch {
-    return null
-  }
-}
-
-function salvarUsuario(id) {
-  try {
-    if (id) localStorage.setItem(CHAVE, id)
-    else localStorage.removeItem(CHAVE)
-  } catch {
-    // sem armazenamento (janela anônima etc.): o login vale só até recarregar
-  }
-}
-
 export function PerfilProvider({ children }) {
-  const [usuarioId, setUsuarioId] = useState(lerUsuarioSalvo)
+  const repositorio = useRepositorio()
+  const [usuarioId, setUsuarioId] = useState(() => lerSessao())
+  // Aviso para o Login depois de sair (ex.: conta excluída); some ao entrar de novo
+  const [avisoSaida, setAvisoSaida] = useState(null)
   const usuario = usuarioId ? (repositorio.obterUsuario(usuarioId) ?? null) : null
 
   const entrar = (id) => {
-    salvarUsuario(id)
+    entrarNaSessao(repositorio, id)
+    setAvisoSaida(null)
     setUsuarioId(id)
   }
-  const sair = () => {
-    salvarUsuario(null)
+  // Sair não reinicia os dados em memória: só esquece quem está logado
+  const sair = (aviso = null) => {
+    sairDaSessao(repositorio, usuarioId)
+    setAvisoSaida(aviso)
     setUsuarioId(null)
   }
 
-  return <PerfilContext.Provider value={{ usuario, entrar, sair }}>{children}</PerfilContext.Provider>
+  return <PerfilContext.Provider value={{ usuario, entrar, sair, avisoSaida }}>{children}</PerfilContext.Provider>
 }
 
 export function usePerfil() {

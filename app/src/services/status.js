@@ -7,7 +7,7 @@ import { eventoAtivo } from './eventos.js'
 import { ORIGENS, SITUACOES_INTERRUPCAO, TIPOS } from './parametros.js'
 
 // Raios oferecidos para "ponto no mapa" (o bairro usa o raio aproximado de data/bairros.json)
-export const RAIOS_PONTO_M = [500, 1000, 2000]
+export { RAIOS_PONTO_M } from './parametros.js'
 
 let sequencia = 1
 

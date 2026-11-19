@@ -7,6 +7,13 @@ export const PERFIS = {
   OPERADOR: 'operador',
 }
 
+// Nome do perfil exibido nas telas (Login, Perfil, Privacidade)
+export const ROTULO_PERFIL = {
+  [PERFIS.MORADOR]: 'Morador',
+  [PERFIS.AGENTE]: 'Agente da Defesa Civil',
+  [PERFIS.OPERADOR]: 'Operador de serviço público',
+}
+
 const TODOS = [PERFIS.MORADOR, PERFIS.AGENTE, PERFIS.OPERADOR]
 
 // As 14 telas da tabela de rastreabilidade

@@ -30,8 +30,8 @@ evento que tem estado, risco, confiança e prioridade.
 
 | Tela                     | Conteúdo principal                                                                                                                                                              | RF                     | Perfil           |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------- |
-| Login / Cadastro         | Escolha do perfil (morador, agente, operador), aceite de termos e consentimento LGPD                                                                                            | RF15, RF16             | Todos            |
-| Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (ex.: 1 km), tipos de risco e canais de alerta                                                                      | RF13                   | Todos            |
+| Login / Cadastro         | Entrar: contas de demonstração com um toque (sem senha real). Criar conta (só morador): nome, e-mail, consentimentos por finalidade e resumo dos termos e da política           | RF15, RF16             | Todos            |
+| Preferências             | Áreas de interesse por bairro ou por ponto no mapa com raio (500 m, 1 km ou 2 km), tipos de risco e canais de alerta; salva com ≥ 1 área, ≥ 1 tipo e ≥ 1 canal                  | RF13                   | Todos            |
 | Painel                   | Mapa com eventos coloridos por risco, indicadores e filtros por tipo de risco e região                                                                                          | RF01, RF02, RF07       | Todos            |
 | Lista de alertas         | Cards ordenados por prioridade, com risco, estado, origem e confiança; filtros por tipo de risco, nível de risco e estado                                                       | RF08                   | Todos            |
 | Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Confirmar alerta" (alerta preliminar), "Encerrar", "Cancelar alerta" e "Descartar evento" (agente) | RF06, RF08, RF12, RF17 | Todos            |
@@ -41,9 +41,9 @@ evento que tem estado, risco, confiança e prioridade.
 | Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                                                | RF03, RF17             | Morador          |
 | Fila de validação        | Só eventos Em validação, por prioridade (desempate: há mais tempo na fila), com selos, resumo da confiança e os botões Confirmar e Descartar                                    | RF04, RF12             | Agente           |
 | Análises                 | Período de 7 ou 30 dias; gráficos por tipo de risco e por bairro; as duas metas do RNF11 ao vivo; alertas preliminares à parte: quantos houve e quantos foram confirmados depois | RF14                   | Agente, operador |
-| Privacidade e meus dados | Consentimentos, exportação dos dados e exclusão da conta                                                                                                                        | RF16                   | Todos            |
+| Privacidade e meus dados | Dados pessoais, consentimentos (morador) ou base legal (agente, operador), exportação em JSON, revogação, exclusão da conta (ou pedido ao órgão) e histórico de acesso          | RF16                   | Todos            |
 | Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"; "Meus status" para trocar a situação | RF18                   | Operador         |
-| Perfil                   | Atalhos: dados do usuário, Preferências, Privacidade e meus dados e sair; o morador também tem Meus registros                                                                   | RF15                   | Todos            |
+| Perfil                   | Nome, perfil e e-mail; atalhos Preferências, Privacidade e meus dados e Sair; o morador também tem Meus registros                                                               | RF15                   | Todos            |
 
 ## 2. Requisitos funcionais
 
@@ -124,6 +124,11 @@ afetado do evento. Por isso, um alagamento no Jardim Maria Helena perto da divis
 escolheu só o Parque Viana. Os centros e raios dos bairros são aproximações feitas a partir do
 OpenStreetMap, não limites oficiais.
 
+Na tela Preferências, as preferências só são salvas com **pelo menos 1 área, 1 tipo de risco e 1 canal**,
+e o que for salvo passa a valer na RN06 na hora. As áreas por ponto usam raio de 500 m, 1 km ou 2 km.
+No protótipo, nenhum SMS ou e-mail é enviado: os avisos de todos os canais aparecem na Central de
+notificações. O morador que acabou de se cadastrar começa sem área, com os 3 tipos de risco e o canal Push.
+
 **Sobre o RF18:**
 
 - Situações possíveis: **Interrupção identificada**, **Em atendimento**, **Normalização parcial** e
@@ -181,13 +186,29 @@ alertas → RNF11; facilidade de uso → RNF06.
 
 ### Tratamento de dados pessoais (LGPD)
 
-- **Base legal (art. 7º):** consentimento do morador para cadastro, áreas de interesse e
-  notificações; execução de políticas públicas para os dados tratados pela Defesa Civil.
+- **Base legal (art. 7º):** para o **morador**, consentimento (art. 7º, I), separado por finalidade:
+  "Cadastro e autenticação" (obrigatório) e "Áreas de interesse e notificações de risco" (opcional).
+  Para os perfis **agente e operador**, execução de políticas públicas (art. 7º, III); no caso do
+  operador, o acesso é concedido pelo convênio entre a Defesa Civil e a concessionária. Por isso, a
+  tela Privacidade e meus dados mostra a base legal deles e não oferece revogação.
+- **Quem cria a conta:** só o morador se cadastra no app (Login / Cadastro). As contas de agente e de
+  operador são criadas pelo órgão responsável, e a exclusão delas também é feita pelo órgão: no app,
+  eles têm o botão "Solicitar exclusão ao órgão", que só registra o pedido no histórico de acesso.
+- **Consentimentos:** desmarcados por padrão e guardados com data e finalidade (RNF09); a revogação
+  também fica guardada com data, e o morador pode autorizar de novo depois (nova data).
+  "Cadastro e autenticação" não se revoga sozinho: para isso existe excluir a conta.
+- **Revogar "Áreas de interesse e notificações de risco":** o morador deixa de receber **qualquer**
+  notificação na hora (Alerta, "Alerta confirmado" e "Alerta cancelado"), mesmo de um alerta que
+  recebeu antes de revogar (RN06).
 - **Minimização:** o registro comunitário pede só tipo, localização, descrição e foto opcional.
 - **Pseudonimização:** os eventos guardam apenas um ID pseudonimizado de quem registrou; os dados
   pessoais ficam separados, no cofre de dados pessoais (ver arquitetura).
 - **Direitos do titular (art. 18):** consulta, exportação, exclusão e revogação de consentimento,
-  atendidos pelo RF16.
+  atendidos pelo RF16 na tela Privacidade e meus dados. A exportação é um JSON só com os dados do
+  titular (sem dados nem pseudônimos de outras pessoas). Excluir a conta apaga os dados pessoais do
+  cofre (usuário, preferências, consentimentos e notificações); os eventos guardam só o pseudônimo,
+  que deixa de apontar para alguém. O histórico de acesso (log de auditoria) é guardado por 12 meses
+  (RNF09), inclusive depois da exclusão.
 
 ## 4. Regras de negócio
 
@@ -288,7 +309,7 @@ Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
 | RN03 | Com **confiança < 50**, o evento fica **Reportado** aguardando confirmações e é **Descartado** se não houver nenhuma em **2 h**. Se as confirmações elevarem a confiança, valem a RN01 ou a RN02.                                                                                                                                                                                                                                               | Estados: Reportado → Descartado                                                                |
 | RN04 | Dados do **mesmo tipo** a até **300 m** e **60 min** um do outro são agrupados no mesmo evento.                                                                                                                                                                                                                                                                                                                                                 | Serviço de Validação                                                                           |
 | RN05 | O evento é **Encerrado** quando o risco fica abaixo do limiar de Moderado (Baixo) por **30 min** seguidos ou quando o agente o encerra.                                                                                                                                                                                                                                                                                                         | Estados: Em monitoramento → Encerrado                                                          |
-| RN06 | Só recebe notificação quem tem **área de interesse** no raio afetado: **500 m** para Alagamento, **1 km** para Ilha de calor e a **área informada pelo operador** para Interrupção de serviço. A área de interesse alcança o evento quando a distância entre o seu centro (bairro ou ponto) e o evento é ≤ raio da área + raio afetado (ver RF13). O mesmo evento não é renotificado em menos de **15 min**, salvo se o risco subir (escalada). | Serviço de Notificação; Central de notificações                                                |
+| RN06 | Só recebe notificação quem tem **área de interesse** no raio afetado: **500 m** para Alagamento, **1 km** para Ilha de calor e a **área informada pelo operador** para Interrupção de serviço. A área de interesse alcança o evento quando a distância entre o seu centro (bairro ou ponto) e o evento é ≤ raio da área + raio afetado (ver RF13). O mesmo evento não é renotificado em menos de **15 min**, salvo se o risco subir (escalada). O **morador** só é notificado com o consentimento "Áreas de interesse e notificações de risco" ativo; sem ele, não recebe nenhuma notificação (Alerta, "Alerta confirmado" nem "Alerta cancelado"). | Serviço de Notificação; Central de notificações                                                |
 | RN07 | O **risco** e a **confiança** do evento são o **maior valor** entre os dados agrupados.                                                                                                                                                                                                                                                                                                                                                         | Motor de Confiança; Motor de Classificação de Risco                                            |
 
 **Interpretações adotadas nas regras:**

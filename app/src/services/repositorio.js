@@ -21,6 +21,7 @@ import {
 } from './estados.js'
 import { deveNotificar, resolverAreas } from './notificacao.js'
 import { aplicarConfirmacao } from './confirmacao.js'
+import { ACOES_ACESSO, autorizar, exportarDadosTitular, podeReceberNotificacoes, revogar } from './conta.js'
 
 const MAX_LEITURAS_GUARDADAS = 40
 
@@ -46,6 +47,19 @@ function prepararDado(dadoJson, evento, sensores, agora) {
       ...(inicioMinutosAtras != null && { inicio: minutosAtras(agora, inicioMinutosAtras) }),
       ...(previsaoMinutosAdiante != null && { previsaoNormalizacao: minutosAtras(agora, -previsaoMinutosAdiante) }),
     },
+  }
+}
+
+// Usuário: áreas por bairro ganham centro e raio do catálogo (RF13, RN06); datas dos consentimentos viram Date
+function prepararUsuario(usuario, bairros) {
+  return {
+    ...usuario,
+    areasInteresse: resolverAreas(usuario.areasInteresse ?? [], bairros),
+    consentimentos: (usuario.consentimentos ?? []).map((c) => ({
+      ...c,
+      concedidoEm: new Date(c.concedidoEm),
+      revogadoEm: c.revogadoEm ? new Date(c.revogadoEm) : null,
+    })),
   }
 }
 
@@ -77,10 +91,12 @@ export function criarRepositorio({
   const estado = {
     bairros,
     sensores: sensores.map((s) => ({ ...s, leituras: [] })),
-    // Áreas por bairro ganham centro e raio do catálogo (RF13, RN06)
-    usuarios: usuarios.map((u) => ({ ...u, areasInteresse: resolverAreas(u.areasInteresse ?? [], bairros) })),
+    usuarios: usuarios.map((u) => prepararUsuario(u, bairros)),
     eventos: [],
     notificacoes: [],
+    // Histórico de acesso a dados pessoais (RNF09): { usuarioId, em, acao }. Guardado por 12 meses,
+    // inclusive depois da exclusão da conta (log de auditoria).
+    acessos: [],
   }
   estado.eventos = eventos.map((e) => prepararEvento(e, estado.sensores, agora))
   const inscritos = new Set()
@@ -103,8 +119,8 @@ export function criarRepositorio({
     estado.usuarios.forEach((usuario) => {
       const anteriores = estado.notificacoes.filter((n) => n.usuarioId === usuario.id && n.eventoId === evento.id)
       if (tipo === 'Alerta cancelado') {
-        // Só avisa do cancelamento quem recebeu o alerta (RF10)
-        if (anteriores.length === 0) return
+        // Só avisa do cancelamento quem recebeu o alerta (RF10) e ainda tem o consentimento ativo (LGPD)
+        if (anteriores.length === 0 || !podeReceberNotificacoes(usuario)) return
       } else {
         const ultima = anteriores.at(-1)
         const ultimaNotificacao = ultima ? { em: ultima.em, risco: ultima.risco } : null
@@ -127,7 +143,8 @@ export function criarRepositorio({
       const preliminar = estado.notificacoes.find(
         (n) => n.usuarioId === usuario.id && n.eventoId === evento.id && n.tipo === 'Alerta' && n.naoConfirmado,
       )
-      if (!preliminar) return
+      // Sem o consentimento ativo (LGPD), nem o "Alerta confirmado" chega, mesmo para quem recebeu o preliminar
+      if (!preliminar || !podeReceberNotificacoes(usuario)) return
       adicionarNotificacao(usuario, evento, 'Alerta confirmado', {
         em: momento,
         lida: false,
@@ -299,6 +316,88 @@ export function criarRepositorio({
     avisarInscritos()
   }
 
+  // ---- Conta e direitos do titular (RF13, RF15, RF16, RNF09) ----
+
+  function obterUsuarioOuErro(usuarioId) {
+    const usuario = estado.usuarios.find((u) => u.id === usuarioId)
+    if (!usuario) throw new Error(`Usuário não encontrado: ${usuarioId}`)
+    return usuario
+  }
+
+  function substituirUsuario(usuarioId, mudar) {
+    estado.usuarios = estado.usuarios.map((u) => (u.id === usuarioId ? mudar(u) : u))
+    avisarInscritos()
+    return estado.usuarios.find((u) => u.id === usuarioId)
+  }
+
+  // Histórico de acesso (RNF09): data e ação
+  function registrarAcesso(usuarioId, acao, momento = new Date()) {
+    estado.acessos.push({ usuarioId, em: momento, acao })
+    avisarInscritos()
+  }
+
+  // Cadastro do morador (Login / Cadastro): o usuário novo entra na lista e passa a valer na RN06
+  function criarUsuario(usuario, momento = new Date()) {
+    estado.usuarios = [...estado.usuarios, prepararUsuario(usuario, estado.bairros)]
+    registrarAcesso(usuario.id, ACOES_ACESSO.CRIOU_CONTA, momento)
+    return estado.usuarios.at(-1)
+  }
+
+  // Preferências (RF13): as áreas viram círculos de novo, para valerem na RN06 na hora
+  function atualizarPreferencias(usuarioId, { areasInteresse, tiposRisco, canais }, momento = new Date()) {
+    obterUsuarioOuErro(usuarioId)
+    const atualizado = substituirUsuario(usuarioId, (u) => ({
+      ...u,
+      areasInteresse: resolverAreas(areasInteresse, estado.bairros),
+      tiposRisco: [...tiposRisco],
+      canais: [...canais],
+    }))
+    registrarAcesso(usuarioId, ACOES_ACESSO.ALTEROU_PREFERENCIAS, momento)
+    return atualizado
+  }
+
+  // Revogar / autorizar o consentimento opcional (RF16). A revogação para as notificações na hora.
+  function revogarConsentimento(usuarioId, finalidade, momento = new Date()) {
+    const usuario = obterUsuarioOuErro(usuarioId)
+    const consentimentos = revogar(usuario.consentimentos, finalidade, momento)
+    const atualizado = substituirUsuario(usuarioId, (u) => ({ ...u, consentimentos }))
+    registrarAcesso(usuarioId, ACOES_ACESSO.revogou(finalidade), momento)
+    return atualizado
+  }
+
+  function autorizarConsentimento(usuarioId, finalidade, momento = new Date()) {
+    const usuario = obterUsuarioOuErro(usuarioId)
+    const consentimentos = autorizar(usuario.consentimentos, finalidade, momento)
+    const atualizado = substituirUsuario(usuarioId, (u) => ({ ...u, consentimentos }))
+    registrarAcesso(usuarioId, ACOES_ACESSO.autorizou(finalidade), momento)
+    return atualizado
+  }
+
+  // Exportação (RF16): só os dados do titular
+  function exportarDados(usuarioId, momento = new Date()) {
+    const usuario = obterUsuarioOuErro(usuarioId)
+    registrarAcesso(usuarioId, ACOES_ACESSO.EXPORTOU, momento)
+    return exportarDadosTitular({
+      usuario,
+      eventos: estado.eventos,
+      notificacoes: estado.notificacoes.filter((n) => n.usuarioId === usuarioId),
+      acessos: estado.acessos.filter((a) => a.usuarioId === usuarioId),
+      bairros: estado.bairros,
+      agora: momento,
+    })
+  }
+
+  // Excluir conta (RF16, morador): apaga os dados pessoais (o "cofre": usuário e notificações).
+  // Os eventos ficam como estão: guardam só o pseudônimo, que deixa de apontar para alguém.
+  // O histórico de acesso fica (log de auditoria, 12 meses, RNF09).
+  function excluirUsuario(usuarioId, momento = new Date()) {
+    obterUsuarioOuErro(usuarioId)
+    registrarAcesso(usuarioId, ACOES_ACESSO.EXCLUIU_CONTA, momento)
+    estado.usuarios = estado.usuarios.filter((u) => u.id !== usuarioId)
+    estado.notificacoes = estado.notificacoes.filter((n) => n.usuarioId !== usuarioId)
+    avisarInscritos()
+  }
+
   recalcularTodos(agora)
   gerarNotificacoesIniciais(idsComNotificacaoInicial)
 
@@ -313,6 +412,14 @@ export function criarRepositorio({
     listarNotificacoes: (usuarioId) => estado.notificacoes.filter((n) => n.usuarioId === usuarioId),
     marcarComoLida,
     marcarTodasComoLidas,
+    criarUsuario,
+    atualizarPreferencias,
+    revogarConsentimento,
+    autorizarConsentimento,
+    exportarDados,
+    excluirUsuario,
+    registrarAcesso,
+    historicoDeAcesso: (usuarioId) => estado.acessos.filter((a) => a.usuarioId === usuarioId),
     receberDado,
     // Registro comunitário (RF03): o dado do morador segue o mesmo caminho dos outros dados
     registrarOcorrencia: (dado, momento = dado.registradoEm) => receberDado(dado, momento),

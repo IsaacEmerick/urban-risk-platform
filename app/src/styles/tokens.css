@@ -91,6 +91,9 @@
   --tamanho-marcador: 32px;
   --tamanho-icone: 1.25em;
   --alvo-toque: 44px; /* área mínima de toque */
+  --tamanho-caixa: 1.5rem; /* caixa de seleção dos consentimentos */
+  --largura-acesso: 480px; /* coluna da tela de Login / Cadastro */
+  --largura-coluna-hora: 7.5em; /* coluna da data no Histórico de acesso */
   --largura-faixa-risco: 6px;
 
   /* Medidas finas de componentes */
