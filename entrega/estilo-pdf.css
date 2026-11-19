@@ -1,0 +1,250 @@
+/* CSS de impressão do PDF da entrega (A4, corpo 11 pt, tabelas a 9 pt) */
+@page {
+  size: A4;
+  margin: 16mm 16mm 18mm 16mm; /* o rodapé com a numeração fica na margem de baixo */
+}
+@page paisagem {
+  size: A4 landscape;
+  margin: 12mm 14mm 16mm 14mm;
+}
+
+:root {
+  --texto: #1b2530;
+  --suave: #4a5866;
+  --borda: #c9d1d9;
+  --fundo-tabela: #eef2f5;
+  --destaque: #0d5c6e;
+}
+
+html {
+  font-family: 'Segoe UI', Arial, sans-serif; /* Segoe UI tem ≥, −, • e todos os acentos */
+  font-size: 11pt;
+  line-height: 1.45;
+  color: var(--texto);
+  background: #fff;
+}
+body {
+  margin: 0;
+}
+
+/* Cada parte começa numa página nova (sem página em branco: só uma regra de quebra por parte) */
+.parte,
+.sumario {
+  break-before: page;
+}
+
+h1 {
+  font-size: 19pt;
+  line-height: 1.2;
+  margin: 0 0 4mm;
+  color: var(--destaque);
+}
+h2 {
+  font-size: 14pt;
+  margin: 7mm 0 2.5mm;
+  break-after: avoid;
+}
+h3 {
+  font-size: 12pt;
+  margin: 5mm 0 2mm;
+  break-after: avoid;
+}
+h4 {
+  font-size: 11pt;
+  margin: 4mm 0 1.5mm;
+  break-after: avoid;
+}
+p,
+li {
+  orphans: 3;
+  widows: 3;
+}
+p {
+  margin: 0 0 2.5mm;
+}
+ul,
+ol {
+  margin: 0 0 2.5mm;
+  padding-left: 6mm;
+}
+a {
+  color: var(--destaque);
+  overflow-wrap: anywhere;
+}
+code {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 9.5pt;
+  background: var(--fundo-tabela);
+  padding: 0 1mm;
+  border-radius: 1mm;
+}
+strong {
+  font-weight: 600;
+}
+blockquote {
+  margin: 0 0 3mm;
+  padding: 1mm 4mm;
+  border-left: 1mm solid var(--borda);
+  color: var(--suave);
+}
+
+/* Tabelas: 9 pt, texto quebrando dentro da célula, cabeçalho repetido a cada página */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9pt;
+  line-height: 1.35;
+  margin: 2mm 0 4mm;
+}
+thead {
+  display: table-header-group;
+}
+tr {
+  break-inside: avoid;
+}
+th,
+td {
+  border: 0.25mm solid var(--borda);
+  padding: 1.2mm 1.6mm;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: break-word;
+  hyphens: manual;
+}
+th {
+  background: var(--fundo-tabela);
+  font-weight: 600;
+}
+td code,
+th code {
+  font-size: 8.5pt;
+}
+
+/* Capa */
+.capa {
+  padding-top: 45mm;
+}
+.capa__evento {
+  font-size: 12pt;
+  color: var(--suave);
+  margin-bottom: 6mm;
+}
+.capa__titulo {
+  font-size: 30pt;
+  margin-bottom: 6mm;
+}
+.capa__sub {
+  font-size: 13pt;
+  max-width: 150mm;
+  margin-bottom: 18mm;
+}
+.capa__dados {
+  display: grid;
+  grid-template-columns: 45mm 1fr;
+  row-gap: 3mm;
+  font-size: 12pt;
+  margin: 0 0 20mm;
+}
+.capa__dados dt {
+  font-weight: 600;
+}
+.capa__dados dd {
+  margin: 0;
+}
+.capa__recorte {
+  font-size: 10pt;
+  color: var(--suave);
+}
+
+/* Sumário: partes sem numeração; os títulos internos mantêm a numeração dos documentos */
+.sumario ul {
+  list-style: none;
+  padding-left: 0;
+}
+.sumario > ul > li {
+  margin: 0 0 2.5mm;
+  font-weight: 600;
+}
+.sumario ul ul {
+  padding-left: 7mm;
+  margin-top: 1mm;
+  font-weight: 400;
+}
+.sumario a {
+  color: var(--texto);
+  text-decoration: none;
+}
+
+/* Documentos: o título principal de cada um já abre a parte */
+.doc > h1:first-child {
+  margin-top: 0;
+}
+
+/* Diagramas */
+figure {
+  margin: 3mm 0 5mm;
+  break-inside: avoid;
+}
+figcaption {
+  font-size: 9pt;
+  color: var(--suave);
+  margin-top: 2mm;
+}
+.diagrama img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.paisagem {
+  page: paisagem;
+}
+.paisagem h2 {
+  margin-top: 0;
+}
+.diagrama--sequencia img {
+  max-height: 136mm;
+}
+.estados {
+  page: auto;
+  break-before: page;
+}
+.estados img {
+  max-height: 150mm;
+}
+
+/* Telas do protótipo: até duas capturas por linha, sem quebrar uma captura entre páginas */
+.grupo-telas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4mm 8mm;
+  margin: 0 0 4mm;
+}
+.tela {
+  margin: 0;
+  max-width: 82mm;
+  break-inside: avoid;
+  text-align: center;
+}
+.tela img {
+  display: block;
+  max-width: 78mm;
+  max-height: 222mm;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border: 0.25mm solid var(--borda);
+}
+.grupo-telas--pequenas {
+  gap: 4mm 5mm;
+}
+.grupo-telas--pequenas .tela {
+  max-width: 55mm;
+}
+.grupo-telas--pequenas .tela img {
+  max-width: 53mm;
+}
+.tela figcaption {
+  font-size: 9pt;
+}

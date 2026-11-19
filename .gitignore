@@ -10,3 +10,7 @@ docs/enunciado.pdf
 # Apoio local (fica só no disco): guia de desenvolvimento e memória do revisor
 docs/guia-desenvolvimento.md
 docs/memoria-revisao.md
+
+# Dependências do gerador do PDF
+entrega/node_modules/
+entrega/documento.html
