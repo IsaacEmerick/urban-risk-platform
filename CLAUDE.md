@@ -36,7 +36,7 @@ registro comunitário de ocorrência, tela de origem e nível de confiança do d
 - `app/` — React + Vite + Leaflet (OpenStreetMap). Dados simulados, sem back-end.
   - `src/pages/` telas · `src/components/` componentes · `src/services/` regras de negócio · `src/data/` dados simulados (JSON)
 - `docs/` — documentação em Markdown + `diagramas/` (sequência e estados em `.puml`; arquitetura em `.drawio`, com posições fixas)
-- `entrega/` — PDF final gerado com Pandoc
+- `entrega/` — gerador (marked + Edge) e PDF final (local, fora do git)
 
 Comandos: `cd app && npm install && npm run dev` (desenvolvimento) · `npm run build` (antes do deploy na Vercel).
 

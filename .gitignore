@@ -12,5 +12,4 @@ docs/guia-desenvolvimento.md
 docs/memoria-revisao.md
 
 # Dependências do gerador do PDF
-entrega/node_modules/
-entrega/documento.html
+entrega/
