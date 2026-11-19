@@ -25,7 +25,7 @@ Depois que `docs/01-requisitos.md` existir, ele passa a ser a fonte da verdade; 
 | Diagrama de Sequência (dado → validação → risco → notificação) | 1,0    | `docs/diagramas/sequencia.puml`                                |
 | Diagrama de Estados (ciclo de vida do evento)                  | 1,0    | `docs/diagramas/estados.puml`                                  |
 | Arquitetura em camadas                                         | 1,0    | `docs/diagramas/arquitetura.drawio` + `docs/02-arquitetura.md` |
-| Vídeo de até 3 min                                             | 1,0    | `docs/roteiro-video.md`                                        |
+| Vídeo de até 3 min                                             | 1,0    | não será entregue (decisão do aluno)                           |
 
 Telas obrigatórias: painel (mapa/visão geral), lista e detalhe de alertas, central de notificações,
 registro comunitário de ocorrência, tela de origem e nível de confiança do dado.
@@ -59,7 +59,6 @@ a inundações do SGB (Barueri, 2017).
 - Sensor de temperatura no Jardim Maria Helena com falha recente (evt-09: 90 − 30 = 60, Em validação): a cada tique
   o simulador manda uma leitura de 38,5 a 39,5 °C com falhaSensor, que substitui a anterior (não fica desatualizado).
 - Fila de validação ao carregar: evt-02 (58,8) → evt-10 e evt-09 (45,0; evt-10 há mais tempo) → evt-11 (13,8).
-  No vídeo, a Ana confirma o evt-02; o Carlos confirma o evt-10 e descarta o evt-11.
 - A área de interesse da Ana cobre o Parque Viana e o Jardim Maria Helena.
 
 ## Glossário — use exatamente estes nomes em todos os artefatos

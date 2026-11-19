@@ -11,7 +11,6 @@ Global Solution 2026.2 · Engenharia de Software · FIAP
 - **Protótipo publicado:** https://urban-risk-platform.vercel.app
   (modo demonstração: https://urban-risk-platform.vercel.app/?demo=1)
 - **Repositório:** https://github.com/IsaacEmerick/urban-risk-platform
-- **Vídeo:** _(a preencher: link do YouTube, não listado)_
 
 ## ⚠️ Dados simulados
 
@@ -67,7 +66,7 @@ memória); para voltar ao estado inicial, recarregue a página.
 ### Modo demonstração
 
 Normalmente o sensor simulado do rio Cotia envia uma leitura a cada 15 s, e o alerta Alto chega em
-cerca de 2 min. Para gravar o vídeo, abra o app com **`?demo=1`** no endereço
+cerca de 2 min. Para ver o alerta antecipado do rio mais rápido, abra o app com **`?demo=1`** no endereço
 (ex.: `http://localhost:5173/?demo=1`): o sensor passa a enviar uma leitura a cada 2 s, o alerta
 **Alto chega em ~16 s** e o **Crítico em ~38 s**. Um aviso "Modo demonstração" aparece no topo
 enquanto o modo estiver ativo. Ele vale até fechar a aba; `?demo=0` desliga.

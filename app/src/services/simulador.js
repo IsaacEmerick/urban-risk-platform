@@ -18,7 +18,7 @@ export function proximoNivel(nivelAtual, cotaTransbordamentoM, aleatorio = Math.
   return arredondar(Math.min(proximo, teto))
 }
 
-// Modo demonstração: ?demo=1 na URL acelera o simulador (uma leitura a cada 2 s, para o vídeo)
+// Modo demonstração: ?demo=1 na URL acelera o simulador (uma leitura a cada 2 s, para a demonstração)
 export function emModoDemonstracao(search = '') {
   return new URLSearchParams(search).get('demo') === '1'
 }

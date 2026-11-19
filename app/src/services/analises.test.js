@@ -85,7 +85,7 @@ describe('metas do RNF11: sempre nos últimos 30 dias (janela móvel)', () => {
     expect(agoraMesmo.total).toBe(15)
   })
 
-  it('fluxo do vídeo: Ana confirma evt-02 → Carlos confirma evt-10 → descarta evt-11 → alerta do rio', async () => {
+  it('fluxo de demonstração: Ana confirma evt-02 → Carlos confirma evt-10 → descarta evt-11 → alerta do rio', async () => {
     const { criarLeitura } = await import('./simulador.js')
     const repo = criarRepositorio({ agora: AGORA })
     const metas = () => {
