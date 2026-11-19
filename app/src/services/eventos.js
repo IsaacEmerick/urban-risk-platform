@@ -37,7 +37,7 @@ export function eventoDaMesmaFonte(dado, eventos) {
   return eventos.find((evento) => eventoAtivo(evento) && evento.dados.some((d) => mesmaFonte(d, dado))) ?? null
 }
 
-// Fila de validação (RF04, RF12): só eventos Em validação, maior prioridade primeiro.
+// Fila de validação (RF12, RN02): só eventos Em validação, maior prioridade primeiro.
 // Empate → o que está Em validação há mais tempo vem antes (seção 4.3: nada fica esquecido na fila).
 export function filaDeValidacao(eventos) {
   const entrouEmValidacao = (e) => e.historico.findLast((h) => h.estado === ESTADOS.EM_VALIDACAO).em

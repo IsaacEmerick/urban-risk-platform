@@ -2,7 +2,7 @@
 
 > Arquivo do **revisor** (Claude no claude.ai). Serve para retomar o trabalho numa conversa nova.
 > **Claude Code: não edite este arquivo.** Ele não faz parte da entrega e não entra no PDF.
-> Última atualização: 19/11/2026, 01h40.
+> Última atualização: 19/11/2026, 01h55. (Hashes de commit atualizados após a limpeza do histórico.)
 
 ## Como retomar numa conversa nova
 
@@ -58,30 +58,35 @@
   14 rotas, 3 perfis (Ana moradora, Carlos agente, Juliana operadora). Dados em memória: recarregar reinicia.
 - **Sessão 4 (fluxo 1) pronta:** `tokens.css` (fonte Atkinson Hyperlegible Next; selo de confiança em barrinhas), Painel, Central de
   notificações, Detalhe do alerta, Origem e confiança. Capturas em `docs/prints/`.
-- **Correções da revisão visual da Sessão 4 feitas** (commit `dee5554`, 188 testes): notificações com risco/confiança/origem do
+- **Correções da revisão visual da Sessão 4 feitas** (commit `b57f62b`, 188 testes): notificações com risco/confiança/origem do
   envio, "Risco Alto (cancelado)" em cinza, círculo de 100 m com o ícone de risco no centro (RNF07), plural, aba "Fila".
   As capturas antigas de `docs/prints/` ficaram desatualizadas: refazer junto com as da Sessão 5.
-- **Sessão 5 (fluxo 2) pronta** (commits `fc5cf4c` e `c8aacdb`, 209 testes): Lista de alertas, Registro comunitário em 3 passos
+- **Sessão 5 (fluxo 2) pronta** (commits `8a6b842` e `d30e45a`, 209 testes): Lista de alertas, Registro comunitário em 3 passos
   (5 toques no mínimo), confirmação de envio, Meus registros, "Também vejo isso". Demonstração: Ana confirma o evt-02 (65 → 75) →
   Confirmado → Alerta emitido. 13 capturas em `docs/prints/`.
-- **Correções da Sessão 5 feitas** (`18b0892`) e notificação **"Alerta confirmado"** (`18060e5`): quando a marca "não confirmado"
+- **Correções da Sessão 5 feitas** (`edc8473`) e notificação **"Alerta confirmado"** (`9efd77e`): quando a marca "não confirmado"
   cai (agente ou confiança 75), quem recebeu o preliminar ganha um aviso novo; o antigo não muda.
-- **Sessão 6a pronta** (`afb19fe` + `5455928`, 276 testes): Fila de validação (evt-02 58,8 → evt-10 45,0 → evt-09 45,0 → evt-11 13,8),
+- **Sessão 6a pronta** (`ca736cd` + `7af6d32`, 276 testes): Fila de validação (evt-02 58,8 → evt-10 45,0 → evt-09 45,0 → evt-11 13,8),
   Publicar status (abas Novo status / Meus status; serviço fixo "Energia elétrica" do perfil), Análises (seletor 7/30 dias, metas do
   RNF11 ao vivo, preliminares à parte, barras SVG com tabela sr-only). `receberDado`: leitura nova da mesma fonte vai para o evento
   ativo que já tem essa fonte. `reavaliarPorTempo()` a cada tique (RN03 2 h, RN05 30 min).
-- **Ajustes da revisão da 6a feitos** (`9c58ed0`, 280 testes): metas do RNF11 sempre nos últimos 30 dias (seletor só nos gráficos),
+- **Ajustes da revisão da 6a feitos** (`ea114e8`, 280 testes): metas do RNF11 sempre nos últimos 30 dias (seletor só nos gráficos),
   hist-05 em 7 d + 3 h, fonteId por status no hist-04/hist-15, "Confirmado pela Defesa Civil" / "Confirmado: a confiança chegou a
   Alta" na notificação. Capturas analises, painel, lista-alertas e central-notificacoes refeitas e revisadas.
   Metas no fluxo do vídeo: 9,1/95,5 → 8,7/95,7 → 8,3/91,7 → (descarta evt-11) igual → (rio) 8,0/92,0. Teste em `analises.test.js`.
-- **Sessão 6b pronta** (`62cdd5f`, 304 testes): Login (contas de demonstração + cadastro só de morador, consentimentos desmarcados),
+- **Sessão 6b pronta** (`a9b7b2e`, 304 testes): Login (contas de demonstração + cadastro só de morador, consentimentos desmarcados),
   Preferências (bairro ou ponto + raio 500 m/1 km/2 km; vale na RN06 na hora), Privacidade e meus dados (consultar, exportar JSON,
   revogar/autorizar, excluir conta ou "Solicitar exclusão ao órgão", histórico de acesso), Perfil. `sessao.js`: sair não reinicia dados.
   Base legal de agente/operador vem do perfil (constante), sem consentimento no usuarios.json. Histórico de acesso fica após a
   exclusão (só id, data e ação). Capturas login, cadastro, preferencias, privacidade, perfil revisadas: sem problemas.
 - **Todas as 14 telas estão prontas.**
-- **ATENÇÃO:** `git status` mostra `main...origin/main [gone]`: nada foi enviado ao GitHub (ou o repositório remoto sumiu).
-  O trabalho só existe no computador do Isaac. Push é o primeiro item da próxima sessão.
+- **Publicado no GitHub** (`4721768`, Sessão 7A): https://github.com/IsaacEmerick/urban-risk-platform (público). Antes do 1º push o
+  histórico foi reescrito (filter-branch) para tirar o `docs/enunciado.pdf` (material da FIAP): o arquivo fica só no disco e no
+  `.gitignore`, junto com `plano-sessao-*.md` e `.claude/settings.local.json`. `app/vercel.json` com rewrite da SPA.
+- **Sessão 7B em andamento:** SGB explicado na §4.3 (nenhum evento marcado), foco no resumo de erros (`hooks/useFocoNoResumo.js`),
+  art. 16, I na LGPD, `painel-topo.png`, nota no topo do guia. Achados do /checar-coerencia sendo corrigidos (RF04, faixas no
+  CLAUDE.md, enunciado só local, variante concessionária no glossário, Juliana no 00, README).
+- Testes: rodar pelo PowerShell (no Git Bash o Vitest falha pela letra do drive D: vs d:).
 
 ## Decisões que não são óbvias (e o porquê)
 
@@ -148,8 +153,8 @@
 
 ## Pendências
 
-1. **Publicação:** push para o GitHub (repositório público), `vercel.json` com rewrite da SPA, deploy na Vercel (raiz `app/`),
-   testar os links em janela anônima (checklist do enunciado). README com nome completo, RM e links (o Isaac preenche).
+1. **Publicação:** deploy na Vercel (raiz `app/`, o Isaac faz pelo navegador), testar `/alertas/evt-01` recarregando e `/?demo=1`
+   em janela anônima. README com nome completo, RM e links (o Isaac preenche).
 2. **Lote final de coerência:** evt-01 sem `suscetivel_sgb` (ver o que a carta citada sustenta); foco no resumo de erros dos
    formulários; LGPD com art. 16, I para a retenção do log; `painel-topo.png` para o PDF; aviso no topo do guia-desenvolvimento.md
    ("desatualizado, vale o 01-requisitos"); README atualizado; varredura do /checar-coerencia em tudo.
@@ -161,4 +166,6 @@
 
 ## Próximo passo
 
-Prompt "Publicação + lote final de coerência" entregue (19/11, 01h40). Aguardar o relatório. Depois: roteiro do vídeo e PDF.
+Decisões do /checar-coerencia enviadas (19/11, 01h55): corrigir 2 a 6 e o README; RF04 vira validação automática no Serviço de
+Validação + validação na entrada (Publicar status, Registro comunitário), saindo da linha da Fila. Commit B + push. Depois:
+**roteiro do vídeo** (próxima sessão) e PDF.

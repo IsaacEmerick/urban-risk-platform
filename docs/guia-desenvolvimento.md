@@ -1,5 +1,8 @@
 # Guia de Desenvolvimento – Urban Risk Intelligence Platform (GS 2026.2)
 
+> **Nota:** Guia de apoio escrito no início do trabalho; está desatualizado em vários pontos. A
+> fonte da verdade é o 01-requisitos.md.
+
 Engenharia de Software · Atualizado em Nov 17, 2026
 
 ## Pode usar IA? Sim, como apoio

@@ -1,4 +1,4 @@
-// Fila de validação (RF04, RF12): os eventos simulados evt-09, evt-10 e evt-11, a ordem por
+// Fila de validação (RF12): os eventos simulados evt-09, evt-10 e evt-11, a ordem por
 // prioridade e o desempate (Em validação há mais tempo primeiro, seção 4.3)
 import { describe, expect, it } from 'vitest'
 import { criarRepositorio } from './repositorio.js'

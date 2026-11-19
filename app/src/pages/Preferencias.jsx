@@ -7,6 +7,7 @@ import Campo from '../components/Campo.jsx'
 import Icone from '../components/Icone.jsx'
 import MapaSeletor from '../components/MapaSeletor.jsx'
 import { usePerfil } from '../contexto/PerfilContext.jsx'
+import { useFocoNoResumo } from '../hooks/useFocoNoResumo.js'
 import { useRepositorio } from '../hooks/useRepositorio.js'
 import { PERFIS, TELAS } from '../navegacao.js'
 import { FINALIDADES, podeReceberNotificacoes, rotuloArea, rotuloRaio, validarPreferencias } from '../services/conta.js'
@@ -49,6 +50,7 @@ export default function Preferencias() {
   const [tipos, setTipos] = useState(usuario.tiposRisco)
   const [canais, setCanais] = useState(usuario.canais)
   const [tentou, setTentou] = useState(false)
+  const [refResumo, focarResumo] = useFocoNoResumo()
   const [resultado, setResultado] = useState('')
 
   // Formulário "Adicionar área"
@@ -85,6 +87,7 @@ export default function Preferencias() {
     setTentou(true)
     if (Object.keys(errosAtuais).length > 0) {
       setResultado('')
+      focarResumo()
       return
     }
     repositorio.atualizarPreferencias(usuario.id, preferencias)
@@ -203,7 +206,7 @@ export default function Preferencias() {
         </GrupoEscolhas>
 
         {tentou && Object.keys(erros).length > 0 && (
-          <p className="campo__erro" role="alert">
+          <p className="campo__erro" role="alert" ref={refResumo} tabIndex={-1}>
             Corrija {Object.keys(erros).length === 1 ? 'o item marcado' : 'os itens marcados'} para salvar.
           </p>
         )}

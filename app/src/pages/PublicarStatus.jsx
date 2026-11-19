@@ -9,6 +9,7 @@ import MapaSeletor from '../components/MapaSeletor.jsx'
 import SeloRisco from '../components/SeloRisco.jsx'
 import { usePerfil } from '../contexto/PerfilContext.jsx'
 import { useAgora } from '../hooks/useAgora.js'
+import { useFocoNoResumo } from '../hooks/useFocoNoResumo.js'
 import { useRepositorio } from '../hooks/useRepositorio.js'
 import { eventoAtivo, passouPorAlerta } from '../services/eventos.js'
 import { formatarDataHora } from '../services/formatar.js'
@@ -49,6 +50,7 @@ export default function PublicarStatus() {
   const [aba, setAba] = useState('novo')
   const [form, setForm] = useState(() => formularioInicial(new Date(), bairros))
   const [tentouEnviar, setTentouEnviar] = useState(false)
+  const [refResumo, focarResumo] = useFocoNoResumo()
   const [resultado, setResultado] = useState('')
   const [novaSituacao, setNovaSituacao] = useState({}) // eventoId → situação escolhida no card
 
@@ -86,7 +88,10 @@ export default function PublicarStatus() {
   const publicar = (e) => {
     e.preventDefault()
     setTentouEnviar(true)
-    if (Object.keys(errosAtuais).length > 0) return
+    if (Object.keys(errosAtuais).length > 0) {
+      focarResumo()
+      return
+    }
     const momento = new Date()
     const dado = criarDadoStatus({ ...entrada, servico, usuario, bairros, agora: momento })
     const evento = repositorio.publicarStatus(dado, momento)
@@ -260,7 +265,7 @@ export default function PublicarStatus() {
           </div>
 
           {tentouEnviar && Object.keys(erros).length > 0 && (
-            <p className="campo__erro" role="alert">
+            <p className="campo__erro" role="alert" ref={refResumo} tabIndex={-1}>
               Corrija {Object.keys(erros).length === 1 ? 'o campo marcado' : 'os campos marcados'} para publicar.
             </p>
           )}

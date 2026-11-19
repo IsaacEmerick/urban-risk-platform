@@ -72,12 +72,15 @@ enquanto o modo estiver ativo. Ele vale até fechar a aba; `?demo=0` desliga.
 
 ## Estrutura
 
-| Pasta              | Conteúdo                                                                         |
-| ------------------ | -------------------------------------------------------------------------------- |
-| `app/src/pages`    | Telas (camada de apresentação)                                                   |
-| `app/src/services` | Regras de negócio: confiança, risco, prioridade, estados, notificação, simulador |
-| `app/src/data`     | Dados simulados (JSON)                                                           |
-| `docs/`            | Problema e personas, requisitos, arquitetura e diagramas                         |
+| Pasta                | Conteúdo                                                                         |
+| -------------------- | -------------------------------------------------------------------------------- |
+| `app/src/pages`      | Telas (camada de apresentação)                                                   |
+| `app/src/components` | Componentes reutilizados pelas telas: selos, cards, mapas, ícones, carimbos      |
+| `app/src/hooks`      | Hooks do React: acesso aos dados, relógio ao vivo, foco no resumo de erros       |
+| `app/src/services`   | Regras de negócio: confiança, risco, prioridade, estados, notificação, simulador |
+| `app/src/data`       | Dados simulados (JSON)                                                           |
+| `docs/`              | Problema e personas, requisitos, arquitetura e diagramas                         |
+| `docs/prints`        | Capturas das telas para o PDF                                                    |
 
 ## Documentação
 

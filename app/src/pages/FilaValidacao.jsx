@@ -1,4 +1,4 @@
-// Fila de validação (RF04, RF12): só eventos Em validação (confiança 50–74, RN02), do mais prioritário
+// Fila de validação (RF12): só eventos Em validação (confiança 50–74, RN02), do mais prioritário
 // para o menos; no empate, o que está Em validação há mais tempo vem antes (seção 4.3).
 // Cada card mostra os selos, a prioridade, o resumo do cálculo da confiança e os botões Confirmar e
 // Descartar, com confirmação em linha (como no Detalhe do alerta).

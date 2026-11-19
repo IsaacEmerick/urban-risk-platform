@@ -78,7 +78,7 @@ alertas e avisa só quem está na área afetada, sempre mostrando a **origem** d
 | **Perfil**                     | 29 anos, trabalha no centro de operações da concessionária de energia que atende a região.                                                                                                |
 | **Objetivo**                   | Ver as interrupções de serviço junto com os outros riscos da área (por exemplo, alagamento que impede o acesso da equipe).                                                                |
 | **Dores**                      | Fica sabendo tarde das interrupções relatadas pela população e não consegue cruzá-las com alagamentos ou calor extremo.                                                                   |
-| **O que a plataforma entrega** | Publicação do status de cada interrupção (serviço, área, situação e previsão de normalização), painel com interrupções e riscos da área e análises históricas por tipo, região e período. |
+| **O que a plataforma entrega** | Publicação do status de cada interrupção (serviço, área, situação, início, previsão de normalização, nº estimado de afetados e se atinge hospital, escola ou abastecimento crítico), painel com interrupções e riscos da área e análises históricas por tipo, região e período. |
 | **Fluxos no protótipo**        | Publicar status, Painel e Análises.                                                                                                                                                       |
 
 ## 4. Indicadores de sucesso

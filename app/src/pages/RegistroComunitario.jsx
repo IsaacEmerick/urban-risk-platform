@@ -1,4 +1,5 @@
-// Registro comunitário (RF03, RNF06): no máximo 3 passos e 60 s.
+// Registro comunitário (RF03, RNF06): no máximo 3 passos e 60 s. RF04 na entrada: só opções fixas e,
+// no Alagamento, a altura da água é obrigatória para enviar.
 // 1) tipo de risco · 2) local (posição atual já marcada, ajuste opcional) · 3) altura da água (Alagamento),
 // descrição e foto opcionais → Enviar. O registro segue o mesmo caminho dos outros dados
 // (confiança, risco, RN04, estados) e aparece no Painel. Depois do envio, a mesma tela mostra a confirmação.

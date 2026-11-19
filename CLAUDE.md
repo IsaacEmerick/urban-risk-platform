@@ -1,6 +1,6 @@
 # Urban Risk Intelligence Platform — Global Solution 2026.2 (Engenharia de Software, FIAP)
 
-Trabalho acadêmico feito por um único aluno. O enunciado completo está em `docs/enunciado.pdf`.
+Trabalho acadêmico feito por um único aluno. O enunciado completo está em `docs/enunciado.pdf` (só local, fora do git).
 Uso de IA é permitido **como apoio**: o aluno precisa entender e conseguir explicar tudo o que for entregue.
 
 Guia de referência (exemplos de personas, RF, RNF, regras, telas, diagramas e roteiro de sessões): `docs/guia-desenvolvimento.md`.
@@ -109,7 +109,8 @@ a inundações do SGB (Barueri, 2017).
   lâmina d'água em via e chuva.
 - Áreas de interesse (RF13): por bairro ou por ponto no mapa com raio (ex.: 1 km). Cada bairro tem centro e
   raio aproximados (`app/src/data/bairros.json`, a partir do OpenStreetMap), então bairro e ponto viram círculos.
-- Faixas de risco usam ≥ e < (sem lacunas); se dois critérios se aplicam, vale o nível mais alto.
+- Faixas de risco sem lacunas, com os limites exatamente como na tabela da seção 4.2 (alguns usam ≤ e >);
+  se dois critérios se aplicam, vale o nível mais alto.
 - Prioridade P = R × 25 × (C/100) + V, com R = 1..4 (Baixo..Crítico), C = confiança, V = +10 área vulnerável
   (hospital, escola, comunidade vulnerável ou área suscetível a inundação na carta do SGB, Barueri 2017; aplicado uma vez só).
   Desempate: na Fila, o evento Em validação há mais tempo primeiro; na Lista e no Painel, o atualizado mais recente.

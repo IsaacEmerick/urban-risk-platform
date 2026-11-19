@@ -13,7 +13,7 @@ exatamente os números abaixo.
 | ------------------------------- | -------------------------------------------------------------------------------------------- |
 | Personas                        | Ana (moradora), Carlos (agente da Defesa Civil), Juliana (operadora de serviço público)      |
 | Tipos de risco                  | Alagamento, Ilha de calor, Interrupção de serviço                                            |
-| Origens do dado                 | Sensor, Base pública, Comunidade                                                             |
+| Origens do dado                 | Sensor, Base pública, Comunidade; variante: Base pública (concessionária)                    |
 | Níveis de risco                 | Baixo, Moderado, Alto, Crítico                                                               |
 | Faixas de confiança             | Alta (≥ 75), Média (50–74), Baixa (< 50)                                                     |
 | Estados do evento               | Reportado, Em validação, Confirmado, Alerta emitido, Em monitoramento, Encerrado, Descartado |
@@ -37,12 +37,12 @@ evento que tem estado, risco, confiança e prioridade.
 | Detalhe do alerta        | Descrição, mapa, estado e risco; botão "Também vejo isso" (morador); botões "Confirmar alerta" (alerta preliminar), "Encerrar", "Cancelar alerta" e "Descartar evento" (agente) | RF06, RF08, RF12, RF17 | Todos            |
 | Origem e confiança       | Origem de cada dado, horário da última atualização e confiança com o cálculo explicado                                                                                          | RF01, RF02, RF05, RF09 | Todos            |
 | Central de notificações  | Histórico, lidas e não lidas, filtros por tipo (Alerta, "Alerta confirmado", "Alerta cancelado") e link para o alerta                                                          | RF10, RF11             | Morador          |
-| Registro comunitário     | Tipo; localização automática (ajuste opcional); altura da água (Alagamento); descrição opcional com sugestões e foto opcional; em até 3 passos                                  | RF03                   | Morador          |
+| Registro comunitário     | Tipo; localização automática (ajuste opcional); altura da água (Alagamento); descrição opcional com sugestões e foto opcional; em até 3 passos                                  | RF03, RF04             | Morador          |
 | Meus registros           | Estado de cada registro e confirmações recebidas                                                                                                                                | RF03, RF17             | Morador          |
-| Fila de validação        | Só eventos Em validação, por prioridade (desempate: há mais tempo na fila), com selos, resumo da confiança e os botões Confirmar e Descartar                                    | RF04, RF12             | Agente           |
+| Fila de validação        | Só eventos Em validação, por prioridade (desempate: há mais tempo na fila), com selos, resumo da confiança e os botões Confirmar e Descartar                                    | RF12                   | Agente           |
 | Análises                 | Período de 7 ou 30 dias; gráficos por tipo de risco e por bairro; as duas metas do RNF11 ao vivo; alertas preliminares à parte: quantos houve e quantos foram confirmados depois | RF14                   | Agente, operador |
 | Privacidade e meus dados | Dados pessoais, consentimentos (morador) ou base legal (agente, operador), exportação em JSON, revogação, exclusão da conta (ou pedido ao órgão) e histórico de acesso          | RF16                   | Todos            |
-| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"; "Meus status" para trocar a situação | RF18                   | Operador         |
+| Publicar status          | Serviço, área, situação, início, previsão de normalização, nº estimado de afetados e "atinge hospital, escola ou abastecimento crítico?"; "Meus status" para trocar a situação | RF04, RF18             | Operador         |
 | Perfil                   | Nome, perfil e e-mail; atalhos Preferências, Privacidade e meus dados e Sair; o morador também tem Meus registros                                                               | RF15                   | Todos            |
 
 ## 2. Requisitos funcionais
@@ -58,7 +58,7 @@ evento que tem estado, risco, confiança e prioridade.
 | RF01 | O sistema deve receber leituras de sensores (nível de água, chuva, temperatura) com identificação do sensor, local e horário.                                                                                                                     | Alta       | —               | Painel, Origem e confiança (integração automática) |
 | RF02 | O sistema deve importar periodicamente dados de bases públicas (CEMADEN, INMET, Defesa Civil e concessionárias).                                                                                                                                  | Alta       | —               | Painel, Origem e confiança (integração automática) |
 | RF03 | O sistema deve permitir que o morador registre uma ocorrência com tipo, localização, descrição e foto opcional.                                                                                                                                   | Alta       | Ana             | Registro comunitário, Meus registros               |
-| RF04 | O sistema deve validar cada dado recebido quanto a formato, faixa de valores e duplicidade.                                                                                                                                                       | Alta       | Carlos          | Fila de validação                                  |
+| RF04 | O sistema deve validar cada dado recebido quanto a formato, faixa de valores e duplicidade.                                                                                                                                                       | Alta       | —               | Publicar status e Registro comunitário (validação na entrada); demais dados: automática no Serviço de Validação |
 | RF05 | O sistema deve calcular o nível de confiança de cada dado conforme a seção 4.1.                                                                                                                                                                   | Alta       | Todas           | Origem e confiança                                 |
 | RF06 | O sistema deve classificar o nível de risco de cada evento em Baixo, Moderado, Alto ou Crítico, conforme a seção 4.2.                                                                                                                             | Alta       | Todas           | Detalhe do alerta                                  |
 | RF07 | O sistema deve exibir um painel com mapa dos eventos ativos, indicadores e filtros por tipo de risco e região.                                                                                                                                    | Alta       | Todas           | Painel                                             |
@@ -150,6 +150,14 @@ notificações. O morador que acabou de se cadastrar começa sem área, com os 3
 RF01 e RF02 não têm tela própria porque são integrações automáticas. O resultado delas aparece no
 Painel e na tela Origem e confiança, como origem dos dados.
 
+O RF04 também é automático. Nos dados digitados no app, a validação de formato e faixa de valores
+acontece na entrada: Publicar status recusa campos vazios ou fora da faixa, e o Registro comunitário
+só aceita opções fixas e exige a altura da água no Alagamento. Os demais dados (sensores e bases
+públicas) são validados pelo Serviço de Validação, sem tela. A duplicidade é tratada pelo
+agrupamento da RN04: dados do mesmo tipo próximos no espaço e no tempo viram um único evento. A Fila
+de validação não é o RF04: ela mostra os eventos em dúvida pela confiança (RN02), para o agente
+confirmar ou descartar (RF12).
+
 ## 3. Requisitos não funcionais (ISO/IEC 25010:2011)
 
 A classificação usa a **ISO/IEC 25010:2011**. Essa versão não tem "escalabilidade" como
@@ -208,7 +216,9 @@ alertas → RNF11; facilidade de uso → RNF06.
   titular (sem dados nem pseudônimos de outras pessoas). Excluir a conta apaga os dados pessoais do
   cofre (usuário, preferências, consentimentos e notificações); os eventos guardam só o pseudônimo,
   que deixa de apontar para alguém. O histórico de acesso (log de auditoria) é guardado por 12 meses
-  (RNF09), inclusive depois da exclusão.
+  (RNF09), inclusive depois da exclusão: a conservação para cumprimento de obrigação legal ou
+  regulatória do controlador é permitida pelo **art. 16, I**. O log guarda só o ID do usuário, a data
+  e a ação; nenhum outro dado pessoal.
 
 ## 4. Regras de negócio
 
@@ -292,6 +302,10 @@ A prioridade ordena a Lista de alertas e a Fila de validação.
 
 P varia de 0 a 110 e é arredondada para **1 casa decimal** (ex.: 58,75 → 58,8). **Exemplo:** alagamento Alto (R = 3) com confiança 80 perto de uma escola do
 Parque Viana: P = 3 × 25 × 0,8 + 10 = **70**.
+
+O critério da carta do SGB está previsto na regra, mas nenhum evento simulado o usa: a delimitação
+das áreas suscetíveis da carta não foi transcrita para o protótipo, e marcar um evento sem essa
+conferência seria afirmar algo que o documento oficial pode não sustentar.
 
 **Desempate (mesma prioridade):**
 

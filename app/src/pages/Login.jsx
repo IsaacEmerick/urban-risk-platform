@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import Campo from '../components/Campo.jsx'
 import Icone from '../components/Icone.jsx'
 import { usePerfil } from '../contexto/PerfilContext.jsx'
+import { useFocoNoResumo } from '../hooks/useFocoNoResumo.js'
 import { useRepositorio } from '../hooks/useRepositorio.js'
 import { ROTULO_PERFIL, TELAS } from '../navegacao.js'
 import { FINALIDADES, criarMorador, validarCadastro } from '../services/conta.js'
@@ -86,6 +87,7 @@ function CriarConta({ aoCriar }) {
   const repositorio = useRepositorio()
   const [form, setForm] = useState({ nome: '', email: '', aceitaCadastro: false, autorizaNotificacoes: false })
   const [tentou, setTentou] = useState(false)
+  const [refResumo, focarResumo] = useFocoNoResumo()
   const mudar = (campo) => (valor) => setForm((f) => ({ ...f, [campo]: valor }))
 
   const errosAtuais = validarCadastro(form, repositorio.listarUsuarios())
@@ -94,7 +96,10 @@ function CriarConta({ aoCriar }) {
   const enviar = (e) => {
     e.preventDefault()
     setTentou(true)
-    if (Object.keys(errosAtuais).length > 0) return
+    if (Object.keys(errosAtuais).length > 0) {
+      focarResumo()
+      return
+    }
     const momento = new Date()
     const usuario = criarMorador(form, { usuariosExistentes: repositorio.listarUsuarios(), agora: momento })
     repositorio.criarUsuario(usuario, momento)
@@ -182,7 +187,7 @@ function CriarConta({ aoCriar }) {
       </details>
 
       {tentou && Object.keys(erros).length > 0 && (
-        <p className="campo__erro" role="alert">
+        <p className="campo__erro" role="alert" ref={refResumo} tabIndex={-1}>
           Corrija {Object.keys(erros).length === 1 ? 'o campo marcado' : 'os campos marcados'} para criar a conta.
         </p>
       )}
