@@ -154,7 +154,8 @@ devem implementar exatamente essas regras. Se uma regra mudar, mude o documento 
   contorno, mesma cor e ícone) com o texto "Risco Crítico (relatado)"; no mapa, marcador vazado e tracejado.
   Selo e tarja cheios só para eventos confirmados ou alertados. Regra em `riscoRelatado()`.
 - Todo card e detalhe mostra: selo de origem, selo de confiança ("Alta • 82") e "atualizado há X s".
-  Evento Encerrado ou Descartado não mostra "atualizado há X" em lugar nenhum: só a data em que terminou.
+  Em cards e no detalhe de evento, Encerrado ou Descartado não mostra "atualizado há X": só a data em que terminou.
+  A Central mostra a notificação como foi enviada (data do envio), e a Origem e confiança mostra o horário de cada dado (RF09).
 - Navegação inferior por perfil:
   - Morador: Painel, Alertas, Registrar, Notificações, Perfil.
   - Agente: Painel, Fila, Alertas, Análises, Perfil. ("Fila" é o rótulo curto da aba; a tela se chama Fila de validação.)
