@@ -2,7 +2,7 @@
 
 > Arquivo do **revisor** (Claude no claude.ai). Serve para retomar o trabalho numa conversa nova.
 > **Claude Code: não edite este arquivo.** Ele não faz parte da entrega e não entra no PDF.
-> Última atualização: 19/11/2026, 01h55. (Hashes de commit atualizados após a limpeza do histórico.)
+> Última atualização: 19/11/2026, 02h25. (Hashes de commit atualizados após a limpeza do histórico.)
 
 ## Como retomar numa conversa nova
 
@@ -83,8 +83,8 @@
 - **Publicado no GitHub** (`4721768`, Sessão 7A): https://github.com/IsaacEmerick/urban-risk-platform (público). Antes do 1º push o
   histórico foi reescrito (filter-branch) para tirar o `docs/enunciado.pdf` (material da FIAP): o arquivo fica só no disco e no
   `.gitignore`, junto com `plano-sessao-*.md` e `.claude/settings.local.json`. `app/vercel.json` com rewrite da SPA.
-- **Sessão 7B em andamento:** SGB explicado na §4.3 (nenhum evento marcado), foco no resumo de erros (`hooks/useFocoNoResumo.js`),
-  art. 16, I na LGPD, `painel-topo.png`, nota no topo do guia. Achados do /checar-coerencia sendo corrigidos (RF04, faixas no
+- **Sessão 7B pronta** (`42e3907`, enviada; backup e refs/original apagados): SGB explicado na §4.3 (nenhum evento marcado), foco no resumo de erros (`hooks/useFocoNoResumo.js`),
+  art. 16, I na LGPD, `painel-topo.png`, nota no topo do guia. Achados do /checar-coerencia corrigidos (RF04 = validação automática + na entrada, fora da Fila; faixas no
   CLAUDE.md, enunciado só local, variante concessionária no glossário, Juliana no 00, README).
 - Testes: rodar pelo PowerShell (no Git Bash o Vitest falha pela letra do drive D: vs d:).
 
@@ -166,6 +166,8 @@
 
 ## Próximo passo
 
-Decisões do /checar-coerencia enviadas (19/11, 01h55): corrigir 2 a 6 e o README; RF04 vira validação automática no Serviço de
-Validação + validação na entrada (Publicar status, Registro comunitário), saindo da linha da Fila. Commit B + push. Depois:
-**roteiro do vídeo** (próxima sessão) e PDF.
+Plano do roteiro aprovado em 19/11, 02h25, com ajustes: trecho 1 (problema + solução) numa janela separada mostrando o Painel/mapa
+e um card com os selos, em vez da tela de Login parada; a tela Origem e confiança sai do sensor do rio e vai para o evt-02 depois do
+"Também vejo isso" (40 + 30 + 5 = 75, o cálculo que importa); Análises mostra 8,0% / 92,0% (o alerta do rio entra aos 16 s);
+Juliana fica se couber em 2:45. Medições: simulador conta desde a abertura da página; Alto ~16 s; Crítico ~36–38 s com reenvio;
+o rio não desce. Aguardar o roteiro ensaiado. Depois: PDF (Sessão 9). Link da Vercel ainda não recebido.
