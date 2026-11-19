@@ -13,9 +13,11 @@
 
 ## O projeto
 
-- Global Solution 2026.2, Engenharia de Software (FIAP). Aluno: **Isaac**, fazendo **sozinho**. Respostas sempre em português do Brasil.
+- Global Solution 2026.2, Engenharia de Software (FIAP). Aluno: **Isaac Vieira Emerick (RM 87081)**, fazendo **sozinho**. Respostas sempre em português do Brasil.
 - Enunciado: `docs/enunciado.pdf`. IA é permitida **como apoio**; o aluno precisa entender e conseguir explicar tudo.
 - Pesos: protótipo 4,0 · requisitos 2,0 · sequência 1,0 · estados 1,0 · arquitetura 1,0 · vídeo 1,0.
+- **Decisão do Isaac (19/11, 11h36): o vídeo NÃO será feito** (aceita perder 1,0 ponto). Roteiro sai do repositório; README,
+  CLAUDE.md e capa do PDF sem vídeo. Entrega: PDF com links do protótipo e do repositório (o README fica no repositório).
 - Guia original (escrito no início): `docs/guia-desenvolvimento.md`, cópia do doc do Claude Docs
   "Guia de Desenvolvimento – Urban Risk Intelligence Platform (GS 2026.2)" (https://claude.ai/artifact/SBzxWEBiBgYyoKGg2pnVE1).
   Está desatualizado em vários pontos; **o `01-requisitos.md` sempre vence**.
@@ -86,6 +88,9 @@
 - **Sessão 7B pronta** (`42e3907`, enviada; backup e refs/original apagados): SGB explicado na §4.3 (nenhum evento marcado), foco no resumo de erros (`hooks/useFocoNoResumo.js`),
   art. 16, I na LGPD, `painel-topo.png`, nota no topo do guia. Achados do /checar-coerencia corrigidos (RF04 = validação automática + na entrada, fora da Fila; faixas no
   CLAUDE.md, enunciado só local, variante concessionária no glossário, Juliana no 00, README).
+- **Deploy na Vercel no ar** (19/11, 11h30): https://urban-risk-platform.vercel.app. Conferido pelo revisor no navegador embutido:
+  `/alertas/evt-01` aberto direto carrega o app (sem 404, redireciona ao Login sem sessão) e a entrada como Ana leva ao Painel.
+- Roteiro do vídeo commitado (`346821a`), ainda **não revisado** pelo revisor.
 - Testes: rodar pelo PowerShell (no Git Bash o Vitest falha pela letra do drive D: vs d:).
 
 ## Decisões que não são óbvias (e o porquê)
@@ -153,21 +158,12 @@
 
 ## Pendências
 
-1. **Publicação:** deploy na Vercel (raiz `app/`, o Isaac faz pelo navegador), testar `/alertas/evt-01` recarregando e `/?demo=1`
-   em janela anônima. README com nome completo, RM e links (o Isaac preenche).
-2. **Lote final de coerência:** evt-01 sem `suscetivel_sgb` (ver o que a carta citada sustenta); foco no resumo de erros dos
-   formulários; LGPD com art. 16, I para a retenção do log; `painel-topo.png` para o PDF; aviso no topo do guia-desenvolvimento.md
-   ("desatualizado, vale o 01-requisitos"); README atualizado; varredura do /checar-coerencia em tudo.
-   **Prettier: não fazer** (risco de trocar sinais, como já aconteceu; MD060 não afeta a nota).
-3. Roteiro do vídeo (~2:45, `?demo=1`, app recém-aberto; Ana confirma evt-02, Carlos confirma evt-10 e descarta evt-11, sem cancelar
-   alerta) → gravar → YouTube não listado.
-4. PDF com Pandoc: capa (nome, RM, links do protótipo, repositório e vídeo), sequência em paisagem, capturas, declaração de uso de IA.
-5. Entrega no Teams; checklist final do enunciado.
+1. Commit "dados de entrega": nome/RM/links no README, vídeo retirado (README, CLAUDE.md, `docs/roteiro-video.md` removido).
+2. PDF com Pandoc em `entrega/`: capa (Isaac Vieira Emerick, RM 87081, https://urban-risk-platform.vercel.app,
+   https://github.com/IsaacEmerick/urban-risk-platform), problema e personas, requisitos, sequência em paisagem, estados,
+   arquitetura, capturas de `docs/prints/` (usar `painel-topo.png`), declaração de uso de IA.
+3. Teste dos links em janela anônima (o Isaac) e entrega no Teams; checklist final do enunciado (sem o item do vídeo).
 
 ## Próximo passo
 
-Plano do roteiro aprovado em 19/11, 02h25, com ajustes: trecho 1 (problema + solução) numa janela separada mostrando o Painel/mapa
-e um card com os selos, em vez da tela de Login parada; a tela Origem e confiança sai do sensor do rio e vai para o evt-02 depois do
-"Também vejo isso" (40 + 30 + 5 = 75, o cálculo que importa); Análises mostra 8,0% / 92,0% (o alerta do rio entra aos 16 s);
-Juliana fica se couber em 2:45. Medições: simulador conta desde a abertura da página; Alto ~16 s; Crítico ~36–38 s com reenvio;
-o rio não desce. Aguardar o roteiro ensaiado. Depois: PDF (Sessão 9). Link da Vercel ainda não recebido.
+Prompt "dados de entrega + sem vídeo" entregue (19/11, 11h40). Depois: prompt da Sessão 9 (PDF).

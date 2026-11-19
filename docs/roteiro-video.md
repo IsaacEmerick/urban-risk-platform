@@ -22,7 +22,7 @@ Os dados ficam só em memória: **recarregar a página (F5) desfaz tudo** que a 
 
 ## Preparação
 
-1. **Link:** `https://<projeto>.vercel.app/?demo=1` (trocar pelo link da Vercel). Se a Vercel ainda não estiver
+1. **Link:** `https://urban-risk-platform.vercel.app/?demo=1`. Se a Vercel ainda não estiver
    pronta: `cd app && npm run dev` e usar `http://localhost:5173/?demo=1`.
 2. **Navegador:** Microsoft Edge, janela **InPrivate** (Ctrl+Shift+N). Ela começa sem login e sem dados guardados,
    como um app recém-aberto. Todas as janelas InPrivate compartilham a sessão: **feche todas** antes de cada trecho.

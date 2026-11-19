@@ -7,8 +7,10 @@ sempre mostrando a **origem** da informação.
 
 Global Solution 2026.2 · Engenharia de Software · FIAP
 
-- **Autor:** _(a preencher: nome completo e RM)_
-- **Protótipo publicado:** _(a preencher: link da Vercel)_
+- **Autor:** Isaac Vieira Emerick — RM 87081
+- **Protótipo publicado:** https://urban-risk-platform.vercel.app
+  (modo demonstração: https://urban-risk-platform.vercel.app/?demo=1)
+- **Repositório:** https://github.com/IsaacEmerick/urban-risk-platform
 - **Vídeo:** _(a preencher: link do YouTube, não listado)_
 
 ## ⚠️ Dados simulados
